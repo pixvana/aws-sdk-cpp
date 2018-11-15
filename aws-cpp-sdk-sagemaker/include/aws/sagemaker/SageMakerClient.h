@@ -308,13 +308,20 @@ namespace Model
 
         /**
          * <p>Adds or overwrites one or more tags for the specified Amazon SageMaker
-         * resource. You can add tags to notebook instances, training jobs, models,
-         * endpoint configurations, and endpoints. </p> <p>Each tag consists of a key and
-         * an optional value. Tag keys must be unique per resource. For more information
-         * about tags, see <a
-         * href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html#allocation-what">Using
-         * Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User
-         * Guide</i>. </p><p><h3>See Also:</h3>   <a
+         * resource. You can add tags to notebook instances, training jobs, hyperparameter
+         * tuning jobs, models, endpoint configurations, and endpoints.</p> <p>Each tag
+         * consists of a key and an optional value. Tag keys must be unique per resource.
+         * For more information about tags, see For more information, see <a
+         * href="https://aws.amazon.com/answers/account-management/aws-tagging-strategies/">AWS
+         * Tagging Strategies</a>.</p> <note> <p>Tags that you add to a hyperparameter
+         * tuning job by calling this API are also added to any training jobs that the
+         * hyperparameter tuning job launches after you call this API, but not to training
+         * jobs that the hyperparameter tuning job launched before you called this API. To
+         * make sure that the tags associated with a hyperparameter tuning job are also
+         * added to all training jobs that the hyperparameter tuning job launches, add the
+         * tags when you first create the tuning job by specifying them in the
+         * <code>Tags</code> parameter of <a>CreateHyperParameterTuningJob</a> </p>
+         * </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/AddTags">AWS
          * API Reference</a></p>
          */
@@ -322,13 +329,20 @@ namespace Model
 
         /**
          * <p>Adds or overwrites one or more tags for the specified Amazon SageMaker
-         * resource. You can add tags to notebook instances, training jobs, models,
-         * endpoint configurations, and endpoints. </p> <p>Each tag consists of a key and
-         * an optional value. Tag keys must be unique per resource. For more information
-         * about tags, see <a
-         * href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html#allocation-what">Using
-         * Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User
-         * Guide</i>. </p><p><h3>See Also:</h3>   <a
+         * resource. You can add tags to notebook instances, training jobs, hyperparameter
+         * tuning jobs, models, endpoint configurations, and endpoints.</p> <p>Each tag
+         * consists of a key and an optional value. Tag keys must be unique per resource.
+         * For more information about tags, see For more information, see <a
+         * href="https://aws.amazon.com/answers/account-management/aws-tagging-strategies/">AWS
+         * Tagging Strategies</a>.</p> <note> <p>Tags that you add to a hyperparameter
+         * tuning job by calling this API are also added to any training jobs that the
+         * hyperparameter tuning job launches after you call this API, but not to training
+         * jobs that the hyperparameter tuning job launched before you called this API. To
+         * make sure that the tags associated with a hyperparameter tuning job are also
+         * added to all training jobs that the hyperparameter tuning job launches, add the
+         * tags when you first create the tuning job by specifying them in the
+         * <code>Tags</code> parameter of <a>CreateHyperParameterTuningJob</a> </p>
+         * </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/AddTags">AWS
          * API Reference</a></p>
          *
@@ -338,13 +352,20 @@ namespace Model
 
         /**
          * <p>Adds or overwrites one or more tags for the specified Amazon SageMaker
-         * resource. You can add tags to notebook instances, training jobs, models,
-         * endpoint configurations, and endpoints. </p> <p>Each tag consists of a key and
-         * an optional value. Tag keys must be unique per resource. For more information
-         * about tags, see <a
-         * href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html#allocation-what">Using
-         * Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User
-         * Guide</i>. </p><p><h3>See Also:</h3>   <a
+         * resource. You can add tags to notebook instances, training jobs, hyperparameter
+         * tuning jobs, models, endpoint configurations, and endpoints.</p> <p>Each tag
+         * consists of a key and an optional value. Tag keys must be unique per resource.
+         * For more information about tags, see For more information, see <a
+         * href="https://aws.amazon.com/answers/account-management/aws-tagging-strategies/">AWS
+         * Tagging Strategies</a>.</p> <note> <p>Tags that you add to a hyperparameter
+         * tuning job by calling this API are also added to any training jobs that the
+         * hyperparameter tuning job launches after you call this API, but not to training
+         * jobs that the hyperparameter tuning job launched before you called this API. To
+         * make sure that the tags associated with a hyperparameter tuning job are also
+         * added to all training jobs that the hyperparameter tuning job launches, add the
+         * tags when you first create the tuning job by specifying them in the
+         * <code>Tags</code> parameter of <a>CreateHyperParameterTuningJob</a> </p>
+         * </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/AddTags">AWS
          * API Reference</a></p>
          *
@@ -520,14 +541,24 @@ namespace Model
         virtual void CreateEndpointConfigAsync(const Model::CreateEndpointConfigRequest& request, const CreateEndpointConfigResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Starts a hyperparameter tuning job.</p><p><h3>See Also:</h3>   <a
+         * <p>Starts a hyperparameter tuning job. A hyperparameter tuning job finds the
+         * best version of a model by running many training jobs on your dataset using the
+         * algorithm you choose and values for hyperparameters within ranges that you
+         * specify. It then chooses the hyperparameter values that result in a model that
+         * performs the best, as measured by an objective metric that you
+         * choose.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreateHyperParameterTuningJob">AWS
          * API Reference</a></p>
          */
         virtual Model::CreateHyperParameterTuningJobOutcome CreateHyperParameterTuningJob(const Model::CreateHyperParameterTuningJobRequest& request) const;
 
         /**
-         * <p>Starts a hyperparameter tuning job.</p><p><h3>See Also:</h3>   <a
+         * <p>Starts a hyperparameter tuning job. A hyperparameter tuning job finds the
+         * best version of a model by running many training jobs on your dataset using the
+         * algorithm you choose and values for hyperparameters within ranges that you
+         * specify. It then chooses the hyperparameter values that result in a model that
+         * performs the best, as measured by an objective metric that you
+         * choose.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreateHyperParameterTuningJob">AWS
          * API Reference</a></p>
          *
@@ -536,7 +567,12 @@ namespace Model
         virtual Model::CreateHyperParameterTuningJobOutcomeCallable CreateHyperParameterTuningJobCallable(const Model::CreateHyperParameterTuningJobRequest& request) const;
 
         /**
-         * <p>Starts a hyperparameter tuning job.</p><p><h3>See Also:</h3>   <a
+         * <p>Starts a hyperparameter tuning job. A hyperparameter tuning job finds the
+         * best version of a model by running many training jobs on your dataset using the
+         * algorithm you choose and values for hyperparameters within ranges that you
+         * specify. It then chooses the hyperparameter values that result in a model that
+         * performs the best, as measured by an objective metric that you
+         * choose.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreateHyperParameterTuningJob">AWS
          * API Reference</a></p>
          *
@@ -748,8 +784,9 @@ namespace Model
          * configuration scripts cannot run for longer than 5 minutes. If a script runs for
          * longer than 5 minutes, it fails and the notebook instance is not created or
          * started.</p> <p>For information about notebook instance lifestyle
-         * configurations, see <a>notebook-lifecycle-config</a>.</p><p><h3>See Also:</h3>  
-         * <a
+         * configurations, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html">Step
+         * 2.1: (Optional) Customize a Notebook Instance</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreateNotebookInstanceLifecycleConfig">AWS
          * API Reference</a></p>
          */
@@ -768,8 +805,9 @@ namespace Model
          * configuration scripts cannot run for longer than 5 minutes. If a script runs for
          * longer than 5 minutes, it fails and the notebook instance is not created or
          * started.</p> <p>For information about notebook instance lifestyle
-         * configurations, see <a>notebook-lifecycle-config</a>.</p><p><h3>See Also:</h3>  
-         * <a
+         * configurations, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html">Step
+         * 2.1: (Optional) Customize a Notebook Instance</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreateNotebookInstanceLifecycleConfig">AWS
          * API Reference</a></p>
          *
@@ -790,8 +828,9 @@ namespace Model
          * configuration scripts cannot run for longer than 5 minutes. If a script runs for
          * longer than 5 minutes, it fails and the notebook instance is not created or
          * started.</p> <p>For information about notebook instance lifestyle
-         * configurations, see <a>notebook-lifecycle-config</a>.</p><p><h3>See Also:</h3>  
-         * <a
+         * configurations, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html">Step
+         * 2.1: (Optional) Customize a Notebook Instance</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreateNotebookInstanceLifecycleConfig">AWS
          * API Reference</a></p>
          *
@@ -812,7 +851,9 @@ namespace Model
          * instance. Use the <code>NotIpAddress</code> condition operator and the
          * <code>aws:SourceIP</code> condition context key to specify the list of IP
          * addresses that you want to have access to the notebook instance. For more
-         * information, see <a>nbi-ip-filter</a>.</p><p><h3>See Also:</h3>   <a
+         * information, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/howitworks-access-ws.html#nbi-ip-filter">Limit
+         * Access to a Notebook Instance by IP Address</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreatePresignedNotebookInstanceUrl">AWS
          * API Reference</a></p>
          */
@@ -831,7 +872,9 @@ namespace Model
          * instance. Use the <code>NotIpAddress</code> condition operator and the
          * <code>aws:SourceIP</code> condition context key to specify the list of IP
          * addresses that you want to have access to the notebook instance. For more
-         * information, see <a>nbi-ip-filter</a>.</p><p><h3>See Also:</h3>   <a
+         * information, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/howitworks-access-ws.html#nbi-ip-filter">Limit
+         * Access to a Notebook Instance by IP Address</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreatePresignedNotebookInstanceUrl">AWS
          * API Reference</a></p>
          *
@@ -852,7 +895,9 @@ namespace Model
          * instance. Use the <code>NotIpAddress</code> condition operator and the
          * <code>aws:SourceIP</code> condition context key to specify the list of IP
          * addresses that you want to have access to the notebook instance. For more
-         * information, see <a>nbi-ip-filter</a>.</p><p><h3>See Also:</h3>   <a
+         * information, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/howitworks-access-ws.html#nbi-ip-filter">Limit
+         * Access to a Notebook Instance by IP Address</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/CreatePresignedNotebookInstanceUrl">AWS
          * API Reference</a></p>
          *
@@ -1217,8 +1262,10 @@ namespace Model
 
         /**
          * <p>Deletes the specified tags from an Amazon SageMaker resource.</p> <p>To list
-         * a resource's tags, use the <code>ListTags</code> API. </p><p><h3>See Also:</h3> 
-         * <a
+         * a resource's tags, use the <code>ListTags</code> API. </p> <note> <p>When you
+         * call this API to delete tags from a hyperparameter tuning job, the deleted tags
+         * are not removed from training jobs that the hyperparameter tuning job launched
+         * before you called this API.</p> </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/DeleteTags">AWS
          * API Reference</a></p>
          */
@@ -1226,8 +1273,10 @@ namespace Model
 
         /**
          * <p>Deletes the specified tags from an Amazon SageMaker resource.</p> <p>To list
-         * a resource's tags, use the <code>ListTags</code> API. </p><p><h3>See Also:</h3> 
-         * <a
+         * a resource's tags, use the <code>ListTags</code> API. </p> <note> <p>When you
+         * call this API to delete tags from a hyperparameter tuning job, the deleted tags
+         * are not removed from training jobs that the hyperparameter tuning job launched
+         * before you called this API.</p> </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/DeleteTags">AWS
          * API Reference</a></p>
          *
@@ -1237,8 +1286,10 @@ namespace Model
 
         /**
          * <p>Deletes the specified tags from an Amazon SageMaker resource.</p> <p>To list
-         * a resource's tags, use the <code>ListTags</code> API. </p><p><h3>See Also:</h3> 
-         * <a
+         * a resource's tags, use the <code>ListTags</code> API. </p> <note> <p>When you
+         * call this API to delete tags from a hyperparameter tuning job, the deleted tags
+         * are not removed from training jobs that the hyperparameter tuning job launched
+         * before you called this API.</p> </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/DeleteTags">AWS
          * API Reference</a></p>
          *
@@ -1382,8 +1433,9 @@ namespace Model
 
         /**
          * <p>Returns a description of a notebook instance lifecycle configuration.</p>
-         * <p>For information about notebook instance lifestyle configurations, see
-         * <a>notebook-lifecycle-config</a>.</p><p><h3>See Also:</h3>   <a
+         * <p>For information about notebook instance lifestyle configurations, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html">Step
+         * 2.1: (Optional) Customize a Notebook Instance</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/DescribeNotebookInstanceLifecycleConfig">AWS
          * API Reference</a></p>
          */
@@ -1391,8 +1443,9 @@ namespace Model
 
         /**
          * <p>Returns a description of a notebook instance lifecycle configuration.</p>
-         * <p>For information about notebook instance lifestyle configurations, see
-         * <a>notebook-lifecycle-config</a>.</p><p><h3>See Also:</h3>   <a
+         * <p>For information about notebook instance lifestyle configurations, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html">Step
+         * 2.1: (Optional) Customize a Notebook Instance</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/DescribeNotebookInstanceLifecycleConfig">AWS
          * API Reference</a></p>
          *
@@ -1402,8 +1455,9 @@ namespace Model
 
         /**
          * <p>Returns a description of a notebook instance lifecycle configuration.</p>
-         * <p>For information about notebook instance lifestyle configurations, see
-         * <a>notebook-lifecycle-config</a>.</p><p><h3>See Also:</h3>   <a
+         * <p>For information about notebook instance lifestyle configurations, see <a
+         * href="http://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html">Step
+         * 2.1: (Optional) Customize a Notebook Instance</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/DescribeNotebookInstanceLifecycleConfig">AWS
          * API Reference</a></p>
          *

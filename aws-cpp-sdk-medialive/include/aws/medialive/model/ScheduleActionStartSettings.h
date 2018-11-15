@@ -16,6 +16,7 @@
 #pragma once
 #include <aws/medialive/MediaLive_EXPORTS.h>
 #include <aws/medialive/model/FixedModeScheduleActionStartSettings.h>
+#include <aws/medialive/model/FollowModeScheduleActionStartSettings.h>
 #include <utility>
 
 namespace Aws
@@ -34,7 +35,7 @@ namespace Model
 {
 
   /**
-   * When the schedule action starts.<p><h3>See Also:</h3>   <a
+   * Settings to specify the start time for an action.<p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/medialive-2017-10-14/ScheduleActionStartSettings">AWS
    * API Reference</a></p>
    */
@@ -48,34 +49,63 @@ namespace Model
 
 
     /**
-     * Fixed timestamp action start. Conforms to ISO-8601.
+     * Holds the start time for the action.
      */
     inline const FixedModeScheduleActionStartSettings& GetFixedModeScheduleActionStartSettings() const{ return m_fixedModeScheduleActionStartSettings; }
 
     /**
-     * Fixed timestamp action start. Conforms to ISO-8601.
+     * Holds the start time for the action.
      */
     inline void SetFixedModeScheduleActionStartSettings(const FixedModeScheduleActionStartSettings& value) { m_fixedModeScheduleActionStartSettingsHasBeenSet = true; m_fixedModeScheduleActionStartSettings = value; }
 
     /**
-     * Fixed timestamp action start. Conforms to ISO-8601.
+     * Holds the start time for the action.
      */
     inline void SetFixedModeScheduleActionStartSettings(FixedModeScheduleActionStartSettings&& value) { m_fixedModeScheduleActionStartSettingsHasBeenSet = true; m_fixedModeScheduleActionStartSettings = std::move(value); }
 
     /**
-     * Fixed timestamp action start. Conforms to ISO-8601.
+     * Holds the start time for the action.
      */
     inline ScheduleActionStartSettings& WithFixedModeScheduleActionStartSettings(const FixedModeScheduleActionStartSettings& value) { SetFixedModeScheduleActionStartSettings(value); return *this;}
 
     /**
-     * Fixed timestamp action start. Conforms to ISO-8601.
+     * Holds the start time for the action.
      */
     inline ScheduleActionStartSettings& WithFixedModeScheduleActionStartSettings(FixedModeScheduleActionStartSettings&& value) { SetFixedModeScheduleActionStartSettings(std::move(value)); return *this;}
+
+
+    /**
+     * Specifies an action to follow for scheduling this action.
+     */
+    inline const FollowModeScheduleActionStartSettings& GetFollowModeScheduleActionStartSettings() const{ return m_followModeScheduleActionStartSettings; }
+
+    /**
+     * Specifies an action to follow for scheduling this action.
+     */
+    inline void SetFollowModeScheduleActionStartSettings(const FollowModeScheduleActionStartSettings& value) { m_followModeScheduleActionStartSettingsHasBeenSet = true; m_followModeScheduleActionStartSettings = value; }
+
+    /**
+     * Specifies an action to follow for scheduling this action.
+     */
+    inline void SetFollowModeScheduleActionStartSettings(FollowModeScheduleActionStartSettings&& value) { m_followModeScheduleActionStartSettingsHasBeenSet = true; m_followModeScheduleActionStartSettings = std::move(value); }
+
+    /**
+     * Specifies an action to follow for scheduling this action.
+     */
+    inline ScheduleActionStartSettings& WithFollowModeScheduleActionStartSettings(const FollowModeScheduleActionStartSettings& value) { SetFollowModeScheduleActionStartSettings(value); return *this;}
+
+    /**
+     * Specifies an action to follow for scheduling this action.
+     */
+    inline ScheduleActionStartSettings& WithFollowModeScheduleActionStartSettings(FollowModeScheduleActionStartSettings&& value) { SetFollowModeScheduleActionStartSettings(std::move(value)); return *this;}
 
   private:
 
     FixedModeScheduleActionStartSettings m_fixedModeScheduleActionStartSettings;
     bool m_fixedModeScheduleActionStartSettingsHasBeenSet;
+
+    FollowModeScheduleActionStartSettings m_followModeScheduleActionStartSettings;
+    bool m_followModeScheduleActionStartSettingsHasBeenSet;
   };
 
 } // namespace Model

@@ -67,52 +67,52 @@ namespace Model
 
 
     /**
-     * Indicates the action to take when an input completes (e.g. end-of-file.) Options
-     * include immediately switching to the next sequential input (via "switchInput"),
-     * switching to the next input and looping back to the first input when last input
-     * ends (via "switchAndLoopInputs") or not switching inputs and instead transcoding
-     * black / color / slate images per the "Input Loss Behavior" configuration until
-     * an activateInput REST command is received (via "none").
+     * Indicates the action to take when the current input completes (e.g.
+     * end-of-file). When switchAndLoopInputs is configured the encoder will restart at
+     * the beginning of the first input.  When "none" is configured the encoder will
+     * transcode either black, a solid color, or a user specified slate images per the
+     * "Input Loss Behavior" configuration until the next input switch occurs (which is
+     * controlled through the Channel Schedule API).
      */
     inline const GlobalConfigurationInputEndAction& GetInputEndAction() const{ return m_inputEndAction; }
 
     /**
-     * Indicates the action to take when an input completes (e.g. end-of-file.) Options
-     * include immediately switching to the next sequential input (via "switchInput"),
-     * switching to the next input and looping back to the first input when last input
-     * ends (via "switchAndLoopInputs") or not switching inputs and instead transcoding
-     * black / color / slate images per the "Input Loss Behavior" configuration until
-     * an activateInput REST command is received (via "none").
+     * Indicates the action to take when the current input completes (e.g.
+     * end-of-file). When switchAndLoopInputs is configured the encoder will restart at
+     * the beginning of the first input.  When "none" is configured the encoder will
+     * transcode either black, a solid color, or a user specified slate images per the
+     * "Input Loss Behavior" configuration until the next input switch occurs (which is
+     * controlled through the Channel Schedule API).
      */
     inline void SetInputEndAction(const GlobalConfigurationInputEndAction& value) { m_inputEndActionHasBeenSet = true; m_inputEndAction = value; }
 
     /**
-     * Indicates the action to take when an input completes (e.g. end-of-file.) Options
-     * include immediately switching to the next sequential input (via "switchInput"),
-     * switching to the next input and looping back to the first input when last input
-     * ends (via "switchAndLoopInputs") or not switching inputs and instead transcoding
-     * black / color / slate images per the "Input Loss Behavior" configuration until
-     * an activateInput REST command is received (via "none").
+     * Indicates the action to take when the current input completes (e.g.
+     * end-of-file). When switchAndLoopInputs is configured the encoder will restart at
+     * the beginning of the first input.  When "none" is configured the encoder will
+     * transcode either black, a solid color, or a user specified slate images per the
+     * "Input Loss Behavior" configuration until the next input switch occurs (which is
+     * controlled through the Channel Schedule API).
      */
     inline void SetInputEndAction(GlobalConfigurationInputEndAction&& value) { m_inputEndActionHasBeenSet = true; m_inputEndAction = std::move(value); }
 
     /**
-     * Indicates the action to take when an input completes (e.g. end-of-file.) Options
-     * include immediately switching to the next sequential input (via "switchInput"),
-     * switching to the next input and looping back to the first input when last input
-     * ends (via "switchAndLoopInputs") or not switching inputs and instead transcoding
-     * black / color / slate images per the "Input Loss Behavior" configuration until
-     * an activateInput REST command is received (via "none").
+     * Indicates the action to take when the current input completes (e.g.
+     * end-of-file). When switchAndLoopInputs is configured the encoder will restart at
+     * the beginning of the first input.  When "none" is configured the encoder will
+     * transcode either black, a solid color, or a user specified slate images per the
+     * "Input Loss Behavior" configuration until the next input switch occurs (which is
+     * controlled through the Channel Schedule API).
      */
     inline GlobalConfiguration& WithInputEndAction(const GlobalConfigurationInputEndAction& value) { SetInputEndAction(value); return *this;}
 
     /**
-     * Indicates the action to take when an input completes (e.g. end-of-file.) Options
-     * include immediately switching to the next sequential input (via "switchInput"),
-     * switching to the next input and looping back to the first input when last input
-     * ends (via "switchAndLoopInputs") or not switching inputs and instead transcoding
-     * black / color / slate images per the "Input Loss Behavior" configuration until
-     * an activateInput REST command is received (via "none").
+     * Indicates the action to take when the current input completes (e.g.
+     * end-of-file). When switchAndLoopInputs is configured the encoder will restart at
+     * the beginning of the first input.  When "none" is configured the encoder will
+     * transcode either black, a solid color, or a user specified slate images per the
+     * "Input Loss Behavior" configuration until the next input switch occurs (which is
+     * controlled through the Channel Schedule API).
      */
     inline GlobalConfiguration& WithInputEndAction(GlobalConfigurationInputEndAction&& value) { SetInputEndAction(std::move(value)); return *this;}
 

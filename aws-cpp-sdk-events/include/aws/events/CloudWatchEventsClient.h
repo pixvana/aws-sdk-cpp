@@ -473,30 +473,50 @@ namespace Model
         virtual void PutEventsAsync(const Model::PutEventsRequest& request, const PutEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Running <code>PutPermission</code> permits the specified AWS account to put
-         * events to your account's default <i>event bus</i>. CloudWatch Events rules in
-         * your account are triggered by these events arriving to your default event bus.
-         * </p> <p>For another account to send events to your account, that external
-         * account must have a CloudWatch Events rule with your account's default event bus
-         * as a target.</p> <p>To enable multiple AWS accounts to put events to your
-         * default event bus, run <code>PutPermission</code> once for each of these
-         * accounts.</p> <p>The permission policy on the default event bus cannot exceed 10
-         * KB in size.</p><p><h3>See Also:</h3>   <a
+         * <p>Running <code>PutPermission</code> permits the specified AWS account or AWS
+         * organization to put events to your account's default <i>event bus</i>.
+         * CloudWatch Events rules in your account are triggered by these events arriving
+         * to your default event bus. </p> <p>For another account to send events to your
+         * account, that external account must have a CloudWatch Events rule with your
+         * account's default event bus as a target.</p> <p>To enable multiple AWS accounts
+         * to put events to your default event bus, run <code>PutPermission</code> once for
+         * each of these accounts. Or, if all the accounts are members of the same AWS
+         * organization, you can run <code>PutPermission</code> once specifying
+         * <code>Principal</code> as "*" and specifying the AWS organization ID in
+         * <code>Condition</code>, to grant permissions to all accounts in that
+         * organization.</p> <p>If you grant permissions using an organization, then
+         * accounts in that organization must specify a <code>RoleArn</code> with proper
+         * permissions when they use <code>PutTarget</code> to add your account's event bus
+         * as a target. For more information, see <a
+         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html">Sending
+         * and Receiving Events Between AWS Accounts</a> in the <i>Amazon CloudWatch Events
+         * User Guide</i>.</p> <p>The permission policy on the default event bus cannot
+         * exceed 10 KB in size.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutPermission">AWS
          * API Reference</a></p>
          */
         virtual Model::PutPermissionOutcome PutPermission(const Model::PutPermissionRequest& request) const;
 
         /**
-         * <p>Running <code>PutPermission</code> permits the specified AWS account to put
-         * events to your account's default <i>event bus</i>. CloudWatch Events rules in
-         * your account are triggered by these events arriving to your default event bus.
-         * </p> <p>For another account to send events to your account, that external
-         * account must have a CloudWatch Events rule with your account's default event bus
-         * as a target.</p> <p>To enable multiple AWS accounts to put events to your
-         * default event bus, run <code>PutPermission</code> once for each of these
-         * accounts.</p> <p>The permission policy on the default event bus cannot exceed 10
-         * KB in size.</p><p><h3>See Also:</h3>   <a
+         * <p>Running <code>PutPermission</code> permits the specified AWS account or AWS
+         * organization to put events to your account's default <i>event bus</i>.
+         * CloudWatch Events rules in your account are triggered by these events arriving
+         * to your default event bus. </p> <p>For another account to send events to your
+         * account, that external account must have a CloudWatch Events rule with your
+         * account's default event bus as a target.</p> <p>To enable multiple AWS accounts
+         * to put events to your default event bus, run <code>PutPermission</code> once for
+         * each of these accounts. Or, if all the accounts are members of the same AWS
+         * organization, you can run <code>PutPermission</code> once specifying
+         * <code>Principal</code> as "*" and specifying the AWS organization ID in
+         * <code>Condition</code>, to grant permissions to all accounts in that
+         * organization.</p> <p>If you grant permissions using an organization, then
+         * accounts in that organization must specify a <code>RoleArn</code> with proper
+         * permissions when they use <code>PutTarget</code> to add your account's event bus
+         * as a target. For more information, see <a
+         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html">Sending
+         * and Receiving Events Between AWS Accounts</a> in the <i>Amazon CloudWatch Events
+         * User Guide</i>.</p> <p>The permission policy on the default event bus cannot
+         * exceed 10 KB in size.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutPermission">AWS
          * API Reference</a></p>
          *
@@ -505,15 +525,25 @@ namespace Model
         virtual Model::PutPermissionOutcomeCallable PutPermissionCallable(const Model::PutPermissionRequest& request) const;
 
         /**
-         * <p>Running <code>PutPermission</code> permits the specified AWS account to put
-         * events to your account's default <i>event bus</i>. CloudWatch Events rules in
-         * your account are triggered by these events arriving to your default event bus.
-         * </p> <p>For another account to send events to your account, that external
-         * account must have a CloudWatch Events rule with your account's default event bus
-         * as a target.</p> <p>To enable multiple AWS accounts to put events to your
-         * default event bus, run <code>PutPermission</code> once for each of these
-         * accounts.</p> <p>The permission policy on the default event bus cannot exceed 10
-         * KB in size.</p><p><h3>See Also:</h3>   <a
+         * <p>Running <code>PutPermission</code> permits the specified AWS account or AWS
+         * organization to put events to your account's default <i>event bus</i>.
+         * CloudWatch Events rules in your account are triggered by these events arriving
+         * to your default event bus. </p> <p>For another account to send events to your
+         * account, that external account must have a CloudWatch Events rule with your
+         * account's default event bus as a target.</p> <p>To enable multiple AWS accounts
+         * to put events to your default event bus, run <code>PutPermission</code> once for
+         * each of these accounts. Or, if all the accounts are members of the same AWS
+         * organization, you can run <code>PutPermission</code> once specifying
+         * <code>Principal</code> as "*" and specifying the AWS organization ID in
+         * <code>Condition</code>, to grant permissions to all accounts in that
+         * organization.</p> <p>If you grant permissions using an organization, then
+         * accounts in that organization must specify a <code>RoleArn</code> with proper
+         * permissions when they use <code>PutTarget</code> to add your account's event bus
+         * as a target. For more information, see <a
+         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html">Sending
+         * and Receiving Events Between AWS Accounts</a> in the <i>Amazon CloudWatch Events
+         * User Guide</i>.</p> <p>The permission policy on the default event bus cannot
+         * exceed 10 KB in size.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutPermission">AWS
          * API Reference</a></p>
          *
@@ -538,7 +568,19 @@ namespace Model
          * character in Amazon Resource Names (ARNs). However, CloudWatch Events uses an
          * exact match in event patterns and rules. Be sure to use the correct ARN
          * characters when creating event patterns so that they match the ARN syntax in the
-         * event you want to match.</p><p><h3>See Also:</h3>   <a
+         * event you want to match.</p> <p>In CloudWatch Events, it is possible to create
+         * rules that lead to infinite loops, where a rule is fired repeatedly. For
+         * example, a rule might detect that ACLs have changed on an S3 bucket, and trigger
+         * software to change them to the desired state. If the rule is not written
+         * carefully, the subsequent change to the ACLs fires the rule again, creating an
+         * infinite loop.</p> <p>To prevent this, write the rules so that the triggered
+         * actions do not re-fire the same rule. For example, your rule could fire only if
+         * ACLs are found to be in a bad state, instead of after any change. </p> <p>An
+         * infinite loop can quickly cause higher than expected charges. We recommend that
+         * you use budgeting, which alerts you when charges exceed your specified limit.
+         * For more information, see <a
+         * href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing
+         * Your Costs with Budgets</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutRule">AWS API
          * Reference</a></p>
          */
@@ -561,7 +603,19 @@ namespace Model
          * character in Amazon Resource Names (ARNs). However, CloudWatch Events uses an
          * exact match in event patterns and rules. Be sure to use the correct ARN
          * characters when creating event patterns so that they match the ARN syntax in the
-         * event you want to match.</p><p><h3>See Also:</h3>   <a
+         * event you want to match.</p> <p>In CloudWatch Events, it is possible to create
+         * rules that lead to infinite loops, where a rule is fired repeatedly. For
+         * example, a rule might detect that ACLs have changed on an S3 bucket, and trigger
+         * software to change them to the desired state. If the rule is not written
+         * carefully, the subsequent change to the ACLs fires the rule again, creating an
+         * infinite loop.</p> <p>To prevent this, write the rules so that the triggered
+         * actions do not re-fire the same rule. For example, your rule could fire only if
+         * ACLs are found to be in a bad state, instead of after any change. </p> <p>An
+         * infinite loop can quickly cause higher than expected charges. We recommend that
+         * you use budgeting, which alerts you when charges exceed your specified limit.
+         * For more information, see <a
+         * href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing
+         * Your Costs with Budgets</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutRule">AWS API
          * Reference</a></p>
          *
@@ -586,7 +640,19 @@ namespace Model
          * character in Amazon Resource Names (ARNs). However, CloudWatch Events uses an
          * exact match in event patterns and rules. Be sure to use the correct ARN
          * characters when creating event patterns so that they match the ARN syntax in the
-         * event you want to match.</p><p><h3>See Also:</h3>   <a
+         * event you want to match.</p> <p>In CloudWatch Events, it is possible to create
+         * rules that lead to infinite loops, where a rule is fired repeatedly. For
+         * example, a rule might detect that ACLs have changed on an S3 bucket, and trigger
+         * software to change them to the desired state. If the rule is not written
+         * carefully, the subsequent change to the ACLs fires the rule again, creating an
+         * infinite loop.</p> <p>To prevent this, write the rules so that the triggered
+         * actions do not re-fire the same rule. For example, your rule could fire only if
+         * ACLs are found to be in a bad state, instead of after any change. </p> <p>An
+         * infinite loop can quickly cause higher than expected charges. We recommend that
+         * you use budgeting, which alerts you when charges exceed your specified limit.
+         * For more information, see <a
+         * href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing
+         * Your Costs with Budgets</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutRule">AWS API
          * Reference</a></p>
          *
@@ -634,7 +700,14 @@ namespace Model
          * Each event sent to another account is charged as a custom event. The account
          * receiving the event is not charged. For more information, see <a
          * href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch
-         * Pricing</a>.</p> <p>For more information about enabling cross-account events,
+         * Pricing</a>.</p> <p>If you are setting the event bus of another account as the
+         * target, and that account granted permission to your account through an
+         * organization instead of directly by the account ID, then you must specify a
+         * <code>RoleArn</code> with proper permissions in the <code>Target</code>
+         * structure. For more information, see <a
+         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html">Sending
+         * and Receiving Events Between AWS Accounts</a> in the <i>Amazon CloudWatch Events
+         * User Guide</i>.</p> <p>For more information about enabling cross-account events,
          * see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and
          * <b>InputTransformer</b> are mutually exclusive and optional parameters of a
          * target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If
@@ -702,7 +775,14 @@ namespace Model
          * Each event sent to another account is charged as a custom event. The account
          * receiving the event is not charged. For more information, see <a
          * href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch
-         * Pricing</a>.</p> <p>For more information about enabling cross-account events,
+         * Pricing</a>.</p> <p>If you are setting the event bus of another account as the
+         * target, and that account granted permission to your account through an
+         * organization instead of directly by the account ID, then you must specify a
+         * <code>RoleArn</code> with proper permissions in the <code>Target</code>
+         * structure. For more information, see <a
+         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html">Sending
+         * and Receiving Events Between AWS Accounts</a> in the <i>Amazon CloudWatch Events
+         * User Guide</i>.</p> <p>For more information about enabling cross-account events,
          * see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and
          * <b>InputTransformer</b> are mutually exclusive and optional parameters of a
          * target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If
@@ -772,7 +852,14 @@ namespace Model
          * Each event sent to another account is charged as a custom event. The account
          * receiving the event is not charged. For more information, see <a
          * href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch
-         * Pricing</a>.</p> <p>For more information about enabling cross-account events,
+         * Pricing</a>.</p> <p>If you are setting the event bus of another account as the
+         * target, and that account granted permission to your account through an
+         * organization instead of directly by the account ID, then you must specify a
+         * <code>RoleArn</code> with proper permissions in the <code>Target</code>
+         * structure. For more information, see <a
+         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html">Sending
+         * and Receiving Events Between AWS Accounts</a> in the <i>Amazon CloudWatch Events
+         * User Guide</i>.</p> <p>For more information about enabling cross-account events,
          * see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and
          * <b>InputTransformer</b> are mutually exclusive and optional parameters of a
          * target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If

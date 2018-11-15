@@ -79,6 +79,12 @@ namespace Model
     r5_16xlarge,
     r5_24xlarge,
     r5_metal,
+    r5a_large,
+    r5a_xlarge,
+    r5a_2xlarge,
+    r5a_4xlarge,
+    r5a_12xlarge,
+    r5a_24xlarge,
     r5d_large,
     r5d_xlarge,
     r5d_2xlarge,
@@ -140,6 +146,7 @@ namespace Model
     g3_4xlarge,
     g3_8xlarge,
     g3_16xlarge,
+    g3s_xlarge,
     cg1_4xlarge,
     p2_xlarge,
     p2_8xlarge,
@@ -160,6 +167,12 @@ namespace Model
     m5_4xlarge,
     m5_12xlarge,
     m5_24xlarge,
+    m5a_large,
+    m5a_xlarge,
+    m5a_2xlarge,
+    m5a_4xlarge,
+    m5a_12xlarge,
+    m5a_24xlarge,
     m5d_large,
     m5d_xlarge,
     m5d_2xlarge,
@@ -175,7 +188,10 @@ namespace Model
     z1d_2xlarge,
     z1d_3xlarge,
     z1d_6xlarge,
-    z1d_12xlarge
+    z1d_12xlarge,
+    u_6tb1_metal,
+    u_9tb1_metal,
+    u_12tb1_metal
   };
 
 namespace InstanceTypeMapper

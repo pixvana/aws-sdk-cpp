@@ -28,9 +28,6 @@ namespace Model
 {
 
   /**
-   * <p/><p><h3>See Also:</h3>   <a
-   * href="http://docs.aws.amazon.com/goto/WebAPI/lambda-2015-03-31/UpdateFunctionCodeRequest">AWS
-   * API Reference</a></p>
    */
   class AWS_LAMBDA_API UpdateFunctionCodeRequest : public LambdaRequest
   {
@@ -47,86 +44,86 @@ namespace Model
 
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline const Aws::String& GetFunctionName() const{ return m_functionName; }
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline void SetFunctionName(const Aws::String& value) { m_functionNameHasBeenSet = true; m_functionName = value; }
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline void SetFunctionName(Aws::String&& value) { m_functionNameHasBeenSet = true; m_functionName = std::move(value); }
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline void SetFunctionName(const char* value) { m_functionNameHasBeenSet = true; m_functionName.assign(value); }
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline UpdateFunctionCodeRequest& WithFunctionName(const Aws::String& value) { SetFunctionName(value); return *this;}
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline UpdateFunctionCodeRequest& WithFunctionName(Aws::String&& value) { SetFunctionName(std::move(value)); return *this;}
 
     /**
-     * <p>The existing Lambda function name whose code you want to replace.</p> <p> You
-     * can specify a function name (for example, <code>Thumbnail</code>) or you can
-     * specify Amazon Resource Name (ARN) of the function (for example,
-     * <code>arn:aws:lambda:us-west-2:account-id:function:ThumbNail</code>). AWS Lambda
-     * also allows you to specify a partial ARN (for example,
-     * <code>account-id:Thumbnail</code>). Note that the length constraint applies only
-     * to the ARN. If you specify only the function name, it is limited to 64
-     * characters in length. </p>
+     * <p>The name of the lambda function.</p> <p class="title"> <b>Name formats</b>
+     * </p> <ul> <li> <p> <b>Function name</b> - <code>MyFunction</code>.</p> </li>
+     * <li> <p> <b>Function ARN</b> -
+     * <code>arn:aws:lambda:us-west-2:123456789012:function:MyFunction</code>.</p>
+     * </li> <li> <p> <b>Partial ARN</b> -
+     * <code>123456789012:function:MyFunction</code>.</p> </li> </ul> <p>The length
+     * constraint applies only to the full ARN. If you specify only the function name,
+     * it is limited to 64 characters in length.</p>
      */
     inline UpdateFunctionCodeRequest& WithFunctionName(const char* value) { SetFunctionName(value); return *this;}
 
@@ -139,7 +136,7 @@ namespace Model
      * href="http://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html#lambda-intro-execution-role.html">Execution
      * Permissions</a>. </p>
      */
-    inline const Aws::Utils::ByteBuffer& GetZipFile() const{ return m_zipFile; }
+    inline const Aws::Utils::CryptoBuffer& GetZipFile() const{ return m_zipFile; }
 
     /**
      * <p>The contents of your zip file containing your deployment package. If you are
@@ -149,7 +146,7 @@ namespace Model
      * href="http://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html#lambda-intro-execution-role.html">Execution
      * Permissions</a>. </p>
      */
-    inline void SetZipFile(const Aws::Utils::ByteBuffer& value) { m_zipFileHasBeenSet = true; m_zipFile = value; }
+    inline void SetZipFile(const Aws::Utils::CryptoBuffer& value) { m_zipFileHasBeenSet = true; m_zipFile = value; }
 
     /**
      * <p>The contents of your zip file containing your deployment package. If you are
@@ -159,7 +156,7 @@ namespace Model
      * href="http://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html#lambda-intro-execution-role.html">Execution
      * Permissions</a>. </p>
      */
-    inline void SetZipFile(Aws::Utils::ByteBuffer&& value) { m_zipFileHasBeenSet = true; m_zipFile = std::move(value); }
+    inline void SetZipFile(Aws::Utils::CryptoBuffer&& value) { m_zipFileHasBeenSet = true; m_zipFile = std::move(value); }
 
     /**
      * <p>The contents of your zip file containing your deployment package. If you are
@@ -169,7 +166,7 @@ namespace Model
      * href="http://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html#lambda-intro-execution-role.html">Execution
      * Permissions</a>. </p>
      */
-    inline UpdateFunctionCodeRequest& WithZipFile(const Aws::Utils::ByteBuffer& value) { SetZipFile(value); return *this;}
+    inline UpdateFunctionCodeRequest& WithZipFile(const Aws::Utils::CryptoBuffer& value) { SetZipFile(value); return *this;}
 
     /**
      * <p>The contents of your zip file containing your deployment package. If you are
@@ -179,7 +176,7 @@ namespace Model
      * href="http://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html#lambda-intro-execution-role.html">Execution
      * Permissions</a>. </p>
      */
-    inline UpdateFunctionCodeRequest& WithZipFile(Aws::Utils::ByteBuffer&& value) { SetZipFile(std::move(value)); return *this;}
+    inline UpdateFunctionCodeRequest& WithZipFile(Aws::Utils::CryptoBuffer&& value) { SetZipFile(std::move(value)); return *this;}
 
 
     /**
@@ -366,7 +363,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline const Aws::String& GetRevisionId() const{ return m_revisionId; }
 
@@ -375,7 +373,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline void SetRevisionId(const Aws::String& value) { m_revisionIdHasBeenSet = true; m_revisionId = value; }
 
@@ -384,7 +383,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline void SetRevisionId(Aws::String&& value) { m_revisionIdHasBeenSet = true; m_revisionId = std::move(value); }
 
@@ -393,7 +393,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline void SetRevisionId(const char* value) { m_revisionIdHasBeenSet = true; m_revisionId.assign(value); }
 
@@ -402,7 +403,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline UpdateFunctionCodeRequest& WithRevisionId(const Aws::String& value) { SetRevisionId(value); return *this;}
 
@@ -411,7 +413,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline UpdateFunctionCodeRequest& WithRevisionId(Aws::String&& value) { SetRevisionId(std::move(value)); return *this;}
 
@@ -420,7 +423,8 @@ namespace Model
      * the function version or alias. If the <code>RevisionID</code> you pass doesn't
      * match the latest <code>RevisionId</code> of the function or alias, it will fail
      * with an error message, advising you to retrieve the latest function version or
-     * alias <code>RevisionID</code> using either or .</p>
+     * alias <code>RevisionID</code> using either using using either <a>GetFunction</a>
+     * or <a>GetAlias</a>.</p>
      */
     inline UpdateFunctionCodeRequest& WithRevisionId(const char* value) { SetRevisionId(value); return *this;}
 
@@ -429,7 +433,7 @@ namespace Model
     Aws::String m_functionName;
     bool m_functionNameHasBeenSet;
 
-    Aws::Utils::ByteBuffer m_zipFile;
+    Aws::Utils::CryptoBuffer m_zipFile;
     bool m_zipFileHasBeenSet;
 
     Aws::String m_s3Bucket;

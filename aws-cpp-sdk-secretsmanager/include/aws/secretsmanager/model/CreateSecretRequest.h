@@ -50,43 +50,71 @@ namespace Model
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline const Aws::String& GetName() const{ return m_name; }
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline CreateSecretRequest& WithName(const Aws::String& value) { SetName(value); return *this;}
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline CreateSecretRequest& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
 
     /**
      * <p>Specifies the friendly name of the new secret.</p> <p>The secret name must be
-     * ASCII letters, digits, or the following characters : /_+=.@-</p>
+     * ASCII letters, digits, or the following characters : /_+=.@-</p> <note> <p>Don't
+     * end your secret name with a hyphen followed by six characters. If you do so, you
+     * risk confusion and unexpected results when searching for a secret by partial
+     * ARN. This is because Secrets Manager automatically adds a hyphen and six random
+     * characters at the end of the ARN.</p> </note>
      */
     inline CreateSecretRequest& WithName(const char* value) { SetName(value); return *this;}
 
@@ -482,7 +510,7 @@ namespace Model
      * available using the Secrets Manager console. It can be accessed only by using
      * the AWS CLI or one of the AWS SDKs.</p>
      */
-    inline const Aws::Utils::ByteBuffer& GetSecretBinary() const{ return m_secretBinary; }
+    inline const Aws::Utils::CryptoBuffer& GetSecretBinary() const{ return m_secretBinary; }
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -494,7 +522,7 @@ namespace Model
      * available using the Secrets Manager console. It can be accessed only by using
      * the AWS CLI or one of the AWS SDKs.</p>
      */
-    inline void SetSecretBinary(const Aws::Utils::ByteBuffer& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = value; }
+    inline void SetSecretBinary(const Aws::Utils::CryptoBuffer& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = value; }
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -506,7 +534,7 @@ namespace Model
      * available using the Secrets Manager console. It can be accessed only by using
      * the AWS CLI or one of the AWS SDKs.</p>
      */
-    inline void SetSecretBinary(Aws::Utils::ByteBuffer&& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = std::move(value); }
+    inline void SetSecretBinary(Aws::Utils::CryptoBuffer&& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = std::move(value); }
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -518,7 +546,7 @@ namespace Model
      * available using the Secrets Manager console. It can be accessed only by using
      * the AWS CLI or one of the AWS SDKs.</p>
      */
-    inline CreateSecretRequest& WithSecretBinary(const Aws::Utils::ByteBuffer& value) { SetSecretBinary(value); return *this;}
+    inline CreateSecretRequest& WithSecretBinary(const Aws::Utils::CryptoBuffer& value) { SetSecretBinary(value); return *this;}
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -530,7 +558,7 @@ namespace Model
      * available using the Secrets Manager console. It can be accessed only by using
      * the AWS CLI or one of the AWS SDKs.</p>
      */
-    inline CreateSecretRequest& WithSecretBinary(Aws::Utils::ByteBuffer&& value) { SetSecretBinary(std::move(value)); return *this;}
+    inline CreateSecretRequest& WithSecretBinary(Aws::Utils::CryptoBuffer&& value) { SetSecretBinary(std::move(value)); return *this;}
 
 
     /**
@@ -933,7 +961,7 @@ namespace Model
     Aws::String m_kmsKeyId;
     bool m_kmsKeyIdHasBeenSet;
 
-    Aws::Utils::ByteBuffer m_secretBinary;
+    Aws::Utils::CryptoBuffer m_secretBinary;
     bool m_secretBinaryHasBeenSet;
 
     Aws::String m_secretString;

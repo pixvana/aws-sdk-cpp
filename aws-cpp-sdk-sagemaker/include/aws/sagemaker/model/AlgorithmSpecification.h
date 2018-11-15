@@ -17,6 +17,8 @@
 #include <aws/sagemaker/SageMaker_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/sagemaker/model/TrainingInputMode.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/sagemaker/model/MetricDefinition.h>
 #include <utility>
 
 namespace Aws
@@ -40,8 +42,9 @@ namespace Model
    * request.</p> <p>For more information about algorithms provided by Amazon
    * SageMaker, see <a
    * href="http://docs.aws.amazon.com/sagemaker/latest/dg/algos.html">Algorithms</a>.
-   * For information about using your own algorithms, see <a>your-algorithms</a>.
-   * </p><p><h3>See Also:</h3>   <a
+   * For information about using your own algorithms, see <a
+   * href="http://docs.aws.amazon.com/sagemaker/latest/dg/your-algorithms.html">Using
+   * Your Own Algorithms with Amazon SageMaker</a>. </p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/AlgorithmSpecification">AWS
    * API Reference</a></p>
    */
@@ -56,50 +59,57 @@ namespace Model
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline const Aws::String& GetTrainingImage() const{ return m_trainingImage; }
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline void SetTrainingImage(const Aws::String& value) { m_trainingImageHasBeenSet = true; m_trainingImage = value; }
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline void SetTrainingImage(Aws::String&& value) { m_trainingImageHasBeenSet = true; m_trainingImage = std::move(value); }
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline void SetTrainingImage(const char* value) { m_trainingImageHasBeenSet = true; m_trainingImage.assign(value); }
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline AlgorithmSpecification& WithTrainingImage(const Aws::String& value) { SetTrainingImage(value); return *this;}
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline AlgorithmSpecification& WithTrainingImage(Aws::String&& value) { SetTrainingImage(std::move(value)); return *this;}
 
     /**
      * <p>The registry path of the Docker image that contains the training algorithm.
-     * For information about docker registry paths for built-in algorithms, see
-     * <a>sagemaker-algo-docker-registry-paths</a>.</p>
+     * For information about docker registry paths for built-in algorithms, see <a
+     * href="http://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-algo-docker-registry-paths.html">Algorithms
+     * Provided by Amazon SageMaker: Common Parameters</a>.</p>
      */
     inline AlgorithmSpecification& WithTrainingImage(const char* value) { SetTrainingImage(value); return *this;}
 
@@ -214,6 +224,56 @@ namespace Model
      */
     inline AlgorithmSpecification& WithTrainingInputMode(TrainingInputMode&& value) { SetTrainingInputMode(std::move(value)); return *this;}
 
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline const Aws::Vector<MetricDefinition>& GetMetricDefinitions() const{ return m_metricDefinitions; }
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline void SetMetricDefinitions(const Aws::Vector<MetricDefinition>& value) { m_metricDefinitionsHasBeenSet = true; m_metricDefinitions = value; }
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline void SetMetricDefinitions(Aws::Vector<MetricDefinition>&& value) { m_metricDefinitionsHasBeenSet = true; m_metricDefinitions = std::move(value); }
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline AlgorithmSpecification& WithMetricDefinitions(const Aws::Vector<MetricDefinition>& value) { SetMetricDefinitions(value); return *this;}
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline AlgorithmSpecification& WithMetricDefinitions(Aws::Vector<MetricDefinition>&& value) { SetMetricDefinitions(std::move(value)); return *this;}
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline AlgorithmSpecification& AddMetricDefinitions(const MetricDefinition& value) { m_metricDefinitionsHasBeenSet = true; m_metricDefinitions.push_back(value); return *this; }
+
+    /**
+     * <p>A list of metric definition objects. Each object specifies the metric name
+     * and regular expressions used to parse algorithm logs. Amazon SageMaker publishes
+     * each metric to Amazon CloudWatch.</p>
+     */
+    inline AlgorithmSpecification& AddMetricDefinitions(MetricDefinition&& value) { m_metricDefinitionsHasBeenSet = true; m_metricDefinitions.push_back(std::move(value)); return *this; }
+
   private:
 
     Aws::String m_trainingImage;
@@ -221,6 +281,9 @@ namespace Model
 
     TrainingInputMode m_trainingInputMode;
     bool m_trainingInputModeHasBeenSet;
+
+    Aws::Vector<MetricDefinition> m_metricDefinitions;
+    bool m_metricDefinitionsHasBeenSet;
   };
 
 } // namespace Model

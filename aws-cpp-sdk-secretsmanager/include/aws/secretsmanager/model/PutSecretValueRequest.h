@@ -50,49 +50,126 @@ namespace Model
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline const Aws::String& GetSecretId() const{ return m_secretId; }
 
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline void SetSecretId(const Aws::String& value) { m_secretIdHasBeenSet = true; m_secretId = value; }
 
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline void SetSecretId(Aws::String&& value) { m_secretIdHasBeenSet = true; m_secretId = std::move(value); }
 
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline void SetSecretId(const char* value) { m_secretIdHasBeenSet = true; m_secretId.assign(value); }
 
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline PutSecretValueRequest& WithSecretId(const Aws::String& value) { SetSecretId(value); return *this;}
 
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline PutSecretValueRequest& WithSecretId(Aws::String&& value) { SetSecretId(std::move(value)); return *this;}
 
     /**
      * <p>Specifies the secret to which you want to add a new version. You can specify
      * either the Amazon Resource Name (ARN) or the friendly name of the secret. The
-     * secret must already exist.</p>
+     * secret must already exist.</p> <note> <p>If you specify an ARN, we generally
+     * recommend that you specify a complete ARN. You can specify a partial ARN too—for
+     * example, if you don’t include the final hyphen and six random characters that
+     * Secrets Manager adds at the end of the ARN when you created the secret. A
+     * partial ARN match can work as long as it uniquely matches only one secret.
+     * However, if your secret has a name that ends in a hyphen followed by six
+     * characters (before Secrets Manager adds the hyphen and six characters to the
+     * ARN) and you try to use that as a partial ARN, then those characters cause
+     * Secrets Manager to assume that you’re specifying a complete ARN. This confusion
+     * can cause unexpected results. To avoid this situation, we recommend that you
+     * don’t create secret names that end with a hyphen followed by six characters.</p>
+     * </note>
      */
     inline PutSecretValueRequest& WithSecretId(const char* value) { SetSecretId(value); return *this;}
 
@@ -296,7 +373,7 @@ namespace Model
      * not both. They cannot both be empty.</p> <p>This parameter is not accessible if
      * the secret using the Secrets Manager console.</p> <p/>
      */
-    inline const Aws::Utils::ByteBuffer& GetSecretBinary() const{ return m_secretBinary; }
+    inline const Aws::Utils::CryptoBuffer& GetSecretBinary() const{ return m_secretBinary; }
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -307,7 +384,7 @@ namespace Model
      * not both. They cannot both be empty.</p> <p>This parameter is not accessible if
      * the secret using the Secrets Manager console.</p> <p/>
      */
-    inline void SetSecretBinary(const Aws::Utils::ByteBuffer& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = value; }
+    inline void SetSecretBinary(const Aws::Utils::CryptoBuffer& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = value; }
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -318,7 +395,7 @@ namespace Model
      * not both. They cannot both be empty.</p> <p>This parameter is not accessible if
      * the secret using the Secrets Manager console.</p> <p/>
      */
-    inline void SetSecretBinary(Aws::Utils::ByteBuffer&& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = std::move(value); }
+    inline void SetSecretBinary(Aws::Utils::CryptoBuffer&& value) { m_secretBinaryHasBeenSet = true; m_secretBinary = std::move(value); }
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -329,7 +406,7 @@ namespace Model
      * not both. They cannot both be empty.</p> <p>This parameter is not accessible if
      * the secret using the Secrets Manager console.</p> <p/>
      */
-    inline PutSecretValueRequest& WithSecretBinary(const Aws::Utils::ByteBuffer& value) { SetSecretBinary(value); return *this;}
+    inline PutSecretValueRequest& WithSecretBinary(const Aws::Utils::CryptoBuffer& value) { SetSecretBinary(value); return *this;}
 
     /**
      * <p>(Optional) Specifies binary data that you want to encrypt and store in the
@@ -340,7 +417,7 @@ namespace Model
      * not both. They cannot both be empty.</p> <p>This parameter is not accessible if
      * the secret using the Secrets Manager console.</p> <p/>
      */
-    inline PutSecretValueRequest& WithSecretBinary(Aws::Utils::ByteBuffer&& value) { SetSecretBinary(std::move(value)); return *this;}
+    inline PutSecretValueRequest& WithSecretBinary(Aws::Utils::CryptoBuffer&& value) { SetSecretBinary(std::move(value)); return *this;}
 
 
     /**
@@ -603,7 +680,7 @@ namespace Model
     Aws::String m_clientRequestToken;
     bool m_clientRequestTokenHasBeenSet;
 
-    Aws::Utils::ByteBuffer m_secretBinary;
+    Aws::Utils::CryptoBuffer m_secretBinary;
     bool m_secretBinaryHasBeenSet;
 
     Aws::String m_secretString;

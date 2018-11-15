@@ -18,6 +18,7 @@
 #include <aws/servicecatalog/ServiceCatalogRequest.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/servicecatalog/model/UpdateProvisioningPreferences.h>
 #include <aws/servicecatalog/model/UpdateProvisioningParameter.h>
 #include <utility>
 #include <aws/core/utils/UUID.h>
@@ -184,37 +185,37 @@ namespace Model
 
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline const Aws::String& GetProductId() const{ return m_productId; }
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline void SetProductId(const Aws::String& value) { m_productIdHasBeenSet = true; m_productId = value; }
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline void SetProductId(Aws::String&& value) { m_productIdHasBeenSet = true; m_productId = std::move(value); }
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline void SetProductId(const char* value) { m_productIdHasBeenSet = true; m_productId.assign(value); }
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline UpdateProvisionedProductRequest& WithProductId(const Aws::String& value) { SetProductId(value); return *this;}
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline UpdateProvisionedProductRequest& WithProductId(Aws::String&& value) { SetProductId(std::move(value)); return *this;}
 
     /**
-     * <p>The identifier of the provisioned product.</p>
+     * <p>The identifier of the product.</p>
      */
     inline UpdateProvisionedProductRequest& WithProductId(const char* value) { SetProductId(value); return *this;}
 
@@ -335,6 +336,37 @@ namespace Model
 
 
     /**
+     * <p>An object that contains information about the provisioning preferences for a
+     * stack set.</p>
+     */
+    inline const UpdateProvisioningPreferences& GetProvisioningPreferences() const{ return m_provisioningPreferences; }
+
+    /**
+     * <p>An object that contains information about the provisioning preferences for a
+     * stack set.</p>
+     */
+    inline void SetProvisioningPreferences(const UpdateProvisioningPreferences& value) { m_provisioningPreferencesHasBeenSet = true; m_provisioningPreferences = value; }
+
+    /**
+     * <p>An object that contains information about the provisioning preferences for a
+     * stack set.</p>
+     */
+    inline void SetProvisioningPreferences(UpdateProvisioningPreferences&& value) { m_provisioningPreferencesHasBeenSet = true; m_provisioningPreferences = std::move(value); }
+
+    /**
+     * <p>An object that contains information about the provisioning preferences for a
+     * stack set.</p>
+     */
+    inline UpdateProvisionedProductRequest& WithProvisioningPreferences(const UpdateProvisioningPreferences& value) { SetProvisioningPreferences(value); return *this;}
+
+    /**
+     * <p>An object that contains information about the provisioning preferences for a
+     * stack set.</p>
+     */
+    inline UpdateProvisionedProductRequest& WithProvisioningPreferences(UpdateProvisioningPreferences&& value) { SetProvisioningPreferences(std::move(value)); return *this;}
+
+
+    /**
      * <p>The idempotency token that uniquely identifies the provisioning update
      * request.</p>
      */
@@ -398,6 +430,9 @@ namespace Model
 
     Aws::Vector<UpdateProvisioningParameter> m_provisioningParameters;
     bool m_provisioningParametersHasBeenSet;
+
+    UpdateProvisioningPreferences m_provisioningPreferences;
+    bool m_provisioningPreferencesHasBeenSet;
 
     Aws::String m_updateToken;
     bool m_updateTokenHasBeenSet;

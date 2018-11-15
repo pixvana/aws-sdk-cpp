@@ -5134,11 +5134,6 @@
       "key":{"shape":"String"},
       "value":{"shape":"ThrottleSettings"}
     },
-    "MapOfHeaderValues":{
-      "type":"map",
-      "key":{"shape":"String"},
-      "value":{"shape":"String"}
-    },
     "MapOfIntegrationResponse":{
       "type":"map",
       "key":{"shape":"String"},
@@ -6033,6 +6028,10 @@
           "shape":"Boolean",
           "documentation":"<p>Specifies whether active tracing with X-ray is enabled for the <a>Stage</a>.</p>"
         },
+        "webAclArn":{
+          "shape":"String",
+          "documentation":"<p>The ARN of the WebAcl associated with the <a>Stage</a>.</p>"
+        },
         "tags":{
           "shape":"MapOfStringToString",
           "documentation":"<p>The collection of tags. Each tag element is associated with a given resource.</p>"
@@ -6138,8 +6137,12 @@
           "locationName":"authorizer_id"
         },
         "headers":{
-          "shape":"MapOfHeaderValues",
+          "shape":"MapOfStringToString",
           "documentation":"<p>[Required] A key-value map of headers to simulate an incoming invocation request. This is where the incoming authorization token, or identity source, should be specified.</p>"
+        },
+        "multiValueHeaders":{
+          "shape":"MapOfStringToList",
+          "documentation":"<p>[Optional] The headers as a map from string to list of values to simulate an incoming invocation request. This is where the incoming authorization token, or identity source, may be specified.</p>"
         },
         "pathWithQueryString":{
           "shape":"String",
@@ -6226,8 +6229,12 @@
           "documentation":"<p>The simulated request body of an incoming invocation request.</p>"
         },
         "headers":{
-          "shape":"MapOfHeaderValues",
+          "shape":"MapOfStringToString",
           "documentation":"<p>A key-value map of headers to simulate an incoming invocation request.</p>"
+        },
+        "multiValueHeaders":{
+          "shape":"MapOfStringToList",
+          "documentation":"<p>The headers as a map from string to list of values to simulate an incoming invocation request.</p>"
         },
         "clientCertificateId":{
           "shape":"String",
@@ -6252,8 +6259,12 @@
           "documentation":"<p>The body of the HTTP response.</p>"
         },
         "headers":{
-          "shape":"MapOfHeaderValues",
+          "shape":"MapOfStringToString",
           "documentation":"<p>The headers of the HTTP response.</p>"
+        },
+        "multiValueHeaders":{
+          "shape":"MapOfStringToList",
+          "documentation":"<p>The headers of the HTTP response as a map from string to list of values.</p>"
         },
         "log":{
           "shape":"String",
