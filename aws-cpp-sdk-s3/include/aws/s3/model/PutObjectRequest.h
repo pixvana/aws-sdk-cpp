@@ -24,6 +24,8 @@
 #include <aws/s3/model/ServerSideEncryption.h>
 #include <aws/s3/model/StorageClass.h>
 #include <aws/s3/model/RequestPayer.h>
+#include <aws/s3/model/ObjectLockMode.h>
+#include <aws/s3/model/ObjectLockLegalHoldStatus.h>
 #include <utility>
 
 namespace Aws
@@ -950,45 +952,123 @@ namespace Model
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline const Aws::String& GetTagging() const{ return m_tagging; }
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline void SetTagging(const Aws::String& value) { m_taggingHasBeenSet = true; m_tagging = value; }
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline void SetTagging(Aws::String&& value) { m_taggingHasBeenSet = true; m_tagging = std::move(value); }
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline void SetTagging(const char* value) { m_taggingHasBeenSet = true; m_tagging.assign(value); }
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline PutObjectRequest& WithTagging(const Aws::String& value) { SetTagging(value); return *this;}
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline PutObjectRequest& WithTagging(Aws::String&& value) { SetTagging(std::move(value)); return *this;}
 
     /**
      * <p>The tag-set for the object. The tag-set must be encoded as URL Query
-     * parameters</p>
+     * parameters. (For example, "Key1=Value1")</p>
      */
     inline PutObjectRequest& WithTagging(const char* value) { SetTagging(value); return *this;}
+
+
+    /**
+     * <p>The Object Lock mode that you want to apply to this object.</p>
+     */
+    inline const ObjectLockMode& GetObjectLockMode() const{ return m_objectLockMode; }
+
+    /**
+     * <p>The Object Lock mode that you want to apply to this object.</p>
+     */
+    inline void SetObjectLockMode(const ObjectLockMode& value) { m_objectLockModeHasBeenSet = true; m_objectLockMode = value; }
+
+    /**
+     * <p>The Object Lock mode that you want to apply to this object.</p>
+     */
+    inline void SetObjectLockMode(ObjectLockMode&& value) { m_objectLockModeHasBeenSet = true; m_objectLockMode = std::move(value); }
+
+    /**
+     * <p>The Object Lock mode that you want to apply to this object.</p>
+     */
+    inline PutObjectRequest& WithObjectLockMode(const ObjectLockMode& value) { SetObjectLockMode(value); return *this;}
+
+    /**
+     * <p>The Object Lock mode that you want to apply to this object.</p>
+     */
+    inline PutObjectRequest& WithObjectLockMode(ObjectLockMode&& value) { SetObjectLockMode(std::move(value)); return *this;}
+
+
+    /**
+     * <p>The date and time when you want this object's Object Lock to expire.</p>
+     */
+    inline const Aws::Utils::DateTime& GetObjectLockRetainUntilDate() const{ return m_objectLockRetainUntilDate; }
+
+    /**
+     * <p>The date and time when you want this object's Object Lock to expire.</p>
+     */
+    inline void SetObjectLockRetainUntilDate(const Aws::Utils::DateTime& value) { m_objectLockRetainUntilDateHasBeenSet = true; m_objectLockRetainUntilDate = value; }
+
+    /**
+     * <p>The date and time when you want this object's Object Lock to expire.</p>
+     */
+    inline void SetObjectLockRetainUntilDate(Aws::Utils::DateTime&& value) { m_objectLockRetainUntilDateHasBeenSet = true; m_objectLockRetainUntilDate = std::move(value); }
+
+    /**
+     * <p>The date and time when you want this object's Object Lock to expire.</p>
+     */
+    inline PutObjectRequest& WithObjectLockRetainUntilDate(const Aws::Utils::DateTime& value) { SetObjectLockRetainUntilDate(value); return *this;}
+
+    /**
+     * <p>The date and time when you want this object's Object Lock to expire.</p>
+     */
+    inline PutObjectRequest& WithObjectLockRetainUntilDate(Aws::Utils::DateTime&& value) { SetObjectLockRetainUntilDate(std::move(value)); return *this;}
+
+
+    /**
+     * <p>The Legal Hold status that you want to apply to the specified object.</p>
+     */
+    inline const ObjectLockLegalHoldStatus& GetObjectLockLegalHoldStatus() const{ return m_objectLockLegalHoldStatus; }
+
+    /**
+     * <p>The Legal Hold status that you want to apply to the specified object.</p>
+     */
+    inline void SetObjectLockLegalHoldStatus(const ObjectLockLegalHoldStatus& value) { m_objectLockLegalHoldStatusHasBeenSet = true; m_objectLockLegalHoldStatus = value; }
+
+    /**
+     * <p>The Legal Hold status that you want to apply to the specified object.</p>
+     */
+    inline void SetObjectLockLegalHoldStatus(ObjectLockLegalHoldStatus&& value) { m_objectLockLegalHoldStatusHasBeenSet = true; m_objectLockLegalHoldStatus = std::move(value); }
+
+    /**
+     * <p>The Legal Hold status that you want to apply to the specified object.</p>
+     */
+    inline PutObjectRequest& WithObjectLockLegalHoldStatus(const ObjectLockLegalHoldStatus& value) { SetObjectLockLegalHoldStatus(value); return *this;}
+
+    /**
+     * <p>The Legal Hold status that you want to apply to the specified object.</p>
+     */
+    inline PutObjectRequest& WithObjectLockLegalHoldStatus(ObjectLockLegalHoldStatus&& value) { SetObjectLockLegalHoldStatus(std::move(value)); return *this;}
 
 
     
@@ -1101,6 +1181,15 @@ namespace Model
 
     Aws::String m_tagging;
     bool m_taggingHasBeenSet;
+
+    ObjectLockMode m_objectLockMode;
+    bool m_objectLockModeHasBeenSet;
+
+    Aws::Utils::DateTime m_objectLockRetainUntilDate;
+    bool m_objectLockRetainUntilDateHasBeenSet;
+
+    ObjectLockLegalHoldStatus m_objectLockLegalHoldStatus;
+    bool m_objectLockLegalHoldStatusHasBeenSet;
 
     Aws::Map<Aws::String, Aws::String> m_customizedAccessLogTag;
     bool m_customizedAccessLogTagHasBeenSet;

@@ -30,6 +30,9 @@ public class ShapeMember {
     String xmlnsUri;
     boolean isFlattened;
     boolean isCustomizedQuery;
+    boolean isEventPayload;
+    boolean hostLabel;
+    boolean endpointDiscoveryId;
 
     public boolean isUsedForHeader() {
         return "header".equals(location) || "headers".equals(location);

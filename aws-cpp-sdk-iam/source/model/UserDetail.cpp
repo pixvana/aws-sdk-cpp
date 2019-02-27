@@ -39,7 +39,8 @@ UserDetail::UserDetail() :
     m_userPolicyListHasBeenSet(false),
     m_groupListHasBeenSet(false),
     m_attachedManagedPoliciesHasBeenSet(false),
-    m_permissionsBoundaryHasBeenSet(false)
+    m_permissionsBoundaryHasBeenSet(false),
+    m_tagsHasBeenSet(false)
 {
 }
 
@@ -52,7 +53,8 @@ UserDetail::UserDetail(const XmlNode& xmlNode) :
     m_userPolicyListHasBeenSet(false),
     m_groupListHasBeenSet(false),
     m_attachedManagedPoliciesHasBeenSet(false),
-    m_permissionsBoundaryHasBeenSet(false)
+    m_permissionsBoundaryHasBeenSet(false),
+    m_tagsHasBeenSet(false)
 {
   *this = xmlNode;
 }
@@ -135,6 +137,18 @@ UserDetail& UserDetail::operator =(const XmlNode& xmlNode)
       m_permissionsBoundary = permissionsBoundaryNode;
       m_permissionsBoundaryHasBeenSet = true;
     }
+    XmlNode tagsNode = resultNode.FirstChild("Tags");
+    if(!tagsNode.IsNull())
+    {
+      XmlNode tagsMember = tagsNode.FirstChild("member");
+      while(!tagsMember.IsNull())
+      {
+        m_tags.push_back(tagsMember);
+        tagsMember = tagsMember.NextNode("member");
+      }
+
+      m_tagsHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -205,6 +219,17 @@ void UserDetail::OutputToStream(Aws::OStream& oStream, const char* location, uns
       m_permissionsBoundary.OutputToStream(oStream, permissionsBoundaryLocationAndMemberSs.str().c_str());
   }
 
+  if(m_tagsHasBeenSet)
+  {
+      unsigned tagsIdx = 1;
+      for(auto& item : m_tags)
+      {
+        Aws::StringStream tagsSs;
+        tagsSs << location << index << locationValue << ".Tags.member." << tagsIdx++;
+        item.OutputToStream(oStream, tagsSs.str().c_str());
+      }
+  }
+
 }
 
 void UserDetail::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -262,6 +287,16 @@ void UserDetail::OutputToStream(Aws::OStream& oStream, const char* location) con
       Aws::String permissionsBoundaryLocationAndMember(location);
       permissionsBoundaryLocationAndMember += ".PermissionsBoundary";
       m_permissionsBoundary.OutputToStream(oStream, permissionsBoundaryLocationAndMember.c_str());
+  }
+  if(m_tagsHasBeenSet)
+  {
+      unsigned tagsIdx = 1;
+      for(auto& item : m_tags)
+      {
+        Aws::StringStream tagsSs;
+        tagsSs << location <<  ".Tags.member." << tagsIdx++;
+        item.OutputToStream(oStream, tagsSs.str().c_str());
+      }
   }
 }
 

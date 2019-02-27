@@ -17,8 +17,8 @@
 #include <aws/ec2/EC2_EXPORTS.h>
 #include <aws/ec2/EC2Request.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
-#include <aws/ec2/model/Filter.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/ec2/model/Filter.h>
 #include <utility>
 
 namespace Aws
@@ -109,7 +109,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -186,7 +186,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -263,7 +263,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -340,7 +340,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -417,7 +417,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -494,7 +494,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -571,7 +571,7 @@ namespace Model
      * <code>cancelled</code> | <code>failed</code>). Spot request status information
      * can help you track your Amazon EC2 Spot Instance requests. For more information,
      * see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-bid-status.html">Spot
      * Request Status</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p>
      * </li> <li> <p> <code>status-code</code> - The short code describing the most
      * recent evaluation of your Spot Instance request.</p> </li> <li> <p>
@@ -657,6 +657,71 @@ namespace Model
      */
     inline DescribeSpotInstanceRequestsRequest& AddSpotInstanceRequestIds(const char* value) { m_spotInstanceRequestIdsHasBeenSet = true; m_spotInstanceRequestIds.push_back(value); return *this; }
 
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline const Aws::String& GetNextToken() const{ return m_nextToken; }
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline void SetNextToken(const Aws::String& value) { m_nextTokenHasBeenSet = true; m_nextToken = value; }
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline void SetNextToken(Aws::String&& value) { m_nextTokenHasBeenSet = true; m_nextToken = std::move(value); }
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline void SetNextToken(const char* value) { m_nextTokenHasBeenSet = true; m_nextToken.assign(value); }
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline DescribeSpotInstanceRequestsRequest& WithNextToken(const Aws::String& value) { SetNextToken(value); return *this;}
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline DescribeSpotInstanceRequestsRequest& WithNextToken(Aws::String&& value) { SetNextToken(std::move(value)); return *this;}
+
+    /**
+     * <p>The token to request the next set of results. This value is <code>null</code>
+     * when there are no more results to return.</p>
+     */
+    inline DescribeSpotInstanceRequestsRequest& WithNextToken(const char* value) { SetNextToken(value); return *this;}
+
+
+    /**
+     * <p>The maximum number of results to return in a single call. Specify a value
+     * between 5 and 1000. To retrieve the remaining results, make another call with
+     * the returned <code>NextToken</code> value.</p>
+     */
+    inline int GetMaxResults() const{ return m_maxResults; }
+
+    /**
+     * <p>The maximum number of results to return in a single call. Specify a value
+     * between 5 and 1000. To retrieve the remaining results, make another call with
+     * the returned <code>NextToken</code> value.</p>
+     */
+    inline void SetMaxResults(int value) { m_maxResultsHasBeenSet = true; m_maxResults = value; }
+
+    /**
+     * <p>The maximum number of results to return in a single call. Specify a value
+     * between 5 and 1000. To retrieve the remaining results, make another call with
+     * the returned <code>NextToken</code> value.</p>
+     */
+    inline DescribeSpotInstanceRequestsRequest& WithMaxResults(int value) { SetMaxResults(value); return *this;}
+
   private:
 
     Aws::Vector<Filter> m_filters;
@@ -667,6 +732,12 @@ namespace Model
 
     Aws::Vector<Aws::String> m_spotInstanceRequestIds;
     bool m_spotInstanceRequestIdsHasBeenSet;
+
+    Aws::String m_nextToken;
+    bool m_nextTokenHasBeenSet;
+
+    int m_maxResults;
+    bool m_maxResultsHasBeenSet;
   };
 
 } // namespace Model

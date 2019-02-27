@@ -16,6 +16,7 @@
 #pragma once
 #include <aws/mediaconvert/MediaConvert_EXPORTS.h>
 #include <aws/mediaconvert/MediaConvertRequest.h>
+#include <aws/mediaconvert/model/AccelerationSettings.h>
 #include <aws/mediaconvert/model/BillingTagsSource.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/mediaconvert/model/JobSettings.h>
@@ -44,6 +45,37 @@ namespace Model
     inline virtual const char* GetServiceRequestName() const override { return "CreateJob"; }
 
     Aws::String SerializePayload() const override;
+
+
+    /**
+     * This is a beta feature. If you are interested in using this feature, please
+     * contact AWS customer support.
+     */
+    inline const AccelerationSettings& GetAccelerationSettings() const{ return m_accelerationSettings; }
+
+    /**
+     * This is a beta feature. If you are interested in using this feature, please
+     * contact AWS customer support.
+     */
+    inline void SetAccelerationSettings(const AccelerationSettings& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = value; }
+
+    /**
+     * This is a beta feature. If you are interested in using this feature, please
+     * contact AWS customer support.
+     */
+    inline void SetAccelerationSettings(AccelerationSettings&& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = std::move(value); }
+
+    /**
+     * This is a beta feature. If you are interested in using this feature, please
+     * contact AWS customer support.
+     */
+    inline CreateJobRequest& WithAccelerationSettings(const AccelerationSettings& value) { SetAccelerationSettings(value); return *this;}
+
+    /**
+     * This is a beta feature. If you are interested in using this feature, please
+     * contact AWS customer support.
+     */
+    inline CreateJobRequest& WithAccelerationSettings(AccelerationSettings&& value) { SetAccelerationSettings(std::move(value)); return *this;}
 
 
     
@@ -265,6 +297,31 @@ namespace Model
 
 
     /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline long long GetStatusUpdateIntervalInSecs() const{ return m_statusUpdateIntervalInSecs; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline void SetStatusUpdateIntervalInSecs(long long value) { m_statusUpdateIntervalInSecsHasBeenSet = true; m_statusUpdateIntervalInSecs = value; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline CreateJobRequest& WithStatusUpdateIntervalInSecs(long long value) { SetStatusUpdateIntervalInSecs(value); return *this;}
+
+
+    /**
      * User-defined metadata that you want to associate with an MediaConvert job. You
      * specify metadata in key/value pairs.
      */
@@ -338,6 +395,9 @@ namespace Model
 
   private:
 
+    AccelerationSettings m_accelerationSettings;
+    bool m_accelerationSettingsHasBeenSet;
+
     BillingTagsSource m_billingTagsSource;
     bool m_billingTagsSourceHasBeenSet;
 
@@ -355,6 +415,9 @@ namespace Model
 
     JobSettings m_settings;
     bool m_settingsHasBeenSet;
+
+    long long m_statusUpdateIntervalInSecs;
+    bool m_statusUpdateIntervalInSecsHasBeenSet;
 
     Aws::Map<Aws::String, Aws::String> m_userMetadata;
     bool m_userMetadataHasBeenSet;

@@ -72,19 +72,34 @@ namespace Model
     inline VideoDescription& WithAfdSignaling(AfdSignaling&& value) { SetAfdSignaling(std::move(value)); return *this;}
 
 
-    
+    /**
+     * You no longer need to specify the anti-alias filter. It's now automatically
+     * applied to all outputs. This property is deprecated.
+     */
     inline const AntiAlias& GetAntiAlias() const{ return m_antiAlias; }
 
-    
+    /**
+     * You no longer need to specify the anti-alias filter. It's now automatically
+     * applied to all outputs. This property is deprecated.
+     */
     inline void SetAntiAlias(const AntiAlias& value) { m_antiAliasHasBeenSet = true; m_antiAlias = value; }
 
-    
+    /**
+     * You no longer need to specify the anti-alias filter. It's now automatically
+     * applied to all outputs. This property is deprecated.
+     */
     inline void SetAntiAlias(AntiAlias&& value) { m_antiAliasHasBeenSet = true; m_antiAlias = std::move(value); }
 
-    
+    /**
+     * You no longer need to specify the anti-alias filter. It's now automatically
+     * applied to all outputs. This property is deprecated.
+     */
     inline VideoDescription& WithAntiAlias(const AntiAlias& value) { SetAntiAlias(value); return *this;}
 
-    
+    /**
+     * You no longer need to specify the anti-alias filter. It's now automatically
+     * applied to all outputs. This property is deprecated.
+     */
     inline VideoDescription& WithAntiAlias(AntiAlias&& value) { SetAntiAlias(std::move(value)); return *this;}
 
 
@@ -124,8 +139,9 @@ namespace Model
      * Applies only if your input aspect ratio is different from your output aspect
      * ratio. Use Input cropping rectangle (Crop) to specify the  video area the
      * service will include in the output. This will crop the input source, causing
-     * video pixels to be removed on encode. Do not use this setting if you have
-     * enabled Stretch to output (stretchToOutput) in your output settings.
+     * video pixels to be removed on encode. If you crop your input frame size to
+     * smaller than your output frame size, make sure to specify the behavior you want
+     * in your output setting "Scaling behavior".
      */
     inline const Rectangle& GetCrop() const{ return m_crop; }
 
@@ -133,8 +149,9 @@ namespace Model
      * Applies only if your input aspect ratio is different from your output aspect
      * ratio. Use Input cropping rectangle (Crop) to specify the  video area the
      * service will include in the output. This will crop the input source, causing
-     * video pixels to be removed on encode. Do not use this setting if you have
-     * enabled Stretch to output (stretchToOutput) in your output settings.
+     * video pixels to be removed on encode. If you crop your input frame size to
+     * smaller than your output frame size, make sure to specify the behavior you want
+     * in your output setting "Scaling behavior".
      */
     inline void SetCrop(const Rectangle& value) { m_cropHasBeenSet = true; m_crop = value; }
 
@@ -142,8 +159,9 @@ namespace Model
      * Applies only if your input aspect ratio is different from your output aspect
      * ratio. Use Input cropping rectangle (Crop) to specify the  video area the
      * service will include in the output. This will crop the input source, causing
-     * video pixels to be removed on encode. Do not use this setting if you have
-     * enabled Stretch to output (stretchToOutput) in your output settings.
+     * video pixels to be removed on encode. If you crop your input frame size to
+     * smaller than your output frame size, make sure to specify the behavior you want
+     * in your output setting "Scaling behavior".
      */
     inline void SetCrop(Rectangle&& value) { m_cropHasBeenSet = true; m_crop = std::move(value); }
 
@@ -151,8 +169,9 @@ namespace Model
      * Applies only if your input aspect ratio is different from your output aspect
      * ratio. Use Input cropping rectangle (Crop) to specify the  video area the
      * service will include in the output. This will crop the input source, causing
-     * video pixels to be removed on encode. Do not use this setting if you have
-     * enabled Stretch to output (stretchToOutput) in your output settings.
+     * video pixels to be removed on encode. If you crop your input frame size to
+     * smaller than your output frame size, make sure to specify the behavior you want
+     * in your output setting "Scaling behavior".
      */
     inline VideoDescription& WithCrop(const Rectangle& value) { SetCrop(value); return *this;}
 
@@ -160,8 +179,9 @@ namespace Model
      * Applies only if your input aspect ratio is different from your output aspect
      * ratio. Use Input cropping rectangle (Crop) to specify the  video area the
      * service will include in the output. This will crop the input source, causing
-     * video pixels to be removed on encode. Do not use this setting if you have
-     * enabled Stretch to output (stretchToOutput) in your output settings.
+     * video pixels to be removed on encode. If you crop your input frame size to
+     * smaller than your output frame size, make sure to specify the behavior you want
+     * in your output setting "Scaling behavior".
      */
     inline VideoDescription& WithCrop(Rectangle&& value) { SetCrop(std::move(value)); return *this;}
 
@@ -290,29 +310,29 @@ namespace Model
 
 
     /**
-     * Use Sharpness (Sharpness)setting to specify the strength of anti-aliasing. This
+     * Use Sharpness (Sharpness) setting to specify the strength of anti-aliasing. This
      * setting changes the width of the anti-alias filter kernel used for scaling.
      * Sharpness only applies if your output resolution is different from your input
-     * resolution, and if you set Anti-alias (AntiAlias) to ENABLED. 0 is the softest
-     * setting, 100 the sharpest, and 50 recommended for most content.
+     * resolution. 0 is the softest setting, 100 the sharpest, and 50 recommended for
+     * most content.
      */
     inline int GetSharpness() const{ return m_sharpness; }
 
     /**
-     * Use Sharpness (Sharpness)setting to specify the strength of anti-aliasing. This
+     * Use Sharpness (Sharpness) setting to specify the strength of anti-aliasing. This
      * setting changes the width of the anti-alias filter kernel used for scaling.
      * Sharpness only applies if your output resolution is different from your input
-     * resolution, and if you set Anti-alias (AntiAlias) to ENABLED. 0 is the softest
-     * setting, 100 the sharpest, and 50 recommended for most content.
+     * resolution. 0 is the softest setting, 100 the sharpest, and 50 recommended for
+     * most content.
      */
     inline void SetSharpness(int value) { m_sharpnessHasBeenSet = true; m_sharpness = value; }
 
     /**
-     * Use Sharpness (Sharpness)setting to specify the strength of anti-aliasing. This
+     * Use Sharpness (Sharpness) setting to specify the strength of anti-aliasing. This
      * setting changes the width of the anti-alias filter kernel used for scaling.
      * Sharpness only applies if your output resolution is different from your input
-     * resolution, and if you set Anti-alias (AntiAlias) to ENABLED. 0 is the softest
-     * setting, 100 the sharpest, and 50 recommended for most content.
+     * resolution. 0 is the softest setting, 100 the sharpest, and 50 recommended for
+     * most content.
      */
     inline VideoDescription& WithSharpness(int value) { SetSharpness(value); return *this;}
 

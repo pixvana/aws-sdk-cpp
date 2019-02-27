@@ -58,9 +58,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -71,7 +72,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -91,7 +93,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline const Aws::Vector<Filter>& GetFilters() const{ return m_filters; }
 
@@ -105,9 +108,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -118,7 +122,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -138,7 +143,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline void SetFilters(const Aws::Vector<Filter>& value) { m_filtersHasBeenSet = true; m_filters = value; }
 
@@ -152,9 +158,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -165,7 +172,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -185,7 +193,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline void SetFilters(Aws::Vector<Filter>&& value) { m_filtersHasBeenSet = true; m_filters = std::move(value); }
 
@@ -199,9 +208,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -212,7 +222,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -232,7 +243,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline DescribeRouteTablesRequest& WithFilters(const Aws::Vector<Filter>& value) { SetFilters(value); return *this;}
 
@@ -246,9 +258,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -259,7 +272,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -279,7 +293,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline DescribeRouteTablesRequest& WithFilters(Aws::Vector<Filter>&& value) { SetFilters(std::move(value)); return *this;}
 
@@ -293,9 +308,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -306,7 +322,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -326,7 +343,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline DescribeRouteTablesRequest& AddFilters(const Filter& value) { m_filtersHasBeenSet = true; m_filters.push_back(value); return *this; }
 
@@ -340,9 +358,10 @@ namespace Model
      * <code>association.main</code> - Indicates whether the route table is the main
      * route table for the VPC (<code>true</code> | <code>false</code>). Route tables
      * that do not have an association ID are not returned in the response.</p> </li>
-     * <li> <p> <code>route-table-id</code> - The ID of the route table.</p> </li> <li>
-     * <p> <code>route.destination-cidr-block</code> - The IPv4 CIDR range specified in
-     * a route in the table.</p> </li> <li> <p>
+     * <li> <p> <code>owner-id</code> - The ID of the AWS account that owns the route
+     * table.</p> </li> <li> <p> <code>route-table-id</code> - The ID of the route
+     * table.</p> </li> <li> <p> <code>route.destination-cidr-block</code> - The IPv4
+     * CIDR range specified in a route in the table.</p> </li> <li> <p>
      * <code>route.destination-ipv6-cidr-block</code> - The IPv6 CIDR range specified
      * in a route in the route table.</p> </li> <li> <p>
      * <code>route.destination-prefix-list-id</code> - The ID (prefix) of the AWS
@@ -353,7 +372,8 @@ namespace Model
      * table.</p> </li> <li> <p> <code>route.instance-id</code> - The ID of an instance
      * specified in a route in the table.</p> </li> <li> <p>
      * <code>route.nat-gateway-id</code> - The ID of a NAT gateway.</p> </li> <li> <p>
-     * <code>route.origin</code> - Describes how the route was created.
+     * <code>route.transit-gateway-id</code> - The ID of a transit gateway.</p> </li>
+     * <li> <p> <code>route.origin</code> - Describes how the route was created.
      * <code>CreateRouteTable</code> indicates that the route was automatically created
      * when the route table was created; <code>CreateRoute</code> indicates that the
      * route was manually added to the route table;
@@ -373,7 +393,8 @@ namespace Model
      * value.</p> </li> <li> <p> <code>tag-key</code> - The key of a tag assigned to
      * the resource. Use this filter to find all resources assigned a tag with a
      * specific key, regardless of the tag value.</p> </li> <li> <p>
-     * <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
+     * <code>transit-gateway-id</code> - The ID of a transit gateway.</p> </li> <li>
+     * <p> <code>vpc-id</code> - The ID of the VPC for the route table.</p> </li> </ul>
      */
     inline DescribeRouteTablesRequest& AddFilters(Filter&& value) { m_filtersHasBeenSet = true; m_filters.push_back(std::move(value)); return *this; }
 

@@ -50,92 +50,99 @@ namespace Model
 
 
     /**
-     * <p>The current status of the Amazon CloudWatch Logs for a build project. Valid
-     * values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs are
-     * enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>: Amazon
-     * CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
+     * <p>The current status of the logs in Amazon CloudWatch Logs for a build project.
+     * Valid values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs
+     * are enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>:
+     * Amazon CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
      */
     inline const LogsConfigStatusType& GetStatus() const{ return m_status; }
 
     /**
-     * <p>The current status of the Amazon CloudWatch Logs for a build project. Valid
-     * values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs are
-     * enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>: Amazon
-     * CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
+     * <p>The current status of the logs in Amazon CloudWatch Logs for a build project.
+     * Valid values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs
+     * are enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>:
+     * Amazon CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
      */
     inline void SetStatus(const LogsConfigStatusType& value) { m_statusHasBeenSet = true; m_status = value; }
 
     /**
-     * <p>The current status of the Amazon CloudWatch Logs for a build project. Valid
-     * values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs are
-     * enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>: Amazon
-     * CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
+     * <p>The current status of the logs in Amazon CloudWatch Logs for a build project.
+     * Valid values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs
+     * are enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>:
+     * Amazon CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
      */
     inline void SetStatus(LogsConfigStatusType&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
 
     /**
-     * <p>The current status of the Amazon CloudWatch Logs for a build project. Valid
-     * values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs are
-     * enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>: Amazon
-     * CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
+     * <p>The current status of the logs in Amazon CloudWatch Logs for a build project.
+     * Valid values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs
+     * are enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>:
+     * Amazon CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
      */
     inline CloudWatchLogsConfig& WithStatus(const LogsConfigStatusType& value) { SetStatus(value); return *this;}
 
     /**
-     * <p>The current status of the Amazon CloudWatch Logs for a build project. Valid
-     * values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs are
-     * enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>: Amazon
-     * CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
+     * <p>The current status of the logs in Amazon CloudWatch Logs for a build project.
+     * Valid values are:</p> <ul> <li> <p> <code>ENABLED</code>: Amazon CloudWatch Logs
+     * are enabled for this build project.</p> </li> <li> <p> <code>DISABLED</code>:
+     * Amazon CloudWatch Logs are not enabled for this build project.</p> </li> </ul>
      */
     inline CloudWatchLogsConfig& WithStatus(LogsConfigStatusType&& value) { SetStatus(std::move(value)); return *this;}
 
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline const Aws::String& GetGroupName() const{ return m_groupName; }
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline void SetGroupName(const Aws::String& value) { m_groupNameHasBeenSet = true; m_groupName = value; }
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline void SetGroupName(Aws::String&& value) { m_groupNameHasBeenSet = true; m_groupName = std::move(value); }
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline void SetGroupName(const char* value) { m_groupNameHasBeenSet = true; m_groupName.assign(value); }
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline CloudWatchLogsConfig& WithGroupName(const Aws::String& value) { SetGroupName(value); return *this;}
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline CloudWatchLogsConfig& WithGroupName(Aws::String&& value) { SetGroupName(std::move(value)); return *this;}
 
     /**
-     * <p> The group name of the Amazon CloudWatch Logs. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * <p> The group name of the logs in Amazon CloudWatch Logs. For more information,
+     * see <a
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline CloudWatchLogsConfig& WithGroupName(const char* value) { SetGroupName(value); return *this;}
 
@@ -143,56 +150,56 @@ namespace Model
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline const Aws::String& GetStreamName() const{ return m_streamName; }
 
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline void SetStreamName(const Aws::String& value) { m_streamNameHasBeenSet = true; m_streamName = value; }
 
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline void SetStreamName(Aws::String&& value) { m_streamNameHasBeenSet = true; m_streamName = std::move(value); }
 
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline void SetStreamName(const char* value) { m_streamNameHasBeenSet = true; m_streamName.assign(value); }
 
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline CloudWatchLogsConfig& WithStreamName(const Aws::String& value) { SetStreamName(value); return *this;}
 
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline CloudWatchLogsConfig& WithStreamName(Aws::String&& value) { SetStreamName(std::move(value)); return *this;}
 
     /**
      * <p> The prefix of the stream name of the Amazon CloudWatch Logs. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
-     * with Log Groups and Log Streams</a> </p>
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html">Working
+     * with Log Groups and Log Streams</a>. </p>
      */
     inline CloudWatchLogsConfig& WithStreamName(const char* value) { SetStreamName(value); return *this;}
 

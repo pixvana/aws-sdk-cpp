@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/directconnect/DirectConnectClient.h>
 #include <aws/directconnect/DirectConnectEndpoint.h>
 #include <aws/directconnect/DirectConnectErrorMarshaller.h>
@@ -116,25 +119,32 @@ DirectConnectClient::~DirectConnectClient()
 
 void DirectConnectClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << DirectConnectEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + DirectConnectEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void DirectConnectClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 AllocateHostedConnectionOutcome DirectConnectClient::AllocateHostedConnection(const AllocateHostedConnectionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -168,8 +178,8 @@ void DirectConnectClient::AllocateHostedConnectionAsyncHelper(const AllocateHost
 
 AllocatePrivateVirtualInterfaceOutcome DirectConnectClient::AllocatePrivateVirtualInterface(const AllocatePrivateVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -203,8 +213,8 @@ void DirectConnectClient::AllocatePrivateVirtualInterfaceAsyncHelper(const Alloc
 
 AllocatePublicVirtualInterfaceOutcome DirectConnectClient::AllocatePublicVirtualInterface(const AllocatePublicVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -238,8 +248,8 @@ void DirectConnectClient::AllocatePublicVirtualInterfaceAsyncHelper(const Alloca
 
 AssociateConnectionWithLagOutcome DirectConnectClient::AssociateConnectionWithLag(const AssociateConnectionWithLagRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -273,8 +283,8 @@ void DirectConnectClient::AssociateConnectionWithLagAsyncHelper(const AssociateC
 
 AssociateHostedConnectionOutcome DirectConnectClient::AssociateHostedConnection(const AssociateHostedConnectionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -308,8 +318,8 @@ void DirectConnectClient::AssociateHostedConnectionAsyncHelper(const AssociateHo
 
 AssociateVirtualInterfaceOutcome DirectConnectClient::AssociateVirtualInterface(const AssociateVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -343,8 +353,8 @@ void DirectConnectClient::AssociateVirtualInterfaceAsyncHelper(const AssociateVi
 
 ConfirmConnectionOutcome DirectConnectClient::ConfirmConnection(const ConfirmConnectionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -378,8 +388,8 @@ void DirectConnectClient::ConfirmConnectionAsyncHelper(const ConfirmConnectionRe
 
 ConfirmPrivateVirtualInterfaceOutcome DirectConnectClient::ConfirmPrivateVirtualInterface(const ConfirmPrivateVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -413,8 +423,8 @@ void DirectConnectClient::ConfirmPrivateVirtualInterfaceAsyncHelper(const Confir
 
 ConfirmPublicVirtualInterfaceOutcome DirectConnectClient::ConfirmPublicVirtualInterface(const ConfirmPublicVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -448,8 +458,8 @@ void DirectConnectClient::ConfirmPublicVirtualInterfaceAsyncHelper(const Confirm
 
 CreateBGPPeerOutcome DirectConnectClient::CreateBGPPeer(const CreateBGPPeerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -483,8 +493,8 @@ void DirectConnectClient::CreateBGPPeerAsyncHelper(const CreateBGPPeerRequest& r
 
 CreateConnectionOutcome DirectConnectClient::CreateConnection(const CreateConnectionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -518,8 +528,8 @@ void DirectConnectClient::CreateConnectionAsyncHelper(const CreateConnectionRequ
 
 CreateDirectConnectGatewayOutcome DirectConnectClient::CreateDirectConnectGateway(const CreateDirectConnectGatewayRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -553,8 +563,8 @@ void DirectConnectClient::CreateDirectConnectGatewayAsyncHelper(const CreateDire
 
 CreateDirectConnectGatewayAssociationOutcome DirectConnectClient::CreateDirectConnectGatewayAssociation(const CreateDirectConnectGatewayAssociationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -588,8 +598,8 @@ void DirectConnectClient::CreateDirectConnectGatewayAssociationAsyncHelper(const
 
 CreateInterconnectOutcome DirectConnectClient::CreateInterconnect(const CreateInterconnectRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -623,8 +633,8 @@ void DirectConnectClient::CreateInterconnectAsyncHelper(const CreateInterconnect
 
 CreateLagOutcome DirectConnectClient::CreateLag(const CreateLagRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -658,8 +668,8 @@ void DirectConnectClient::CreateLagAsyncHelper(const CreateLagRequest& request, 
 
 CreatePrivateVirtualInterfaceOutcome DirectConnectClient::CreatePrivateVirtualInterface(const CreatePrivateVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -693,8 +703,8 @@ void DirectConnectClient::CreatePrivateVirtualInterfaceAsyncHelper(const CreateP
 
 CreatePublicVirtualInterfaceOutcome DirectConnectClient::CreatePublicVirtualInterface(const CreatePublicVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -728,8 +738,8 @@ void DirectConnectClient::CreatePublicVirtualInterfaceAsyncHelper(const CreatePu
 
 DeleteBGPPeerOutcome DirectConnectClient::DeleteBGPPeer(const DeleteBGPPeerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -763,8 +773,8 @@ void DirectConnectClient::DeleteBGPPeerAsyncHelper(const DeleteBGPPeerRequest& r
 
 DeleteConnectionOutcome DirectConnectClient::DeleteConnection(const DeleteConnectionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -798,8 +808,8 @@ void DirectConnectClient::DeleteConnectionAsyncHelper(const DeleteConnectionRequ
 
 DeleteDirectConnectGatewayOutcome DirectConnectClient::DeleteDirectConnectGateway(const DeleteDirectConnectGatewayRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -833,8 +843,8 @@ void DirectConnectClient::DeleteDirectConnectGatewayAsyncHelper(const DeleteDire
 
 DeleteDirectConnectGatewayAssociationOutcome DirectConnectClient::DeleteDirectConnectGatewayAssociation(const DeleteDirectConnectGatewayAssociationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -868,8 +878,8 @@ void DirectConnectClient::DeleteDirectConnectGatewayAssociationAsyncHelper(const
 
 DeleteInterconnectOutcome DirectConnectClient::DeleteInterconnect(const DeleteInterconnectRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -903,8 +913,8 @@ void DirectConnectClient::DeleteInterconnectAsyncHelper(const DeleteInterconnect
 
 DeleteLagOutcome DirectConnectClient::DeleteLag(const DeleteLagRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -938,8 +948,8 @@ void DirectConnectClient::DeleteLagAsyncHelper(const DeleteLagRequest& request, 
 
 DeleteVirtualInterfaceOutcome DirectConnectClient::DeleteVirtualInterface(const DeleteVirtualInterfaceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -973,8 +983,8 @@ void DirectConnectClient::DeleteVirtualInterfaceAsyncHelper(const DeleteVirtualI
 
 DescribeConnectionsOutcome DirectConnectClient::DescribeConnections(const DescribeConnectionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1008,8 +1018,8 @@ void DirectConnectClient::DescribeConnectionsAsyncHelper(const DescribeConnectio
 
 DescribeDirectConnectGatewayAssociationsOutcome DirectConnectClient::DescribeDirectConnectGatewayAssociations(const DescribeDirectConnectGatewayAssociationsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1043,8 +1053,8 @@ void DirectConnectClient::DescribeDirectConnectGatewayAssociationsAsyncHelper(co
 
 DescribeDirectConnectGatewayAttachmentsOutcome DirectConnectClient::DescribeDirectConnectGatewayAttachments(const DescribeDirectConnectGatewayAttachmentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1078,8 +1088,8 @@ void DirectConnectClient::DescribeDirectConnectGatewayAttachmentsAsyncHelper(con
 
 DescribeDirectConnectGatewaysOutcome DirectConnectClient::DescribeDirectConnectGateways(const DescribeDirectConnectGatewaysRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1113,8 +1123,8 @@ void DirectConnectClient::DescribeDirectConnectGatewaysAsyncHelper(const Describ
 
 DescribeHostedConnectionsOutcome DirectConnectClient::DescribeHostedConnections(const DescribeHostedConnectionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1148,8 +1158,8 @@ void DirectConnectClient::DescribeHostedConnectionsAsyncHelper(const DescribeHos
 
 DescribeInterconnectsOutcome DirectConnectClient::DescribeInterconnects(const DescribeInterconnectsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1183,8 +1193,8 @@ void DirectConnectClient::DescribeInterconnectsAsyncHelper(const DescribeInterco
 
 DescribeLagsOutcome DirectConnectClient::DescribeLags(const DescribeLagsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1218,8 +1228,8 @@ void DirectConnectClient::DescribeLagsAsyncHelper(const DescribeLagsRequest& req
 
 DescribeLoaOutcome DirectConnectClient::DescribeLoa(const DescribeLoaRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1255,7 +1265,6 @@ DescribeLocationsOutcome DirectConnectClient::DescribeLocations() const
 {
   Aws::StringStream ss;
   ss << m_uri << "/";
-
   JsonOutcome outcome = MakeRequest(ss.str(), HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER, "DescribeLocations");
   if(outcome.IsSuccess())
   {
@@ -1287,8 +1296,8 @@ void DirectConnectClient::DescribeLocationsAsyncHelper(const DescribeLocationsRe
 
 DescribeTagsOutcome DirectConnectClient::DescribeTags(const DescribeTagsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1324,7 +1333,6 @@ DescribeVirtualGatewaysOutcome DirectConnectClient::DescribeVirtualGateways() co
 {
   Aws::StringStream ss;
   ss << m_uri << "/";
-
   JsonOutcome outcome = MakeRequest(ss.str(), HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER, "DescribeVirtualGateways");
   if(outcome.IsSuccess())
   {
@@ -1356,8 +1364,8 @@ void DirectConnectClient::DescribeVirtualGatewaysAsyncHelper(const DescribeVirtu
 
 DescribeVirtualInterfacesOutcome DirectConnectClient::DescribeVirtualInterfaces(const DescribeVirtualInterfacesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1391,8 +1399,8 @@ void DirectConnectClient::DescribeVirtualInterfacesAsyncHelper(const DescribeVir
 
 DisassociateConnectionFromLagOutcome DirectConnectClient::DisassociateConnectionFromLag(const DisassociateConnectionFromLagRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1426,8 +1434,8 @@ void DirectConnectClient::DisassociateConnectionFromLagAsyncHelper(const Disasso
 
 TagResourceOutcome DirectConnectClient::TagResource(const TagResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1461,8 +1469,8 @@ void DirectConnectClient::TagResourceAsyncHelper(const TagResourceRequest& reque
 
 UntagResourceOutcome DirectConnectClient::UntagResource(const UntagResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1496,8 +1504,8 @@ void DirectConnectClient::UntagResourceAsyncHelper(const UntagResourceRequest& r
 
 UpdateLagOutcome DirectConnectClient::UpdateLag(const UpdateLagRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1531,8 +1539,8 @@ void DirectConnectClient::UpdateLagAsyncHelper(const UpdateLagRequest& request, 
 
 UpdateVirtualInterfaceAttributesOutcome DirectConnectClient::UpdateVirtualInterfaceAttributes(const UpdateVirtualInterfaceAttributesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);

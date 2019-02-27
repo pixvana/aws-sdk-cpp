@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/cognito-identity/CognitoIdentityClient.h>
 #include <aws/cognito-identity/CognitoIdentityEndpoint.h>
 #include <aws/cognito-identity/CognitoIdentityErrorMarshaller.h>
@@ -95,25 +98,32 @@ CognitoIdentityClient::~CognitoIdentityClient()
 
 void CognitoIdentityClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << CognitoIdentityEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + CognitoIdentityEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void CognitoIdentityClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateIdentityPoolOutcome CognitoIdentityClient::CreateIdentityPool(const CreateIdentityPoolRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -147,8 +157,8 @@ void CognitoIdentityClient::CreateIdentityPoolAsyncHelper(const CreateIdentityPo
 
 DeleteIdentitiesOutcome CognitoIdentityClient::DeleteIdentities(const DeleteIdentitiesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -182,8 +192,8 @@ void CognitoIdentityClient::DeleteIdentitiesAsyncHelper(const DeleteIdentitiesRe
 
 DeleteIdentityPoolOutcome CognitoIdentityClient::DeleteIdentityPool(const DeleteIdentityPoolRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -217,8 +227,8 @@ void CognitoIdentityClient::DeleteIdentityPoolAsyncHelper(const DeleteIdentityPo
 
 DescribeIdentityOutcome CognitoIdentityClient::DescribeIdentity(const DescribeIdentityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -252,8 +262,8 @@ void CognitoIdentityClient::DescribeIdentityAsyncHelper(const DescribeIdentityRe
 
 DescribeIdentityPoolOutcome CognitoIdentityClient::DescribeIdentityPool(const DescribeIdentityPoolRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -287,8 +297,8 @@ void CognitoIdentityClient::DescribeIdentityPoolAsyncHelper(const DescribeIdenti
 
 GetCredentialsForIdentityOutcome CognitoIdentityClient::GetCredentialsForIdentity(const GetCredentialsForIdentityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -322,8 +332,8 @@ void CognitoIdentityClient::GetCredentialsForIdentityAsyncHelper(const GetCreden
 
 GetIdOutcome CognitoIdentityClient::GetId(const GetIdRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -357,8 +367,8 @@ void CognitoIdentityClient::GetIdAsyncHelper(const GetIdRequest& request, const 
 
 GetIdentityPoolRolesOutcome CognitoIdentityClient::GetIdentityPoolRoles(const GetIdentityPoolRolesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -392,8 +402,8 @@ void CognitoIdentityClient::GetIdentityPoolRolesAsyncHelper(const GetIdentityPoo
 
 GetOpenIdTokenOutcome CognitoIdentityClient::GetOpenIdToken(const GetOpenIdTokenRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -427,8 +437,8 @@ void CognitoIdentityClient::GetOpenIdTokenAsyncHelper(const GetOpenIdTokenReques
 
 GetOpenIdTokenForDeveloperIdentityOutcome CognitoIdentityClient::GetOpenIdTokenForDeveloperIdentity(const GetOpenIdTokenForDeveloperIdentityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -462,8 +472,8 @@ void CognitoIdentityClient::GetOpenIdTokenForDeveloperIdentityAsyncHelper(const 
 
 ListIdentitiesOutcome CognitoIdentityClient::ListIdentities(const ListIdentitiesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -497,8 +507,8 @@ void CognitoIdentityClient::ListIdentitiesAsyncHelper(const ListIdentitiesReques
 
 ListIdentityPoolsOutcome CognitoIdentityClient::ListIdentityPools(const ListIdentityPoolsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -532,8 +542,8 @@ void CognitoIdentityClient::ListIdentityPoolsAsyncHelper(const ListIdentityPools
 
 LookupDeveloperIdentityOutcome CognitoIdentityClient::LookupDeveloperIdentity(const LookupDeveloperIdentityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -567,8 +577,8 @@ void CognitoIdentityClient::LookupDeveloperIdentityAsyncHelper(const LookupDevel
 
 MergeDeveloperIdentitiesOutcome CognitoIdentityClient::MergeDeveloperIdentities(const MergeDeveloperIdentitiesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -602,8 +612,8 @@ void CognitoIdentityClient::MergeDeveloperIdentitiesAsyncHelper(const MergeDevel
 
 SetIdentityPoolRolesOutcome CognitoIdentityClient::SetIdentityPoolRoles(const SetIdentityPoolRolesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -637,8 +647,8 @@ void CognitoIdentityClient::SetIdentityPoolRolesAsyncHelper(const SetIdentityPoo
 
 UnlinkDeveloperIdentityOutcome CognitoIdentityClient::UnlinkDeveloperIdentity(const UnlinkDeveloperIdentityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -672,8 +682,8 @@ void CognitoIdentityClient::UnlinkDeveloperIdentityAsyncHelper(const UnlinkDevel
 
 UnlinkIdentityOutcome CognitoIdentityClient::UnlinkIdentity(const UnlinkIdentityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -707,8 +717,8 @@ void CognitoIdentityClient::UnlinkIdentityAsyncHelper(const UnlinkIdentityReques
 
 UpdateIdentityPoolOutcome CognitoIdentityClient::UpdateIdentityPool(const UpdateIdentityPoolRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);

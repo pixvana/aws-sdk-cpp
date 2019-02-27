@@ -42,7 +42,7 @@ namespace Model
 {
 
   /**
-   * <p>Contains the parameters for a fleet.</p><p><h3>See Also:</h3>   <a
+   * <p>Describes the parameters for a fleet.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/appstream-2016-12-01/Fleet">AWS API
    * Reference</a></p>
    */
@@ -128,73 +128,73 @@ namespace Model
 
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline const Aws::String& GetDisplayName() const{ return m_displayName; }
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline void SetDisplayName(const Aws::String& value) { m_displayNameHasBeenSet = true; m_displayName = value; }
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline void SetDisplayName(Aws::String&& value) { m_displayNameHasBeenSet = true; m_displayName = std::move(value); }
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline void SetDisplayName(const char* value) { m_displayNameHasBeenSet = true; m_displayName.assign(value); }
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline Fleet& WithDisplayName(const Aws::String& value) { SetDisplayName(value); return *this;}
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline Fleet& WithDisplayName(Aws::String&& value) { SetDisplayName(std::move(value)); return *this;}
 
     /**
-     * <p>The fleet name for display.</p>
+     * <p>The fleet name to display.</p>
      */
     inline Fleet& WithDisplayName(const char* value) { SetDisplayName(value); return *this;}
 
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline Fleet& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline Fleet& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
 
     /**
-     * <p>The description for display.</p>
+     * <p>The description to display.</p>
      */
     inline Fleet& WithDescription(const char* value) { SetDescription(value); return *this;}
 
@@ -391,19 +391,19 @@ namespace Model
 
     /**
      * <p>The maximum time that a streaming session can run, in seconds. Specify a
-     * value between 600 and 57600.</p>
+     * value between 600 and 360000.</p>
      */
     inline int GetMaxUserDurationInSeconds() const{ return m_maxUserDurationInSeconds; }
 
     /**
      * <p>The maximum time that a streaming session can run, in seconds. Specify a
-     * value between 600 and 57600.</p>
+     * value between 600 and 360000.</p>
      */
     inline void SetMaxUserDurationInSeconds(int value) { m_maxUserDurationInSecondsHasBeenSet = true; m_maxUserDurationInSeconds = value; }
 
     /**
      * <p>The maximum time that a streaming session can run, in seconds. Specify a
-     * value between 600 and 57600.</p>
+     * value between 600 and 360000.</p>
      */
     inline Fleet& WithMaxUserDurationInSeconds(int value) { SetMaxUserDurationInSeconds(value); return *this;}
 
@@ -412,7 +412,7 @@ namespace Model
      * <p>The time after disconnection when a session is considered to have ended, in
      * seconds. If a user who was disconnected reconnects within this time interval,
      * the user is connected to their previous session. Specify a value between 60 and
-     * 57600.</p>
+     * 360000. By default, this value is 900 seconds (15 minutes).</p>
      */
     inline int GetDisconnectTimeoutInSeconds() const{ return m_disconnectTimeoutInSeconds; }
 
@@ -420,7 +420,7 @@ namespace Model
      * <p>The time after disconnection when a session is considered to have ended, in
      * seconds. If a user who was disconnected reconnects within this time interval,
      * the user is connected to their previous session. Specify a value between 60 and
-     * 57600.</p>
+     * 360000. By default, this value is 900 seconds (15 minutes).</p>
      */
     inline void SetDisconnectTimeoutInSeconds(int value) { m_disconnectTimeoutInSecondsHasBeenSet = true; m_disconnectTimeoutInSeconds = value; }
 
@@ -428,7 +428,7 @@ namespace Model
      * <p>The time after disconnection when a session is considered to have ended, in
      * seconds. If a user who was disconnected reconnects within this time interval,
      * the user is connected to their previous session. Specify a value between 60 and
-     * 57600.</p>
+     * 360000. By default, this value is 900 seconds (15 minutes).</p>
      */
     inline Fleet& WithDisconnectTimeoutInSeconds(int value) { SetDisconnectTimeoutInSeconds(value); return *this;}
 
@@ -564,27 +564,32 @@ namespace Model
 
 
     /**
-     * <p>The information needed to join a Microsoft Active Directory domain.</p>
+     * <p>The name of the directory and organizational unit (OU) to use to join the
+     * fleet to a Microsoft Active Directory domain. </p>
      */
     inline const DomainJoinInfo& GetDomainJoinInfo() const{ return m_domainJoinInfo; }
 
     /**
-     * <p>The information needed to join a Microsoft Active Directory domain.</p>
+     * <p>The name of the directory and organizational unit (OU) to use to join the
+     * fleet to a Microsoft Active Directory domain. </p>
      */
     inline void SetDomainJoinInfo(const DomainJoinInfo& value) { m_domainJoinInfoHasBeenSet = true; m_domainJoinInfo = value; }
 
     /**
-     * <p>The information needed to join a Microsoft Active Directory domain.</p>
+     * <p>The name of the directory and organizational unit (OU) to use to join the
+     * fleet to a Microsoft Active Directory domain. </p>
      */
     inline void SetDomainJoinInfo(DomainJoinInfo&& value) { m_domainJoinInfoHasBeenSet = true; m_domainJoinInfo = std::move(value); }
 
     /**
-     * <p>The information needed to join a Microsoft Active Directory domain.</p>
+     * <p>The name of the directory and organizational unit (OU) to use to join the
+     * fleet to a Microsoft Active Directory domain. </p>
      */
     inline Fleet& WithDomainJoinInfo(const DomainJoinInfo& value) { SetDomainJoinInfo(value); return *this;}
 
     /**
-     * <p>The information needed to join a Microsoft Active Directory domain.</p>
+     * <p>The name of the directory and organizational unit (OU) to use to join the
+     * fleet to a Microsoft Active Directory domain. </p>
      */
     inline Fleet& WithDomainJoinInfo(DomainJoinInfo&& value) { SetDomainJoinInfo(std::move(value)); return *this;}
 

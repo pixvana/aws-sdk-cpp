@@ -1581,13 +1581,31 @@ namespace Model
     inline DBCluster& AddEnabledCloudwatchLogsExports(const char* value) { m_enabledCloudwatchLogsExportsHasBeenSet = true; m_enabledCloudwatchLogsExports.push_back(value); return *this; }
 
 
-    
+    /**
+     * <p>The current capacity of an Aurora Serverless DB cluster. The capacity is 0
+     * (zero) when the cluster is paused.</p> <p>For more information about Aurora
+     * Serverless, see <a
+     * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html">Using
+     * Amazon Aurora Serverless</a> in the <i>Amazon Aurora User Guide</i>.</p>
+     */
     inline int GetCapacity() const{ return m_capacity; }
 
-    
+    /**
+     * <p>The current capacity of an Aurora Serverless DB cluster. The capacity is 0
+     * (zero) when the cluster is paused.</p> <p>For more information about Aurora
+     * Serverless, see <a
+     * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html">Using
+     * Amazon Aurora Serverless</a> in the <i>Amazon Aurora User Guide</i>.</p>
+     */
     inline void SetCapacity(int value) { m_capacityHasBeenSet = true; m_capacity = value; }
 
-    
+    /**
+     * <p>The current capacity of an Aurora Serverless DB cluster. The capacity is 0
+     * (zero) when the cluster is paused.</p> <p>For more information about Aurora
+     * Serverless, see <a
+     * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html">Using
+     * Amazon Aurora Serverless</a> in the <i>Amazon Aurora User Guide</i>.</p>
+     */
     inline DBCluster& WithCapacity(int value) { SetCapacity(value); return *this;}
 
 
@@ -1667,6 +1685,46 @@ namespace Model
      * can't be deleted when this value is set to true. </p>
      */
     inline DBCluster& WithDeletionProtection(bool value) { SetDeletionProtection(value); return *this;}
+
+
+    /**
+     * <note> <p>HTTP endpoint functionality is in beta for Aurora Serverless and is
+     * subject to change.</p> </note> <p>Value that is <code>true</code> if the HTTP
+     * endpoint for an Aurora Serverless DB cluster is enabled and <code>false</code>
+     * otherwise.</p> <p>When enabled, the HTTP endpoint provides a connectionless web
+     * service API for running SQL queries on the Aurora Serverless DB cluster. You can
+     * also query your database from inside the RDS console with the query editor.</p>
+     * <p>For more information about Aurora Serverless, see <a
+     * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html">Using
+     * Amazon Aurora Serverless</a> in the <i>Amazon Aurora User Guide</i>.</p>
+     */
+    inline bool GetHttpEndpointEnabled() const{ return m_httpEndpointEnabled; }
+
+    /**
+     * <note> <p>HTTP endpoint functionality is in beta for Aurora Serverless and is
+     * subject to change.</p> </note> <p>Value that is <code>true</code> if the HTTP
+     * endpoint for an Aurora Serverless DB cluster is enabled and <code>false</code>
+     * otherwise.</p> <p>When enabled, the HTTP endpoint provides a connectionless web
+     * service API for running SQL queries on the Aurora Serverless DB cluster. You can
+     * also query your database from inside the RDS console with the query editor.</p>
+     * <p>For more information about Aurora Serverless, see <a
+     * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html">Using
+     * Amazon Aurora Serverless</a> in the <i>Amazon Aurora User Guide</i>.</p>
+     */
+    inline void SetHttpEndpointEnabled(bool value) { m_httpEndpointEnabledHasBeenSet = true; m_httpEndpointEnabled = value; }
+
+    /**
+     * <note> <p>HTTP endpoint functionality is in beta for Aurora Serverless and is
+     * subject to change.</p> </note> <p>Value that is <code>true</code> if the HTTP
+     * endpoint for an Aurora Serverless DB cluster is enabled and <code>false</code>
+     * otherwise.</p> <p>When enabled, the HTTP endpoint provides a connectionless web
+     * service API for running SQL queries on the Aurora Serverless DB cluster. You can
+     * also query your database from inside the RDS console with the query editor.</p>
+     * <p>For more information about Aurora Serverless, see <a
+     * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html">Using
+     * Amazon Aurora Serverless</a> in the <i>Amazon Aurora User Guide</i>.</p>
+     */
+    inline DBCluster& WithHttpEndpointEnabled(bool value) { SetHttpEndpointEnabled(value); return *this;}
 
   private:
 
@@ -1801,6 +1859,9 @@ namespace Model
 
     bool m_deletionProtection;
     bool m_deletionProtectionHasBeenSet;
+
+    bool m_httpEndpointEnabled;
+    bool m_httpEndpointEnabledHasBeenSet;
   };
 
 } // namespace Model

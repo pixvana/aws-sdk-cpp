@@ -15,6 +15,7 @@
 
 #pragma once
 #include <aws/mediaconvert/MediaConvert_EXPORTS.h>
+#include <aws/mediaconvert/model/AccelerationSettings.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/mediaconvert/model/BillingTagsSource.h>
 #include <aws/core/utils/DateTime.h>
@@ -56,6 +57,32 @@ namespace Model
     Job(Aws::Utils::Json::JsonView jsonValue);
     Job& operator=(Aws::Utils::Json::JsonView jsonValue);
     Aws::Utils::Json::JsonValue Jsonize() const;
+
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline const AccelerationSettings& GetAccelerationSettings() const{ return m_accelerationSettings; }
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline void SetAccelerationSettings(const AccelerationSettings& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = value; }
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline void SetAccelerationSettings(AccelerationSettings&& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = std::move(value); }
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline Job& WithAccelerationSettings(const AccelerationSettings& value) { SetAccelerationSettings(value); return *this;}
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline Job& WithAccelerationSettings(AccelerationSettings&& value) { SetAccelerationSettings(std::move(value)); return *this;}
 
 
     /**
@@ -449,6 +476,31 @@ namespace Model
     inline Job& WithStatus(JobStatus&& value) { SetStatus(std::move(value)); return *this;}
 
 
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline long long GetStatusUpdateIntervalInSecs() const{ return m_statusUpdateIntervalInSecs; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline void SetStatusUpdateIntervalInSecs(long long value) { m_statusUpdateIntervalInSecsHasBeenSet = true; m_statusUpdateIntervalInSecs = value; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline Job& WithStatusUpdateIntervalInSecs(long long value) { SetStatusUpdateIntervalInSecs(value); return *this;}
+
+
     
     inline const Timing& GetTiming() const{ return m_timing; }
 
@@ -539,6 +591,9 @@ namespace Model
 
   private:
 
+    AccelerationSettings m_accelerationSettings;
+    bool m_accelerationSettingsHasBeenSet;
+
     Aws::String m_arn;
     bool m_arnHasBeenSet;
 
@@ -574,6 +629,9 @@ namespace Model
 
     JobStatus m_status;
     bool m_statusHasBeenSet;
+
+    long long m_statusUpdateIntervalInSecs;
+    bool m_statusUpdateIntervalInSecsHasBeenSet;
 
     Timing m_timing;
     bool m_timingHasBeenSet;

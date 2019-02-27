@@ -48,6 +48,7 @@ ContainerDefinition::ContainerDefinition() :
     m_mountPointsHasBeenSet(false),
     m_volumesFromHasBeenSet(false),
     m_linuxParametersHasBeenSet(false),
+    m_secretsHasBeenSet(false),
     m_hostnameHasBeenSet(false),
     m_userHasBeenSet(false),
     m_workingDirectoryHasBeenSet(false),
@@ -69,7 +70,8 @@ ContainerDefinition::ContainerDefinition() :
     m_ulimitsHasBeenSet(false),
     m_logConfigurationHasBeenSet(false),
     m_healthCheckHasBeenSet(false),
-    m_systemControlsHasBeenSet(false)
+    m_systemControlsHasBeenSet(false),
+    m_resourceRequirementsHasBeenSet(false)
 {
 }
 
@@ -93,6 +95,7 @@ ContainerDefinition::ContainerDefinition(JsonView jsonValue) :
     m_mountPointsHasBeenSet(false),
     m_volumesFromHasBeenSet(false),
     m_linuxParametersHasBeenSet(false),
+    m_secretsHasBeenSet(false),
     m_hostnameHasBeenSet(false),
     m_userHasBeenSet(false),
     m_workingDirectoryHasBeenSet(false),
@@ -114,7 +117,8 @@ ContainerDefinition::ContainerDefinition(JsonView jsonValue) :
     m_ulimitsHasBeenSet(false),
     m_logConfigurationHasBeenSet(false),
     m_healthCheckHasBeenSet(false),
-    m_systemControlsHasBeenSet(false)
+    m_systemControlsHasBeenSet(false),
+    m_resourceRequirementsHasBeenSet(false)
 {
   *this = jsonValue;
 }
@@ -245,6 +249,16 @@ ContainerDefinition& ContainerDefinition::operator =(JsonView jsonValue)
     m_linuxParameters = jsonValue.GetObject("linuxParameters");
 
     m_linuxParametersHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("secrets"))
+  {
+    Array<JsonView> secretsJsonList = jsonValue.GetArray("secrets");
+    for(unsigned secretsIndex = 0; secretsIndex < secretsJsonList.GetLength(); ++secretsIndex)
+    {
+      m_secrets.push_back(secretsJsonList[secretsIndex].AsObject());
+    }
+    m_secretsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("hostname"))
@@ -387,6 +401,16 @@ ContainerDefinition& ContainerDefinition::operator =(JsonView jsonValue)
     m_systemControlsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("resourceRequirements"))
+  {
+    Array<JsonView> resourceRequirementsJsonList = jsonValue.GetArray("resourceRequirements");
+    for(unsigned resourceRequirementsIndex = 0; resourceRequirementsIndex < resourceRequirementsJsonList.GetLength(); ++resourceRequirementsIndex)
+    {
+      m_resourceRequirements.push_back(resourceRequirementsJsonList[resourceRequirementsIndex].AsObject());
+    }
+    m_resourceRequirementsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -516,6 +540,17 @@ JsonValue ContainerDefinition::Jsonize() const
   if(m_linuxParametersHasBeenSet)
   {
    payload.WithObject("linuxParameters", m_linuxParameters.Jsonize());
+
+  }
+
+  if(m_secretsHasBeenSet)
+  {
+   Array<JsonValue> secretsJsonList(m_secrets.size());
+   for(unsigned secretsIndex = 0; secretsIndex < secretsJsonList.GetLength(); ++secretsIndex)
+   {
+     secretsJsonList[secretsIndex].AsObject(m_secrets[secretsIndex].Jsonize());
+   }
+   payload.WithArray("secrets", std::move(secretsJsonList));
 
   }
 
@@ -653,6 +688,17 @@ JsonValue ContainerDefinition::Jsonize() const
      systemControlsJsonList[systemControlsIndex].AsObject(m_systemControls[systemControlsIndex].Jsonize());
    }
    payload.WithArray("systemControls", std::move(systemControlsJsonList));
+
+  }
+
+  if(m_resourceRequirementsHasBeenSet)
+  {
+   Array<JsonValue> resourceRequirementsJsonList(m_resourceRequirements.size());
+   for(unsigned resourceRequirementsIndex = 0; resourceRequirementsIndex < resourceRequirementsJsonList.GetLength(); ++resourceRequirementsIndex)
+   {
+     resourceRequirementsJsonList[resourceRequirementsIndex].AsObject(m_resourceRequirements[resourceRequirementsIndex].Jsonize());
+   }
+   payload.WithArray("resourceRequirements", std::move(resourceRequirementsJsonList));
 
   }
 

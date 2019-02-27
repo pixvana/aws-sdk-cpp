@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/iot-data/IoTDataPlaneClient.h>
 #include <aws/iot-data/IoTDataPlaneEndpoint.h>
 #include <aws/iot-data/IoTDataPlaneErrorMarshaller.h>
@@ -81,25 +84,32 @@ IoTDataPlaneClient::~IoTDataPlaneClient()
 
 void IoTDataPlaneClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << IoTDataPlaneEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + IoTDataPlaneEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void IoTDataPlaneClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 DeleteThingShadowOutcome IoTDataPlaneClient::DeleteThingShadow(const DeleteThingShadowRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/shadow";
@@ -135,8 +145,8 @@ void IoTDataPlaneClient::DeleteThingShadowAsyncHelper(const DeleteThingShadowReq
 
 GetThingShadowOutcome IoTDataPlaneClient::GetThingShadow(const GetThingShadowRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/shadow";
@@ -172,8 +182,8 @@ void IoTDataPlaneClient::GetThingShadowAsyncHelper(const GetThingShadowRequest& 
 
 PublishOutcome IoTDataPlaneClient::Publish(const PublishRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/topics/";
   ss << request.GetTopic();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -208,8 +218,8 @@ void IoTDataPlaneClient::PublishAsyncHelper(const PublishRequest& request, const
 
 UpdateThingShadowOutcome IoTDataPlaneClient::UpdateThingShadow(const UpdateThingShadowRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/shadow";

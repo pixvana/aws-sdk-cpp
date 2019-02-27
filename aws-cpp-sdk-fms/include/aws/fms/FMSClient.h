@@ -267,9 +267,9 @@ namespace Model
 
         /**
          * <p>Disassociates the account that has been set as the AWS Firewall Manager
-         * administrator account. You will need to submit an
-         * <code>AssociateAdminAccount</code> request to set a new account as the AWS
-         * Firewall administrator.</p><p><h3>See Also:</h3>   <a
+         * administrator account. To set a different account as the administrator account,
+         * you must submit an <code>AssociateAdminAccount</code> request .</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/fms-2018-01-01/DisassociateAdminAccount">AWS
          * API Reference</a></p>
          */
@@ -277,9 +277,9 @@ namespace Model
 
         /**
          * <p>Disassociates the account that has been set as the AWS Firewall Manager
-         * administrator account. You will need to submit an
-         * <code>AssociateAdminAccount</code> request to set a new account as the AWS
-         * Firewall administrator.</p><p><h3>See Also:</h3>   <a
+         * administrator account. To set a different account as the administrator account,
+         * you must submit an <code>AssociateAdminAccount</code> request .</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/fms-2018-01-01/DisassociateAdminAccount">AWS
          * API Reference</a></p>
          *
@@ -289,9 +289,9 @@ namespace Model
 
         /**
          * <p>Disassociates the account that has been set as the AWS Firewall Manager
-         * administrator account. You will need to submit an
-         * <code>AssociateAdminAccount</code> request to set a new account as the AWS
-         * Firewall administrator.</p><p><h3>See Also:</h3>   <a
+         * administrator account. To set a different account as the administrator account,
+         * you must submit an <code>AssociateAdminAccount</code> request .</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/fms-2018-01-01/DisassociateAdminAccount">AWS
          * API Reference</a></p>
          *
@@ -572,10 +572,10 @@ namespace Model
          */
         virtual void PutPolicyAsync(const Model::PutPolicyRequest& request, const PutPolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+      void OverrideEndpoint(const Aws::String& endpoint);
     private:
       void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
         /**Async helpers**/
         void AssociateAdminAccountAsyncHelper(const Model::AssociateAdminAccountRequest& request, const AssociateAdminAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteNotificationChannelAsyncHelper(const Model::DeleteNotificationChannelRequest& request, const DeleteNotificationChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -592,6 +592,7 @@ namespace Model
         void PutPolicyAsyncHelper(const Model::PutPolicyRequest& request, const PutPolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
       Aws::String m_uri;
+      Aws::String m_configScheme;
       std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 

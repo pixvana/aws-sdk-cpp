@@ -406,7 +406,8 @@ namespace Model
         virtual void CreateDatasetAsync(const Model::CreateDatasetRequest& request, const CreateDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Creates the content of a data set by applying a SQL action.</p><p><h3>See
+         * <p>Creates the content of a data set by applying a "queryAction" (a SQL query)
+         * or a "containerAction" (executing a containerized application).</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotanalytics-2017-11-27/CreateDatasetContent">AWS
          * API Reference</a></p>
@@ -414,7 +415,8 @@ namespace Model
         virtual Model::CreateDatasetContentOutcome CreateDatasetContent(const Model::CreateDatasetContentRequest& request) const;
 
         /**
-         * <p>Creates the content of a data set by applying a SQL action.</p><p><h3>See
+         * <p>Creates the content of a data set by applying a "queryAction" (a SQL query)
+         * or a "containerAction" (executing a containerized application).</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotanalytics-2017-11-27/CreateDatasetContent">AWS
          * API Reference</a></p>
@@ -424,7 +426,8 @@ namespace Model
         virtual Model::CreateDatasetContentOutcomeCallable CreateDatasetContentCallable(const Model::CreateDatasetContentRequest& request) const;
 
         /**
-         * <p>Creates the content of a data set by applying a SQL action.</p><p><h3>See
+         * <p>Creates the content of a data set by applying a "queryAction" (a SQL query)
+         * or a "containerAction" (executing a containerized application).</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotanalytics-2017-11-27/CreateDatasetContent">AWS
          * API Reference</a></p>
@@ -1215,10 +1218,10 @@ namespace Model
          */
         virtual void UpdatePipelineAsync(const Model::UpdatePipelineRequest& request, const UpdatePipelineResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+      void OverrideEndpoint(const Aws::String& endpoint);
     private:
       void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
         /**Async helpers**/
         void BatchPutMessageAsyncHelper(const Model::BatchPutMessageRequest& request, const BatchPutMessageResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void CancelPipelineReprocessingAsyncHelper(const Model::CancelPipelineReprocessingRequest& request, const CancelPipelineReprocessingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -1256,6 +1259,7 @@ namespace Model
         void UpdatePipelineAsyncHelper(const Model::UpdatePipelineRequest& request, const UpdatePipelineResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
       Aws::String m_uri;
+      Aws::String m_configScheme;
       std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 

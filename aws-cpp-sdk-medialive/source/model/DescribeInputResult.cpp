@@ -72,9 +72,24 @@ DescribeInputResult& DescribeInputResult::operator =(const Aws::AmazonWebService
 
   }
 
+  if(jsonValue.ValueExists("mediaConnectFlows"))
+  {
+    Array<JsonView> mediaConnectFlowsJsonList = jsonValue.GetArray("mediaConnectFlows");
+    for(unsigned mediaConnectFlowsIndex = 0; mediaConnectFlowsIndex < mediaConnectFlowsJsonList.GetLength(); ++mediaConnectFlowsIndex)
+    {
+      m_mediaConnectFlows.push_back(mediaConnectFlowsJsonList[mediaConnectFlowsIndex].AsObject());
+    }
+  }
+
   if(jsonValue.ValueExists("name"))
   {
     m_name = jsonValue.GetString("name");
+
+  }
+
+  if(jsonValue.ValueExists("roleArn"))
+  {
+    m_roleArn = jsonValue.GetString("roleArn");
 
   }
 
@@ -100,6 +115,15 @@ DescribeInputResult& DescribeInputResult::operator =(const Aws::AmazonWebService
   {
     m_state = InputStateMapper::GetInputStateForName(jsonValue.GetString("state"));
 
+  }
+
+  if(jsonValue.ValueExists("tags"))
+  {
+    Aws::Map<Aws::String, JsonView> tagsJsonMap = jsonValue.GetObject("tags").GetAllObjects();
+    for(auto& tagsItem : tagsJsonMap)
+    {
+      m_tags[tagsItem.first] = tagsItem.second.AsString();
+    }
   }
 
   if(jsonValue.ValueExists("type"))

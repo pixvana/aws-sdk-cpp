@@ -117,37 +117,37 @@ namespace Model
 
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline const Aws::String& GetUserId() const{ return m_userId; }
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline void SetUserId(const Aws::String& value) { m_userIdHasBeenSet = true; m_userId = value; }
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline void SetUserId(Aws::String&& value) { m_userIdHasBeenSet = true; m_userId = std::move(value); }
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline void SetUserId(const char* value) { m_userIdHasBeenSet = true; m_userId.assign(value); }
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline CreateStreamingURLRequest& WithUserId(const Aws::String& value) { SetUserId(value); return *this;}
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline CreateStreamingURLRequest& WithUserId(Aws::String&& value) { SetUserId(std::move(value)); return *this;}
 
     /**
-     * <p>The ID of the user.</p>
+     * <p>The identifier of the user.</p>
      */
     inline CreateStreamingURLRequest& WithUserId(const char* value) { SetUserId(value); return *this;}
 
@@ -216,49 +216,49 @@ namespace Model
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline const Aws::String& GetSessionContext() const{ return m_sessionContext; }
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline void SetSessionContext(const Aws::String& value) { m_sessionContextHasBeenSet = true; m_sessionContext = value; }
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline void SetSessionContext(Aws::String&& value) { m_sessionContextHasBeenSet = true; m_sessionContext = std::move(value); }
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline void SetSessionContext(const char* value) { m_sessionContextHasBeenSet = true; m_sessionContext.assign(value); }
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline CreateStreamingURLRequest& WithSessionContext(const Aws::String& value) { SetSessionContext(value); return *this;}
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline CreateStreamingURLRequest& WithSessionContext(Aws::String&& value) { SetSessionContext(std::move(value)); return *this;}
 
     /**
      * <p>The session context. For more information, see <a
-     * href="http://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
+     * href="https://docs.aws.amazon.com/appstream2/latest/developerguide/managing-stacks-fleets.html#managing-stacks-fleets-parameters">Session
      * Context</a> in the <i>Amazon AppStream 2.0 Developer Guide</i>.</p>
      */
     inline CreateStreamingURLRequest& WithSessionContext(const char* value) { SetSessionContext(value); return *this;}

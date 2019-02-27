@@ -33,7 +33,7 @@ namespace Model
 
   /**
    * <p>You can use the following request parameters to query for how much of your
-   * instance usage is covered by a reservation.</p><p><h3>See Also:</h3>   <a
+   * instance usage a reservation covered.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/ce-2017-10-25/GetReservationCoverageRequest">AWS
    * API Reference</a></p>
    */
@@ -54,62 +54,57 @@ namespace Model
 
 
     /**
-     * <p>The start and end dates of the period for which you want to retrieve data
-     * about reservation coverage. You can retrieve data for a maximum of 13 months:
-     * the last 12 months and the current month. The start date is inclusive, but the
-     * end date is exclusive. For example, if <code>start</code> is
-     * <code>2017-01-01</code> and <code>end</code> is <code>2017-05-01</code>, then
-     * the cost and usage data is retrieved from <code>2017-01-01</code> up to and
-     * including <code>2017-04-30</code> but not including <code>2017-05-01</code>.
-     * </p>
+     * <p>The start and end dates of the period that you want to retrieve data about
+     * reservation coverage for. You can retrieve data for a maximum of 13 months: the
+     * last 12 months and the current month. The start date is inclusive, but the end
+     * date is exclusive. For example, if <code>start</code> is <code>2017-01-01</code>
+     * and <code>end</code> is <code>2017-05-01</code>, then the cost and usage data is
+     * retrieved from <code>2017-01-01</code> up to and including
+     * <code>2017-04-30</code> but not including <code>2017-05-01</code>. </p>
      */
     inline const DateInterval& GetTimePeriod() const{ return m_timePeriod; }
 
     /**
-     * <p>The start and end dates of the period for which you want to retrieve data
-     * about reservation coverage. You can retrieve data for a maximum of 13 months:
-     * the last 12 months and the current month. The start date is inclusive, but the
-     * end date is exclusive. For example, if <code>start</code> is
-     * <code>2017-01-01</code> and <code>end</code> is <code>2017-05-01</code>, then
-     * the cost and usage data is retrieved from <code>2017-01-01</code> up to and
-     * including <code>2017-04-30</code> but not including <code>2017-05-01</code>.
-     * </p>
+     * <p>The start and end dates of the period that you want to retrieve data about
+     * reservation coverage for. You can retrieve data for a maximum of 13 months: the
+     * last 12 months and the current month. The start date is inclusive, but the end
+     * date is exclusive. For example, if <code>start</code> is <code>2017-01-01</code>
+     * and <code>end</code> is <code>2017-05-01</code>, then the cost and usage data is
+     * retrieved from <code>2017-01-01</code> up to and including
+     * <code>2017-04-30</code> but not including <code>2017-05-01</code>. </p>
      */
     inline void SetTimePeriod(const DateInterval& value) { m_timePeriodHasBeenSet = true; m_timePeriod = value; }
 
     /**
-     * <p>The start and end dates of the period for which you want to retrieve data
-     * about reservation coverage. You can retrieve data for a maximum of 13 months:
-     * the last 12 months and the current month. The start date is inclusive, but the
-     * end date is exclusive. For example, if <code>start</code> is
-     * <code>2017-01-01</code> and <code>end</code> is <code>2017-05-01</code>, then
-     * the cost and usage data is retrieved from <code>2017-01-01</code> up to and
-     * including <code>2017-04-30</code> but not including <code>2017-05-01</code>.
-     * </p>
+     * <p>The start and end dates of the period that you want to retrieve data about
+     * reservation coverage for. You can retrieve data for a maximum of 13 months: the
+     * last 12 months and the current month. The start date is inclusive, but the end
+     * date is exclusive. For example, if <code>start</code> is <code>2017-01-01</code>
+     * and <code>end</code> is <code>2017-05-01</code>, then the cost and usage data is
+     * retrieved from <code>2017-01-01</code> up to and including
+     * <code>2017-04-30</code> but not including <code>2017-05-01</code>. </p>
      */
     inline void SetTimePeriod(DateInterval&& value) { m_timePeriodHasBeenSet = true; m_timePeriod = std::move(value); }
 
     /**
-     * <p>The start and end dates of the period for which you want to retrieve data
-     * about reservation coverage. You can retrieve data for a maximum of 13 months:
-     * the last 12 months and the current month. The start date is inclusive, but the
-     * end date is exclusive. For example, if <code>start</code> is
-     * <code>2017-01-01</code> and <code>end</code> is <code>2017-05-01</code>, then
-     * the cost and usage data is retrieved from <code>2017-01-01</code> up to and
-     * including <code>2017-04-30</code> but not including <code>2017-05-01</code>.
-     * </p>
+     * <p>The start and end dates of the period that you want to retrieve data about
+     * reservation coverage for. You can retrieve data for a maximum of 13 months: the
+     * last 12 months and the current month. The start date is inclusive, but the end
+     * date is exclusive. For example, if <code>start</code> is <code>2017-01-01</code>
+     * and <code>end</code> is <code>2017-05-01</code>, then the cost and usage data is
+     * retrieved from <code>2017-01-01</code> up to and including
+     * <code>2017-04-30</code> but not including <code>2017-05-01</code>. </p>
      */
     inline GetReservationCoverageRequest& WithTimePeriod(const DateInterval& value) { SetTimePeriod(value); return *this;}
 
     /**
-     * <p>The start and end dates of the period for which you want to retrieve data
-     * about reservation coverage. You can retrieve data for a maximum of 13 months:
-     * the last 12 months and the current month. The start date is inclusive, but the
-     * end date is exclusive. For example, if <code>start</code> is
-     * <code>2017-01-01</code> and <code>end</code> is <code>2017-05-01</code>, then
-     * the cost and usage data is retrieved from <code>2017-01-01</code> up to and
-     * including <code>2017-04-30</code> but not including <code>2017-05-01</code>.
-     * </p>
+     * <p>The start and end dates of the period that you want to retrieve data about
+     * reservation coverage for. You can retrieve data for a maximum of 13 months: the
+     * last 12 months and the current month. The start date is inclusive, but the end
+     * date is exclusive. For example, if <code>start</code> is <code>2017-01-01</code>
+     * and <code>end</code> is <code>2017-05-01</code>, then the cost and usage data is
+     * retrieved from <code>2017-01-01</code> up to and including
+     * <code>2017-04-30</code> but not including <code>2017-05-01</code>. </p>
      */
     inline GetReservationCoverageRequest& WithTimePeriod(DateInterval&& value) { SetTimePeriod(std::move(value)); return *this;}
 
@@ -119,8 +114,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline const Aws::Vector<GroupDefinition>& GetGroupBy() const{ return m_groupBy; }
 
@@ -129,8 +123,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline void SetGroupBy(const Aws::Vector<GroupDefinition>& value) { m_groupByHasBeenSet = true; m_groupBy = value; }
 
@@ -139,8 +132,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline void SetGroupBy(Aws::Vector<GroupDefinition>&& value) { m_groupByHasBeenSet = true; m_groupBy = std::move(value); }
 
@@ -149,8 +141,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline GetReservationCoverageRequest& WithGroupBy(const Aws::Vector<GroupDefinition>& value) { SetGroupBy(value); return *this;}
 
@@ -159,8 +150,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline GetReservationCoverageRequest& WithGroupBy(Aws::Vector<GroupDefinition>&& value) { SetGroupBy(std::move(value)); return *this;}
 
@@ -169,8 +159,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline GetReservationCoverageRequest& AddGroupBy(const GroupDefinition& value) { m_groupByHasBeenSet = true; m_groupBy.push_back(value); return *this; }
 
@@ -179,8 +168,7 @@ namespace Model
      * </li> <li> <p>CACHE_ENGINE</p> </li> <li> <p>DATABASE_ENGINE</p> </li> <li>
      * <p>DEPLOYMENT_OPTION</p> </li> <li> <p>INSTANCE_TYPE</p> </li> <li>
      * <p>LINKED_ACCOUNT</p> </li> <li> <p>OPERATING_SYSTEM</p> </li> <li>
-     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TAG</p> </li> <li>
-     * <p>TENANCY</p> </li> </ul>
+     * <p>PLATFORM</p> </li> <li> <p>REGION</p> </li> <li> <p>TENANCY</p> </li> </ul>
      */
     inline GetReservationCoverageRequest& AddGroupBy(GroupDefinition&& value) { m_groupByHasBeenSet = true; m_groupBy.push_back(std::move(value)); return *this; }
 
@@ -190,7 +178,9 @@ namespace Model
      * <code>MONTHLY</code> and <code>DAILY</code>.</p> <p>If <code>GroupBy</code> is
      * set, <code>Granularity</code> can't be set. If <code>Granularity</code> isn't
      * set, the response object doesn't include <code>Granularity</code>, either
-     * <code>MONTHLY</code> or <code>DAILY</code>.</p>
+     * <code>MONTHLY</code> or <code>DAILY</code>.</p> <p>The
+     * <code>GetReservationCoverage</code> operation supports only <code>DAILY</code>
+     * and <code>MONTHLY</code> granularities.</p>
      */
     inline const Granularity& GetGranularity() const{ return m_granularity; }
 
@@ -199,7 +189,9 @@ namespace Model
      * <code>MONTHLY</code> and <code>DAILY</code>.</p> <p>If <code>GroupBy</code> is
      * set, <code>Granularity</code> can't be set. If <code>Granularity</code> isn't
      * set, the response object doesn't include <code>Granularity</code>, either
-     * <code>MONTHLY</code> or <code>DAILY</code>.</p>
+     * <code>MONTHLY</code> or <code>DAILY</code>.</p> <p>The
+     * <code>GetReservationCoverage</code> operation supports only <code>DAILY</code>
+     * and <code>MONTHLY</code> granularities.</p>
      */
     inline void SetGranularity(const Granularity& value) { m_granularityHasBeenSet = true; m_granularity = value; }
 
@@ -208,7 +200,9 @@ namespace Model
      * <code>MONTHLY</code> and <code>DAILY</code>.</p> <p>If <code>GroupBy</code> is
      * set, <code>Granularity</code> can't be set. If <code>Granularity</code> isn't
      * set, the response object doesn't include <code>Granularity</code>, either
-     * <code>MONTHLY</code> or <code>DAILY</code>.</p>
+     * <code>MONTHLY</code> or <code>DAILY</code>.</p> <p>The
+     * <code>GetReservationCoverage</code> operation supports only <code>DAILY</code>
+     * and <code>MONTHLY</code> granularities.</p>
      */
     inline void SetGranularity(Granularity&& value) { m_granularityHasBeenSet = true; m_granularity = std::move(value); }
 
@@ -217,7 +211,9 @@ namespace Model
      * <code>MONTHLY</code> and <code>DAILY</code>.</p> <p>If <code>GroupBy</code> is
      * set, <code>Granularity</code> can't be set. If <code>Granularity</code> isn't
      * set, the response object doesn't include <code>Granularity</code>, either
-     * <code>MONTHLY</code> or <code>DAILY</code>.</p>
+     * <code>MONTHLY</code> or <code>DAILY</code>.</p> <p>The
+     * <code>GetReservationCoverage</code> operation supports only <code>DAILY</code>
+     * and <code>MONTHLY</code> granularities.</p>
      */
     inline GetReservationCoverageRequest& WithGranularity(const Granularity& value) { SetGranularity(value); return *this;}
 
@@ -226,7 +222,9 @@ namespace Model
      * <code>MONTHLY</code> and <code>DAILY</code>.</p> <p>If <code>GroupBy</code> is
      * set, <code>Granularity</code> can't be set. If <code>Granularity</code> isn't
      * set, the response object doesn't include <code>Granularity</code>, either
-     * <code>MONTHLY</code> or <code>DAILY</code>.</p>
+     * <code>MONTHLY</code> or <code>DAILY</code>.</p> <p>The
+     * <code>GetReservationCoverage</code> operation supports only <code>DAILY</code>
+     * and <code>MONTHLY</code> granularities.</p>
      */
     inline GetReservationCoverageRequest& WithGranularity(Granularity&& value) { SetGranularity(std::move(value)); return *this;}
 
@@ -238,11 +236,11 @@ namespace Model
      * <p>INSTANCE_TYPE</p> </li> <li> <p>LINKED_ACCOUNT</p> </li> <li>
      * <p>OPERATING_SYSTEM</p> </li> <li> <p>PLATFORM</p> </li> <li> <p>REGION</p>
      * </li> <li> <p>SERVICE</p> </li> <li> <p>TAG</p> </li> <li> <p>TENANCY</p> </li>
-     * </ul> <p> <code>GetReservationCoverage</code> uses the same <code> <a
+     * </ul> <p> <code>GetReservationCoverage</code> uses the same <a
      * href="http://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html">Expression</a>
-     * </code> object as the other operations, but only <code>AND</code> is supported
-     * among each dimension. You can nest only one level deep. If there are multiple
-     * values for a dimension, they are OR'd together.</p> <p>If you don't provide a
+     * object as the other operations, but only <code>AND</code> is supported among
+     * each dimension. You can nest only one level deep. If there are multiple values
+     * for a dimension, they are OR'd together.</p> <p>If you don't provide a
      * <code>SERVICE</code> filter, Cost Explorer defaults to EC2.</p>
      */
     inline const Expression& GetFilter() const{ return m_filter; }
@@ -254,11 +252,11 @@ namespace Model
      * <p>INSTANCE_TYPE</p> </li> <li> <p>LINKED_ACCOUNT</p> </li> <li>
      * <p>OPERATING_SYSTEM</p> </li> <li> <p>PLATFORM</p> </li> <li> <p>REGION</p>
      * </li> <li> <p>SERVICE</p> </li> <li> <p>TAG</p> </li> <li> <p>TENANCY</p> </li>
-     * </ul> <p> <code>GetReservationCoverage</code> uses the same <code> <a
+     * </ul> <p> <code>GetReservationCoverage</code> uses the same <a
      * href="http://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html">Expression</a>
-     * </code> object as the other operations, but only <code>AND</code> is supported
-     * among each dimension. You can nest only one level deep. If there are multiple
-     * values for a dimension, they are OR'd together.</p> <p>If you don't provide a
+     * object as the other operations, but only <code>AND</code> is supported among
+     * each dimension. You can nest only one level deep. If there are multiple values
+     * for a dimension, they are OR'd together.</p> <p>If you don't provide a
      * <code>SERVICE</code> filter, Cost Explorer defaults to EC2.</p>
      */
     inline void SetFilter(const Expression& value) { m_filterHasBeenSet = true; m_filter = value; }
@@ -270,11 +268,11 @@ namespace Model
      * <p>INSTANCE_TYPE</p> </li> <li> <p>LINKED_ACCOUNT</p> </li> <li>
      * <p>OPERATING_SYSTEM</p> </li> <li> <p>PLATFORM</p> </li> <li> <p>REGION</p>
      * </li> <li> <p>SERVICE</p> </li> <li> <p>TAG</p> </li> <li> <p>TENANCY</p> </li>
-     * </ul> <p> <code>GetReservationCoverage</code> uses the same <code> <a
+     * </ul> <p> <code>GetReservationCoverage</code> uses the same <a
      * href="http://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html">Expression</a>
-     * </code> object as the other operations, but only <code>AND</code> is supported
-     * among each dimension. You can nest only one level deep. If there are multiple
-     * values for a dimension, they are OR'd together.</p> <p>If you don't provide a
+     * object as the other operations, but only <code>AND</code> is supported among
+     * each dimension. You can nest only one level deep. If there are multiple values
+     * for a dimension, they are OR'd together.</p> <p>If you don't provide a
      * <code>SERVICE</code> filter, Cost Explorer defaults to EC2.</p>
      */
     inline void SetFilter(Expression&& value) { m_filterHasBeenSet = true; m_filter = std::move(value); }
@@ -286,11 +284,11 @@ namespace Model
      * <p>INSTANCE_TYPE</p> </li> <li> <p>LINKED_ACCOUNT</p> </li> <li>
      * <p>OPERATING_SYSTEM</p> </li> <li> <p>PLATFORM</p> </li> <li> <p>REGION</p>
      * </li> <li> <p>SERVICE</p> </li> <li> <p>TAG</p> </li> <li> <p>TENANCY</p> </li>
-     * </ul> <p> <code>GetReservationCoverage</code> uses the same <code> <a
+     * </ul> <p> <code>GetReservationCoverage</code> uses the same <a
      * href="http://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html">Expression</a>
-     * </code> object as the other operations, but only <code>AND</code> is supported
-     * among each dimension. You can nest only one level deep. If there are multiple
-     * values for a dimension, they are OR'd together.</p> <p>If you don't provide a
+     * object as the other operations, but only <code>AND</code> is supported among
+     * each dimension. You can nest only one level deep. If there are multiple values
+     * for a dimension, they are OR'd together.</p> <p>If you don't provide a
      * <code>SERVICE</code> filter, Cost Explorer defaults to EC2.</p>
      */
     inline GetReservationCoverageRequest& WithFilter(const Expression& value) { SetFilter(value); return *this;}
@@ -302,14 +300,71 @@ namespace Model
      * <p>INSTANCE_TYPE</p> </li> <li> <p>LINKED_ACCOUNT</p> </li> <li>
      * <p>OPERATING_SYSTEM</p> </li> <li> <p>PLATFORM</p> </li> <li> <p>REGION</p>
      * </li> <li> <p>SERVICE</p> </li> <li> <p>TAG</p> </li> <li> <p>TENANCY</p> </li>
-     * </ul> <p> <code>GetReservationCoverage</code> uses the same <code> <a
+     * </ul> <p> <code>GetReservationCoverage</code> uses the same <a
      * href="http://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html">Expression</a>
-     * </code> object as the other operations, but only <code>AND</code> is supported
-     * among each dimension. You can nest only one level deep. If there are multiple
-     * values for a dimension, they are OR'd together.</p> <p>If you don't provide a
+     * object as the other operations, but only <code>AND</code> is supported among
+     * each dimension. You can nest only one level deep. If there are multiple values
+     * for a dimension, they are OR'd together.</p> <p>If you don't provide a
      * <code>SERVICE</code> filter, Cost Explorer defaults to EC2.</p>
      */
     inline GetReservationCoverageRequest& WithFilter(Expression&& value) { SetFilter(std::move(value)); return *this;}
+
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline const Aws::Vector<Aws::String>& GetMetrics() const{ return m_metrics; }
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline void SetMetrics(const Aws::Vector<Aws::String>& value) { m_metricsHasBeenSet = true; m_metrics = value; }
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline void SetMetrics(Aws::Vector<Aws::String>&& value) { m_metricsHasBeenSet = true; m_metrics = std::move(value); }
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline GetReservationCoverageRequest& WithMetrics(const Aws::Vector<Aws::String>& value) { SetMetrics(value); return *this;}
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline GetReservationCoverageRequest& WithMetrics(Aws::Vector<Aws::String>&& value) { SetMetrics(std::move(value)); return *this;}
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline GetReservationCoverageRequest& AddMetrics(const Aws::String& value) { m_metricsHasBeenSet = true; m_metrics.push_back(value); return *this; }
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline GetReservationCoverageRequest& AddMetrics(Aws::String&& value) { m_metricsHasBeenSet = true; m_metrics.push_back(std::move(value)); return *this; }
+
+    /**
+     * <p>The measurement that you want your reservation coverage reported in.</p>
+     * <p>Valid values are <code>Hour</code>, <code>Unit</code>, and <code>Cost</code>.
+     * You can use multiple values in a request.</p>
+     */
+    inline GetReservationCoverageRequest& AddMetrics(const char* value) { m_metricsHasBeenSet = true; m_metrics.push_back(value); return *this; }
 
 
     /**
@@ -374,6 +429,9 @@ namespace Model
 
     Expression m_filter;
     bool m_filterHasBeenSet;
+
+    Aws::Vector<Aws::String> m_metrics;
+    bool m_metricsHasBeenSet;
 
     Aws::String m_nextPageToken;
     bool m_nextPageTokenHasBeenSet;

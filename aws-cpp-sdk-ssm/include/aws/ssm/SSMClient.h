@@ -858,7 +858,7 @@ namespace Model
          * instances using instance IDs or tags, SSM Agent running on the instance
          * processes the document and configures the instance as specified.</p> <p>If you
          * associate a document with an instance that already has an associated document,
-         * the system throws the AssociationAlreadyExists exception.</p><p><h3>See
+         * the system returns the AssociationAlreadyExists exception.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociation">AWS
          * API Reference</a></p>
@@ -871,7 +871,7 @@ namespace Model
          * instances using instance IDs or tags, SSM Agent running on the instance
          * processes the document and configures the instance as specified.</p> <p>If you
          * associate a document with an instance that already has an associated document,
-         * the system throws the AssociationAlreadyExists exception.</p><p><h3>See
+         * the system returns the AssociationAlreadyExists exception.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociation">AWS
          * API Reference</a></p>
@@ -886,7 +886,7 @@ namespace Model
          * instances using instance IDs or tags, SSM Agent running on the instance
          * processes the document and configures the instance as specified.</p> <p>If you
          * associate a document with an instance that already has an associated document,
-         * the system throws the AssociationAlreadyExists exception.</p><p><h3>See
+         * the system returns the AssociationAlreadyExists exception.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociation">AWS
          * API Reference</a></p>
@@ -901,7 +901,7 @@ namespace Model
          * instances using instance IDs or tags, SSM Agent running on the instance
          * processes the document and configures the instance as specified.</p> <p>If you
          * associate a document with an instance that already has an associated document,
-         * the system throws the AssociationAlreadyExists exception.</p><p><h3>See
+         * the system returns the AssociationAlreadyExists exception.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociationBatch">AWS
          * API Reference</a></p>
@@ -914,7 +914,7 @@ namespace Model
          * instances using instance IDs or tags, SSM Agent running on the instance
          * processes the document and configures the instance as specified.</p> <p>If you
          * associate a document with an instance that already has an associated document,
-         * the system throws the AssociationAlreadyExists exception.</p><p><h3>See
+         * the system returns the AssociationAlreadyExists exception.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociationBatch">AWS
          * API Reference</a></p>
@@ -929,7 +929,7 @@ namespace Model
          * instances using instance IDs or tags, SSM Agent running on the instance
          * processes the document and configures the instance as specified.</p> <p>If you
          * associate a document with an instance that already has an associated document,
-         * the system throws the AssociationAlreadyExists exception.</p><p><h3>See
+         * the system returns the AssociationAlreadyExists exception.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociationBatch">AWS
          * API Reference</a></p>
@@ -4289,10 +4289,10 @@ namespace Model
          */
         virtual void UpdatePatchBaselineAsync(const Model::UpdatePatchBaselineRequest& request, const UpdatePatchBaselineResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+      void OverrideEndpoint(const Aws::String& endpoint);
     private:
       void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
         /**Async helpers**/
         void AddTagsToResourceAsyncHelper(const Model::AddTagsToResourceRequest& request, const AddTagsToResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void CancelCommandAsyncHelper(const Model::CancelCommandRequest& request, const CancelCommandResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -4407,6 +4407,7 @@ namespace Model
         void UpdatePatchBaselineAsyncHelper(const Model::UpdatePatchBaselineRequest& request, const UpdatePatchBaselineResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
       Aws::String m_uri;
+      Aws::String m_configScheme;
       std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 

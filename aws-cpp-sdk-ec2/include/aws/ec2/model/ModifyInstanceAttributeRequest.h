@@ -33,10 +33,6 @@ namespace Model
 {
 
   /**
-   * <p>Contains the parameters for ModifyInstanceAttribute.</p><p><h3>See Also:</h3>
-   * <a
-   * href="http://docs.aws.amazon.com/goto/WebAPI/ec2-2016-11-15/ModifyInstanceAttributeRequest">AWS
-   * API Reference</a></p>
    */
   class AWS_EC2_API ModifyInstanceAttributeRequest : public EC2Request
   {
@@ -130,7 +126,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -143,7 +139,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -156,7 +152,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -169,7 +165,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -182,7 +178,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -195,7 +191,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -208,7 +204,7 @@ namespace Model
      * and the volume is deleted when the instance is terminated.</p> <p>To add
      * instance store volumes to an Amazon EBS-backed instance, you must add them when
      * you launch the instance. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html#Using_OverridingAMIBDM">Updating
      * the Block Device Mapping when Launching an Instance</a> in the <i>Amazon Elastic
      * Compute Cloud User Guide</i>.</p>
      */
@@ -485,7 +481,7 @@ namespace Model
     /**
      * <p>Changes the instance type to the specified value. For more information, see
      * <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
      * Types</a>. If the instance type is not valid, the error returned is
      * <code>InvalidInstanceAttributeValue</code>.</p>
      */
@@ -494,7 +490,7 @@ namespace Model
     /**
      * <p>Changes the instance type to the specified value. For more information, see
      * <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
      * Types</a>. If the instance type is not valid, the error returned is
      * <code>InvalidInstanceAttributeValue</code>.</p>
      */
@@ -503,7 +499,7 @@ namespace Model
     /**
      * <p>Changes the instance type to the specified value. For more information, see
      * <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
      * Types</a>. If the instance type is not valid, the error returned is
      * <code>InvalidInstanceAttributeValue</code>.</p>
      */
@@ -512,7 +508,7 @@ namespace Model
     /**
      * <p>Changes the instance type to the specified value. For more information, see
      * <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
      * Types</a>. If the instance type is not valid, the error returned is
      * <code>InvalidInstanceAttributeValue</code>.</p>
      */
@@ -521,7 +517,7 @@ namespace Model
     /**
      * <p>Changes the instance type to the specified value. For more information, see
      * <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance
      * Types</a>. If the instance type is not valid, the error returned is
      * <code>InvalidInstanceAttributeValue</code>.</p>
      */
@@ -531,35 +527,35 @@ namespace Model
     /**
      * <p>Changes the instance's kernel to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline const AttributeValue& GetKernel() const{ return m_kernel; }
 
     /**
      * <p>Changes the instance's kernel to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline void SetKernel(const AttributeValue& value) { m_kernelHasBeenSet = true; m_kernel = value; }
 
     /**
      * <p>Changes the instance's kernel to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline void SetKernel(AttributeValue&& value) { m_kernelHasBeenSet = true; m_kernel = std::move(value); }
 
     /**
      * <p>Changes the instance's kernel to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline ModifyInstanceAttributeRequest& WithKernel(const AttributeValue& value) { SetKernel(value); return *this;}
 
     /**
      * <p>Changes the instance's kernel to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline ModifyInstanceAttributeRequest& WithKernel(AttributeValue&& value) { SetKernel(std::move(value)); return *this;}
 
@@ -567,35 +563,35 @@ namespace Model
     /**
      * <p>Changes the instance's RAM disk to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline const AttributeValue& GetRamdisk() const{ return m_ramdisk; }
 
     /**
      * <p>Changes the instance's RAM disk to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline void SetRamdisk(const AttributeValue& value) { m_ramdiskHasBeenSet = true; m_ramdisk = value; }
 
     /**
      * <p>Changes the instance's RAM disk to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline void SetRamdisk(AttributeValue&& value) { m_ramdiskHasBeenSet = true; m_ramdisk = std::move(value); }
 
     /**
      * <p>Changes the instance's RAM disk to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline ModifyInstanceAttributeRequest& WithRamdisk(const AttributeValue& value) { SetRamdisk(value); return *this;}
 
     /**
      * <p>Changes the instance's RAM disk to the specified value. We recommend that you
      * use PV-GRUB instead of kernels and RAM disks. For more information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedKernels.html">PV-GRUB</a>.</p>
      */
     inline ModifyInstanceAttributeRequest& WithRamdisk(AttributeValue&& value) { SetRamdisk(std::move(value)); return *this;}
 

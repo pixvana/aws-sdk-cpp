@@ -17,8 +17,11 @@
 #include <aws/ssm/SSM_EXPORTS.h>
 #include <aws/ssm/SSMRequest.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/ssm/model/DocumentType.h>
 #include <aws/ssm/model/DocumentFormat.h>
+#include <aws/ssm/model/AttachmentsSource.h>
+#include <aws/ssm/model/Tag.h>
 #include <utility>
 
 namespace Aws
@@ -80,6 +83,49 @@ namespace Model
      * <p>A valid JSON or YAML string.</p>
      */
     inline CreateDocumentRequest& WithContent(const char* value) { SetContent(value); return *this;}
+
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline const Aws::Vector<AttachmentsSource>& GetAttachments() const{ return m_attachments; }
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline void SetAttachments(const Aws::Vector<AttachmentsSource>& value) { m_attachmentsHasBeenSet = true; m_attachments = value; }
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline void SetAttachments(Aws::Vector<AttachmentsSource>&& value) { m_attachmentsHasBeenSet = true; m_attachments = std::move(value); }
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline CreateDocumentRequest& WithAttachments(const Aws::Vector<AttachmentsSource>& value) { SetAttachments(value); return *this;}
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline CreateDocumentRequest& WithAttachments(Aws::Vector<AttachmentsSource>&& value) { SetAttachments(std::move(value)); return *this;}
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline CreateDocumentRequest& AddAttachments(const AttachmentsSource& value) { m_attachmentsHasBeenSet = true; m_attachments.push_back(value); return *this; }
+
+    /**
+     * <p>A list of key and value pairs that describe attachments to a version of a
+     * document.</p>
+     */
+    inline CreateDocumentRequest& AddAttachments(AttachmentsSource&& value) { m_attachmentsHasBeenSet = true; m_attachments.push_back(std::move(value)); return *this; }
 
 
     /**
@@ -147,32 +193,87 @@ namespace Model
 
 
     /**
-     * <p>The type of document to create. Valid document types include: Policy,
-     * Automation, and Command.</p>
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline const Aws::String& GetVersionName() const{ return m_versionName; }
+
+    /**
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline void SetVersionName(const Aws::String& value) { m_versionNameHasBeenSet = true; m_versionName = value; }
+
+    /**
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline void SetVersionName(Aws::String&& value) { m_versionNameHasBeenSet = true; m_versionName = std::move(value); }
+
+    /**
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline void SetVersionName(const char* value) { m_versionNameHasBeenSet = true; m_versionName.assign(value); }
+
+    /**
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline CreateDocumentRequest& WithVersionName(const Aws::String& value) { SetVersionName(value); return *this;}
+
+    /**
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline CreateDocumentRequest& WithVersionName(Aws::String&& value) { SetVersionName(std::move(value)); return *this;}
+
+    /**
+     * <p>An optional field specifying the version of the artifact you are creating
+     * with the document. For example, "Release 12, Update 6". This value is unique
+     * across all versions of a document, and cannot be changed.</p>
+     */
+    inline CreateDocumentRequest& WithVersionName(const char* value) { SetVersionName(value); return *this;}
+
+
+    /**
+     * <p>The type of document to create. Valid document types include:
+     * <code>Command</code>, <code>Policy</code>, <code>Automation</code>,
+     * <code>Session</code>, and <code>Package</code>.</p>
      */
     inline const DocumentType& GetDocumentType() const{ return m_documentType; }
 
     /**
-     * <p>The type of document to create. Valid document types include: Policy,
-     * Automation, and Command.</p>
+     * <p>The type of document to create. Valid document types include:
+     * <code>Command</code>, <code>Policy</code>, <code>Automation</code>,
+     * <code>Session</code>, and <code>Package</code>.</p>
      */
     inline void SetDocumentType(const DocumentType& value) { m_documentTypeHasBeenSet = true; m_documentType = value; }
 
     /**
-     * <p>The type of document to create. Valid document types include: Policy,
-     * Automation, and Command.</p>
+     * <p>The type of document to create. Valid document types include:
+     * <code>Command</code>, <code>Policy</code>, <code>Automation</code>,
+     * <code>Session</code>, and <code>Package</code>.</p>
      */
     inline void SetDocumentType(DocumentType&& value) { m_documentTypeHasBeenSet = true; m_documentType = std::move(value); }
 
     /**
-     * <p>The type of document to create. Valid document types include: Policy,
-     * Automation, and Command.</p>
+     * <p>The type of document to create. Valid document types include:
+     * <code>Command</code>, <code>Policy</code>, <code>Automation</code>,
+     * <code>Session</code>, and <code>Package</code>.</p>
      */
     inline CreateDocumentRequest& WithDocumentType(const DocumentType& value) { SetDocumentType(value); return *this;}
 
     /**
-     * <p>The type of document to create. Valid document types include: Policy,
-     * Automation, and Command.</p>
+     * <p>The type of document to create. Valid document types include:
+     * <code>Command</code>, <code>Policy</code>, <code>Automation</code>,
+     * <code>Session</code>, and <code>Package</code>.</p>
      */
     inline CreateDocumentRequest& WithDocumentType(DocumentType&& value) { SetDocumentType(std::move(value)); return *this;}
 
@@ -285,13 +386,111 @@ namespace Model
      */
     inline CreateDocumentRequest& WithTargetType(const char* value) { SetTargetType(value); return *this;}
 
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline CreateDocumentRequest& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline CreateDocumentRequest& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline CreateDocumentRequest& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
+
+    /**
+     * <p>Optional metadata that you assign to a resource. Tags enable you to
+     * categorize a resource in different ways, such as by purpose, owner, or
+     * environment. For example, you might want to tag an SSM document to identify the
+     * types of targets or the environment where it will run. In this case, you could
+     * specify the following key name/value pairs:</p> <ul> <li> <p>
+     * <code>Key=OS,Value=Windows</code> </p> </li> <li> <p>
+     * <code>Key=Environment,Value=Production</code> </p> </li> </ul> <note> <p>To add
+     * tags to an existing SSM document, use the <a>AddTagsToResource</a> action.</p>
+     * </note>
+     */
+    inline CreateDocumentRequest& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
+
   private:
 
     Aws::String m_content;
     bool m_contentHasBeenSet;
 
+    Aws::Vector<AttachmentsSource> m_attachments;
+    bool m_attachmentsHasBeenSet;
+
     Aws::String m_name;
     bool m_nameHasBeenSet;
+
+    Aws::String m_versionName;
+    bool m_versionNameHasBeenSet;
 
     DocumentType m_documentType;
     bool m_documentTypeHasBeenSet;
@@ -301,6 +500,9 @@ namespace Model
 
     Aws::String m_targetType;
     bool m_targetTypeHasBeenSet;
+
+    Aws::Vector<Tag> m_tags;
+    bool m_tagsHasBeenSet;
   };
 
 } // namespace Model

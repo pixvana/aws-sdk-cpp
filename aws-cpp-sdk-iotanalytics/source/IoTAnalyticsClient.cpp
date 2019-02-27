@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/iotanalytics/IoTAnalyticsClient.h>
 #include <aws/iotanalytics/IoTAnalyticsEndpoint.h>
 #include <aws/iotanalytics/IoTAnalyticsErrorMarshaller.h>
@@ -111,25 +114,32 @@ IoTAnalyticsClient::~IoTAnalyticsClient()
 
 void IoTAnalyticsClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << IoTAnalyticsEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + IoTAnalyticsEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void IoTAnalyticsClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 BatchPutMessageOutcome IoTAnalyticsClient::BatchPutMessage(const BatchPutMessageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/messages/batch";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -163,8 +173,8 @@ void IoTAnalyticsClient::BatchPutMessageAsyncHelper(const BatchPutMessageRequest
 
 CancelPipelineReprocessingOutcome IoTAnalyticsClient::CancelPipelineReprocessing(const CancelPipelineReprocessingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines/";
   ss << request.GetPipelineName();
   ss << "/reprocessing/";
@@ -201,8 +211,8 @@ void IoTAnalyticsClient::CancelPipelineReprocessingAsyncHelper(const CancelPipel
 
 CreateChannelOutcome IoTAnalyticsClient::CreateChannel(const CreateChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/channels";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -236,8 +246,8 @@ void IoTAnalyticsClient::CreateChannelAsyncHelper(const CreateChannelRequest& re
 
 CreateDatasetOutcome IoTAnalyticsClient::CreateDataset(const CreateDatasetRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -271,8 +281,8 @@ void IoTAnalyticsClient::CreateDatasetAsyncHelper(const CreateDatasetRequest& re
 
 CreateDatasetContentOutcome IoTAnalyticsClient::CreateDatasetContent(const CreateDatasetContentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   ss << "/content";
@@ -308,8 +318,8 @@ void IoTAnalyticsClient::CreateDatasetContentAsyncHelper(const CreateDatasetCont
 
 CreateDatastoreOutcome IoTAnalyticsClient::CreateDatastore(const CreateDatastoreRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datastores";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -343,8 +353,8 @@ void IoTAnalyticsClient::CreateDatastoreAsyncHelper(const CreateDatastoreRequest
 
 CreatePipelineOutcome IoTAnalyticsClient::CreatePipeline(const CreatePipelineRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -378,8 +388,8 @@ void IoTAnalyticsClient::CreatePipelineAsyncHelper(const CreatePipelineRequest& 
 
 DeleteChannelOutcome IoTAnalyticsClient::DeleteChannel(const DeleteChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/channels/";
   ss << request.GetChannelName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -414,8 +424,8 @@ void IoTAnalyticsClient::DeleteChannelAsyncHelper(const DeleteChannelRequest& re
 
 DeleteDatasetOutcome IoTAnalyticsClient::DeleteDataset(const DeleteDatasetRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -450,8 +460,8 @@ void IoTAnalyticsClient::DeleteDatasetAsyncHelper(const DeleteDatasetRequest& re
 
 DeleteDatasetContentOutcome IoTAnalyticsClient::DeleteDatasetContent(const DeleteDatasetContentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   ss << "/content";
@@ -487,8 +497,8 @@ void IoTAnalyticsClient::DeleteDatasetContentAsyncHelper(const DeleteDatasetCont
 
 DeleteDatastoreOutcome IoTAnalyticsClient::DeleteDatastore(const DeleteDatastoreRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datastores/";
   ss << request.GetDatastoreName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -523,8 +533,8 @@ void IoTAnalyticsClient::DeleteDatastoreAsyncHelper(const DeleteDatastoreRequest
 
 DeletePipelineOutcome IoTAnalyticsClient::DeletePipeline(const DeletePipelineRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines/";
   ss << request.GetPipelineName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -559,8 +569,8 @@ void IoTAnalyticsClient::DeletePipelineAsyncHelper(const DeletePipelineRequest& 
 
 DescribeChannelOutcome IoTAnalyticsClient::DescribeChannel(const DescribeChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/channels/";
   ss << request.GetChannelName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -595,8 +605,8 @@ void IoTAnalyticsClient::DescribeChannelAsyncHelper(const DescribeChannelRequest
 
 DescribeDatasetOutcome IoTAnalyticsClient::DescribeDataset(const DescribeDatasetRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -631,8 +641,8 @@ void IoTAnalyticsClient::DescribeDatasetAsyncHelper(const DescribeDatasetRequest
 
 DescribeDatastoreOutcome IoTAnalyticsClient::DescribeDatastore(const DescribeDatastoreRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datastores/";
   ss << request.GetDatastoreName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -667,8 +677,8 @@ void IoTAnalyticsClient::DescribeDatastoreAsyncHelper(const DescribeDatastoreReq
 
 DescribeLoggingOptionsOutcome IoTAnalyticsClient::DescribeLoggingOptions(const DescribeLoggingOptionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/logging";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -702,8 +712,8 @@ void IoTAnalyticsClient::DescribeLoggingOptionsAsyncHelper(const DescribeLogging
 
 DescribePipelineOutcome IoTAnalyticsClient::DescribePipeline(const DescribePipelineRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines/";
   ss << request.GetPipelineName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -738,8 +748,8 @@ void IoTAnalyticsClient::DescribePipelineAsyncHelper(const DescribePipelineReque
 
 GetDatasetContentOutcome IoTAnalyticsClient::GetDatasetContent(const GetDatasetContentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   ss << "/content";
@@ -775,8 +785,8 @@ void IoTAnalyticsClient::GetDatasetContentAsyncHelper(const GetDatasetContentReq
 
 ListChannelsOutcome IoTAnalyticsClient::ListChannels(const ListChannelsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/channels";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -810,8 +820,8 @@ void IoTAnalyticsClient::ListChannelsAsyncHelper(const ListChannelsRequest& requ
 
 ListDatasetContentsOutcome IoTAnalyticsClient::ListDatasetContents(const ListDatasetContentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   ss << "/contents";
@@ -847,8 +857,8 @@ void IoTAnalyticsClient::ListDatasetContentsAsyncHelper(const ListDatasetContent
 
 ListDatasetsOutcome IoTAnalyticsClient::ListDatasets(const ListDatasetsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -882,8 +892,8 @@ void IoTAnalyticsClient::ListDatasetsAsyncHelper(const ListDatasetsRequest& requ
 
 ListDatastoresOutcome IoTAnalyticsClient::ListDatastores(const ListDatastoresRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datastores";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -917,8 +927,8 @@ void IoTAnalyticsClient::ListDatastoresAsyncHelper(const ListDatastoresRequest& 
 
 ListPipelinesOutcome IoTAnalyticsClient::ListPipelines(const ListPipelinesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -952,8 +962,8 @@ void IoTAnalyticsClient::ListPipelinesAsyncHelper(const ListPipelinesRequest& re
 
 ListTagsForResourceOutcome IoTAnalyticsClient::ListTagsForResource(const ListTagsForResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/tags";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -987,8 +997,8 @@ void IoTAnalyticsClient::ListTagsForResourceAsyncHelper(const ListTagsForResourc
 
 PutLoggingOptionsOutcome IoTAnalyticsClient::PutLoggingOptions(const PutLoggingOptionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/logging";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
@@ -1022,8 +1032,8 @@ void IoTAnalyticsClient::PutLoggingOptionsAsyncHelper(const PutLoggingOptionsReq
 
 RunPipelineActivityOutcome IoTAnalyticsClient::RunPipelineActivity(const RunPipelineActivityRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelineactivities/run";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1057,8 +1067,8 @@ void IoTAnalyticsClient::RunPipelineActivityAsyncHelper(const RunPipelineActivit
 
 SampleChannelDataOutcome IoTAnalyticsClient::SampleChannelData(const SampleChannelDataRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/channels/";
   ss << request.GetChannelName();
   ss << "/sample";
@@ -1094,8 +1104,8 @@ void IoTAnalyticsClient::SampleChannelDataAsyncHelper(const SampleChannelDataReq
 
 StartPipelineReprocessingOutcome IoTAnalyticsClient::StartPipelineReprocessing(const StartPipelineReprocessingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines/";
   ss << request.GetPipelineName();
   ss << "/reprocessing";
@@ -1131,8 +1141,8 @@ void IoTAnalyticsClient::StartPipelineReprocessingAsyncHelper(const StartPipelin
 
 TagResourceOutcome IoTAnalyticsClient::TagResource(const TagResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/tags";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1166,8 +1176,8 @@ void IoTAnalyticsClient::TagResourceAsyncHelper(const TagResourceRequest& reques
 
 UntagResourceOutcome IoTAnalyticsClient::UntagResource(const UntagResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/tags";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
@@ -1201,8 +1211,8 @@ void IoTAnalyticsClient::UntagResourceAsyncHelper(const UntagResourceRequest& re
 
 UpdateChannelOutcome IoTAnalyticsClient::UpdateChannel(const UpdateChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/channels/";
   ss << request.GetChannelName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1237,8 +1247,8 @@ void IoTAnalyticsClient::UpdateChannelAsyncHelper(const UpdateChannelRequest& re
 
 UpdateDatasetOutcome IoTAnalyticsClient::UpdateDataset(const UpdateDatasetRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datasets/";
   ss << request.GetDatasetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1273,8 +1283,8 @@ void IoTAnalyticsClient::UpdateDatasetAsyncHelper(const UpdateDatasetRequest& re
 
 UpdateDatastoreOutcome IoTAnalyticsClient::UpdateDatastore(const UpdateDatastoreRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/datastores/";
   ss << request.GetDatastoreName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1309,8 +1319,8 @@ void IoTAnalyticsClient::UpdateDatastoreAsyncHelper(const UpdateDatastoreRequest
 
 UpdatePipelineOutcome IoTAnalyticsClient::UpdatePipeline(const UpdatePipelineRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/pipelines/";
   ss << request.GetPipelineName();
   uri.SetPath(uri.GetPath() + ss.str());

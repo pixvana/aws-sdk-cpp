@@ -24,13 +24,18 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/mq/MQClient.h>
 #include <aws/mq/MQEndpoint.h>
 #include <aws/mq/MQErrorMarshaller.h>
 #include <aws/mq/model/CreateBrokerRequest.h>
 #include <aws/mq/model/CreateConfigurationRequest.h>
+#include <aws/mq/model/CreateTagsRequest.h>
 #include <aws/mq/model/CreateUserRequest.h>
 #include <aws/mq/model/DeleteBrokerRequest.h>
+#include <aws/mq/model/DeleteTagsRequest.h>
 #include <aws/mq/model/DeleteUserRequest.h>
 #include <aws/mq/model/DescribeBrokerRequest.h>
 #include <aws/mq/model/DescribeConfigurationRequest.h>
@@ -39,6 +44,7 @@
 #include <aws/mq/model/ListBrokersRequest.h>
 #include <aws/mq/model/ListConfigurationRevisionsRequest.h>
 #include <aws/mq/model/ListConfigurationsRequest.h>
+#include <aws/mq/model/ListTagsRequest.h>
 #include <aws/mq/model/ListUsersRequest.h>
 #include <aws/mq/model/RebootBrokerRequest.h>
 #include <aws/mq/model/UpdateBrokerRequest.h>
@@ -94,25 +100,32 @@ MQClient::~MQClient()
 
 void MQClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << MQEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + MQEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void MQClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateBrokerOutcome MQClient::CreateBroker(const CreateBrokerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/brokers";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -146,8 +159,8 @@ void MQClient::CreateBrokerAsyncHelper(const CreateBrokerRequest& request, const
 
 CreateConfigurationOutcome MQClient::CreateConfiguration(const CreateConfigurationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/configurations";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -179,11 +192,49 @@ void MQClient::CreateConfigurationAsyncHelper(const CreateConfigurationRequest& 
   handler(this, request, CreateConfiguration(request), context);
 }
 
+CreateTagsOutcome MQClient::CreateTags(const CreateTagsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/tags/";
+  ss << request.GetResourceArn();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return CreateTagsOutcome(NoResult());
+  }
+  else
+  {
+    return CreateTagsOutcome(outcome.GetError());
+  }
+}
+
+CreateTagsOutcomeCallable MQClient::CreateTagsCallable(const CreateTagsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< CreateTagsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->CreateTags(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void MQClient::CreateTagsAsync(const CreateTagsRequest& request, const CreateTagsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->CreateTagsAsyncHelper( request, handler, context ); } );
+}
+
+void MQClient::CreateTagsAsyncHelper(const CreateTagsRequest& request, const CreateTagsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, CreateTags(request), context);
+}
+
 CreateUserOutcome MQClient::CreateUser(const CreateUserRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}/users/";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
+  ss << "/users/";
   ss << request.GetUsername();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -217,9 +268,10 @@ void MQClient::CreateUserAsyncHelper(const CreateUserRequest& request, const Cre
 
 DeleteBrokerOutcome MQClient::DeleteBroker(const DeleteBrokerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -250,11 +302,49 @@ void MQClient::DeleteBrokerAsyncHelper(const DeleteBrokerRequest& request, const
   handler(this, request, DeleteBroker(request), context);
 }
 
+DeleteTagsOutcome MQClient::DeleteTags(const DeleteTagsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/tags/";
+  ss << request.GetResourceArn();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return DeleteTagsOutcome(NoResult());
+  }
+  else
+  {
+    return DeleteTagsOutcome(outcome.GetError());
+  }
+}
+
+DeleteTagsOutcomeCallable MQClient::DeleteTagsCallable(const DeleteTagsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DeleteTagsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DeleteTags(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void MQClient::DeleteTagsAsync(const DeleteTagsRequest& request, const DeleteTagsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DeleteTagsAsyncHelper( request, handler, context ); } );
+}
+
+void MQClient::DeleteTagsAsyncHelper(const DeleteTagsRequest& request, const DeleteTagsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DeleteTags(request), context);
+}
+
 DeleteUserOutcome MQClient::DeleteUser(const DeleteUserRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}/users/";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
+  ss << "/users/";
   ss << request.GetUsername();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
@@ -288,9 +378,10 @@ void MQClient::DeleteUserAsyncHelper(const DeleteUserRequest& request, const Del
 
 DescribeBrokerOutcome MQClient::DescribeBroker(const DescribeBrokerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -323,9 +414,10 @@ void MQClient::DescribeBrokerAsyncHelper(const DescribeBrokerRequest& request, c
 
 DescribeConfigurationOutcome MQClient::DescribeConfiguration(const DescribeConfigurationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/configurations/{configuration-id}";
+  Aws::StringStream ss;
+  ss << "/v1/configurations/";
+  ss << request.GetConfigurationId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -358,9 +450,12 @@ void MQClient::DescribeConfigurationAsyncHelper(const DescribeConfigurationReque
 
 DescribeConfigurationRevisionOutcome MQClient::DescribeConfigurationRevision(const DescribeConfigurationRevisionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/configurations/{configuration-id}/revisions/{configuration-revision}";
+  Aws::StringStream ss;
+  ss << "/v1/configurations/";
+  ss << request.GetConfigurationId();
+  ss << "/revisions/";
+  ss << request.GetConfigurationRevision();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -393,9 +488,11 @@ void MQClient::DescribeConfigurationRevisionAsyncHelper(const DescribeConfigurat
 
 DescribeUserOutcome MQClient::DescribeUser(const DescribeUserRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}/users/";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
+  ss << "/users/";
   ss << request.GetUsername();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -429,8 +526,8 @@ void MQClient::DescribeUserAsyncHelper(const DescribeUserRequest& request, const
 
 ListBrokersOutcome MQClient::ListBrokers(const ListBrokersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/brokers";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -464,9 +561,11 @@ void MQClient::ListBrokersAsyncHelper(const ListBrokersRequest& request, const L
 
 ListConfigurationRevisionsOutcome MQClient::ListConfigurationRevisions(const ListConfigurationRevisionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/configurations/{configuration-id}/revisions";
+  Aws::StringStream ss;
+  ss << "/v1/configurations/";
+  ss << request.GetConfigurationId();
+  ss << "/revisions";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -499,8 +598,8 @@ void MQClient::ListConfigurationRevisionsAsyncHelper(const ListConfigurationRevi
 
 ListConfigurationsOutcome MQClient::ListConfigurations(const ListConfigurationsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/configurations";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -532,11 +631,49 @@ void MQClient::ListConfigurationsAsyncHelper(const ListConfigurationsRequest& re
   handler(this, request, ListConfigurations(request), context);
 }
 
+ListTagsOutcome MQClient::ListTags(const ListTagsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/tags/";
+  ss << request.GetResourceArn();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListTagsOutcome(ListTagsResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListTagsOutcome(outcome.GetError());
+  }
+}
+
+ListTagsOutcomeCallable MQClient::ListTagsCallable(const ListTagsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListTagsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListTags(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void MQClient::ListTagsAsync(const ListTagsRequest& request, const ListTagsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListTagsAsyncHelper( request, handler, context ); } );
+}
+
+void MQClient::ListTagsAsyncHelper(const ListTagsRequest& request, const ListTagsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListTags(request), context);
+}
+
 ListUsersOutcome MQClient::ListUsers(const ListUsersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}/users";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
+  ss << "/users";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -569,9 +706,11 @@ void MQClient::ListUsersAsyncHelper(const ListUsersRequest& request, const ListU
 
 RebootBrokerOutcome MQClient::RebootBroker(const RebootBrokerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}/reboot";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
+  ss << "/reboot";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -604,9 +743,10 @@ void MQClient::RebootBrokerAsyncHelper(const RebootBrokerRequest& request, const
 
 UpdateBrokerOutcome MQClient::UpdateBroker(const UpdateBrokerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -639,9 +779,10 @@ void MQClient::UpdateBrokerAsyncHelper(const UpdateBrokerRequest& request, const
 
 UpdateConfigurationOutcome MQClient::UpdateConfiguration(const UpdateConfigurationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/configurations/{configuration-id}";
+  Aws::StringStream ss;
+  ss << "/v1/configurations/";
+  ss << request.GetConfigurationId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -674,9 +815,11 @@ void MQClient::UpdateConfigurationAsyncHelper(const UpdateConfigurationRequest& 
 
 UpdateUserOutcome MQClient::UpdateUser(const UpdateUserRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/brokers/{broker-id}/users/";
+  Aws::StringStream ss;
+  ss << "/v1/brokers/";
+  ss << request.GetBrokerId();
+  ss << "/users/";
   ss << request.GetUsername();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);

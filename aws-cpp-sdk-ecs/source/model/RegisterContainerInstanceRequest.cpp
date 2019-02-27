@@ -29,7 +29,9 @@ RegisterContainerInstanceRequest::RegisterContainerInstanceRequest() :
     m_totalResourcesHasBeenSet(false),
     m_versionInfoHasBeenSet(false),
     m_containerInstanceArnHasBeenSet(false),
-    m_attributesHasBeenSet(false)
+    m_attributesHasBeenSet(false),
+    m_platformDevicesHasBeenSet(false),
+    m_tagsHasBeenSet(false)
 {
 }
 
@@ -86,6 +88,28 @@ Aws::String RegisterContainerInstanceRequest::SerializePayload() const
      attributesJsonList[attributesIndex].AsObject(m_attributes[attributesIndex].Jsonize());
    }
    payload.WithArray("attributes", std::move(attributesJsonList));
+
+  }
+
+  if(m_platformDevicesHasBeenSet)
+  {
+   Array<JsonValue> platformDevicesJsonList(m_platformDevices.size());
+   for(unsigned platformDevicesIndex = 0; platformDevicesIndex < platformDevicesJsonList.GetLength(); ++platformDevicesIndex)
+   {
+     platformDevicesJsonList[platformDevicesIndex].AsObject(m_platformDevices[platformDevicesIndex].Jsonize());
+   }
+   payload.WithArray("platformDevices", std::move(platformDevicesJsonList));
+
+  }
+
+  if(m_tagsHasBeenSet)
+  {
+   Array<JsonValue> tagsJsonList(m_tags.size());
+   for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+   {
+     tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
+   }
+   payload.WithArray("tags", std::move(tagsJsonList));
 
   }
 

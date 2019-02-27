@@ -18,8 +18,11 @@
 #include <aws/medialive/MediaLiveRequest.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/core/utils/memory/stl/AWSMap.h>
 #include <aws/medialive/model/InputType.h>
+#include <aws/medialive/model/InputVpcRequest.h>
 #include <aws/medialive/model/InputDestinationRequest.h>
+#include <aws/medialive/model/MediaConnectFlowRequest.h>
 #include <aws/medialive/model/InputSourceRequest.h>
 #include <utility>
 #include <aws/core/utils/UUID.h>
@@ -128,6 +131,84 @@ namespace Model
 
 
     /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline const Aws::Vector<MediaConnectFlowRequest>& GetMediaConnectFlows() const{ return m_mediaConnectFlows; }
+
+    /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline void SetMediaConnectFlows(const Aws::Vector<MediaConnectFlowRequest>& value) { m_mediaConnectFlowsHasBeenSet = true; m_mediaConnectFlows = value; }
+
+    /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline void SetMediaConnectFlows(Aws::Vector<MediaConnectFlowRequest>&& value) { m_mediaConnectFlowsHasBeenSet = true; m_mediaConnectFlows = std::move(value); }
+
+    /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline CreateInputRequest& WithMediaConnectFlows(const Aws::Vector<MediaConnectFlowRequest>& value) { SetMediaConnectFlows(value); return *this;}
+
+    /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline CreateInputRequest& WithMediaConnectFlows(Aws::Vector<MediaConnectFlowRequest>&& value) { SetMediaConnectFlows(std::move(value)); return *this;}
+
+    /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline CreateInputRequest& AddMediaConnectFlows(const MediaConnectFlowRequest& value) { m_mediaConnectFlowsHasBeenSet = true; m_mediaConnectFlows.push_back(value); return *this; }
+
+    /**
+     * A list of the MediaConnect Flows that you want to use in this input. You can
+     * specify as few as one
+Flow and presently, as many as two. The only requirement
+     * is when you have more than one is that each Flow is in a
+separate Availability
+     * Zone as this ensures your EML input is redundant to AZ issues.
+
+     */
+    inline CreateInputRequest& AddMediaConnectFlows(MediaConnectFlowRequest&& value) { m_mediaConnectFlowsHasBeenSet = true; m_mediaConnectFlows.push_back(std::move(value)); return *this; }
+
+
+    /**
      * Name of the input.
      */
     inline const Aws::String& GetName() const{ return m_name; }
@@ -221,6 +302,49 @@ exactly once
 
 
     /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline const Aws::String& GetRoleArn() const{ return m_roleArn; }
+
+    /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline void SetRoleArn(const Aws::String& value) { m_roleArnHasBeenSet = true; m_roleArn = value; }
+
+    /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline void SetRoleArn(Aws::String&& value) { m_roleArnHasBeenSet = true; m_roleArn = std::move(value); }
+
+    /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline void SetRoleArn(const char* value) { m_roleArnHasBeenSet = true; m_roleArn.assign(value); }
+
+    /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline CreateInputRequest& WithRoleArn(const Aws::String& value) { SetRoleArn(value); return *this;}
+
+    /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline CreateInputRequest& WithRoleArn(Aws::String&& value) { SetRoleArn(std::move(value)); return *this;}
+
+    /**
+     * The Amazon Resource Name (ARN) of the role this input assumes during and after
+     * creation.
+     */
+    inline CreateInputRequest& WithRoleArn(const char* value) { SetRoleArn(value); return *this;}
+
+
+    /**
      * The source URLs for a PULL-type input. Every PULL type input needs
 exactly two
      * source URLs for redundancy.
@@ -291,6 +415,67 @@ Only specify sources for PULL type Inputs. Leave
     inline CreateInputRequest& AddSources(InputSourceRequest&& value) { m_sourcesHasBeenSet = true; m_sources.push_back(std::move(value)); return *this; }
 
 
+    /**
+     * A collection of key-value pairs.
+     */
+    inline const Aws::Map<Aws::String, Aws::String>& GetTags() const{ return m_tags; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline void SetTags(const Aws::Map<Aws::String, Aws::String>& value) { m_tagsHasBeenSet = true; m_tags = value; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline void SetTags(Aws::Map<Aws::String, Aws::String>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& WithTags(const Aws::Map<Aws::String, Aws::String>& value) { SetTags(value); return *this;}
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& WithTags(Aws::Map<Aws::String, Aws::String>&& value) { SetTags(std::move(value)); return *this;}
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(const Aws::String& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(Aws::String&& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(const Aws::String& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(Aws::String&& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), std::move(value)); return *this; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(const char* key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(Aws::String&& key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
+
+    /**
+     * A collection of key-value pairs.
+     */
+    inline CreateInputRequest& AddTags(const char* key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
+
+
     
     inline const InputType& GetType() const{ return m_type; }
 
@@ -306,6 +491,22 @@ Only specify sources for PULL type Inputs. Leave
     
     inline CreateInputRequest& WithType(InputType&& value) { SetType(std::move(value)); return *this;}
 
+
+    
+    inline const InputVpcRequest& GetVpc() const{ return m_vpc; }
+
+    
+    inline void SetVpc(const InputVpcRequest& value) { m_vpcHasBeenSet = true; m_vpc = value; }
+
+    
+    inline void SetVpc(InputVpcRequest&& value) { m_vpcHasBeenSet = true; m_vpc = std::move(value); }
+
+    
+    inline CreateInputRequest& WithVpc(const InputVpcRequest& value) { SetVpc(value); return *this;}
+
+    
+    inline CreateInputRequest& WithVpc(InputVpcRequest&& value) { SetVpc(std::move(value)); return *this;}
+
   private:
 
     Aws::Vector<InputDestinationRequest> m_destinations;
@@ -314,17 +515,29 @@ Only specify sources for PULL type Inputs. Leave
     Aws::Vector<Aws::String> m_inputSecurityGroups;
     bool m_inputSecurityGroupsHasBeenSet;
 
+    Aws::Vector<MediaConnectFlowRequest> m_mediaConnectFlows;
+    bool m_mediaConnectFlowsHasBeenSet;
+
     Aws::String m_name;
     bool m_nameHasBeenSet;
 
     Aws::String m_requestId;
     bool m_requestIdHasBeenSet;
 
+    Aws::String m_roleArn;
+    bool m_roleArnHasBeenSet;
+
     Aws::Vector<InputSourceRequest> m_sources;
     bool m_sourcesHasBeenSet;
 
+    Aws::Map<Aws::String, Aws::String> m_tags;
+    bool m_tagsHasBeenSet;
+
     InputType m_type;
     bool m_typeHasBeenSet;
+
+    InputVpcRequest m_vpc;
+    bool m_vpcHasBeenSet;
   };
 
 } // namespace Model

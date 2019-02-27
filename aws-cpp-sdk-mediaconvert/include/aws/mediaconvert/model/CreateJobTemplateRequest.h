@@ -16,6 +16,7 @@
 #pragma once
 #include <aws/mediaconvert/MediaConvert_EXPORTS.h>
 #include <aws/mediaconvert/MediaConvertRequest.h>
+#include <aws/mediaconvert/model/AccelerationSettings.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/mediaconvert/model/JobTemplateSettings.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
@@ -42,6 +43,37 @@ namespace Model
     inline virtual const char* GetServiceRequestName() const override { return "CreateJobTemplate"; }
 
     Aws::String SerializePayload() const override;
+
+
+    /**
+     * This is a beta feature. If you are interested in using this feature please
+     * contact AWS customer support.
+     */
+    inline const AccelerationSettings& GetAccelerationSettings() const{ return m_accelerationSettings; }
+
+    /**
+     * This is a beta feature. If you are interested in using this feature please
+     * contact AWS customer support.
+     */
+    inline void SetAccelerationSettings(const AccelerationSettings& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = value; }
+
+    /**
+     * This is a beta feature. If you are interested in using this feature please
+     * contact AWS customer support.
+     */
+    inline void SetAccelerationSettings(AccelerationSettings&& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = std::move(value); }
+
+    /**
+     * This is a beta feature. If you are interested in using this feature please
+     * contact AWS customer support.
+     */
+    inline CreateJobTemplateRequest& WithAccelerationSettings(const AccelerationSettings& value) { SetAccelerationSettings(value); return *this;}
+
+    /**
+     * This is a beta feature. If you are interested in using this feature please
+     * contact AWS customer support.
+     */
+    inline CreateJobTemplateRequest& WithAccelerationSettings(AccelerationSettings&& value) { SetAccelerationSettings(std::move(value)); return *this;}
 
 
     /**
@@ -212,6 +244,31 @@ namespace Model
 
 
     /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline long long GetStatusUpdateIntervalInSecs() const{ return m_statusUpdateIntervalInSecs; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline void SetStatusUpdateIntervalInSecs(long long value) { m_statusUpdateIntervalInSecsHasBeenSet = true; m_statusUpdateIntervalInSecs = value; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline CreateJobTemplateRequest& WithStatusUpdateIntervalInSecs(long long value) { SetStatusUpdateIntervalInSecs(value); return *this;}
+
+
+    /**
      * The tags that you want to add to the resource. You can tag resources with a
      * key-value pair or with only a key.
      */
@@ -285,6 +342,9 @@ namespace Model
 
   private:
 
+    AccelerationSettings m_accelerationSettings;
+    bool m_accelerationSettingsHasBeenSet;
+
     Aws::String m_category;
     bool m_categoryHasBeenSet;
 
@@ -299,6 +359,9 @@ namespace Model
 
     JobTemplateSettings m_settings;
     bool m_settingsHasBeenSet;
+
+    long long m_statusUpdateIntervalInSecs;
+    bool m_statusUpdateIntervalInSecsHasBeenSet;
 
     Aws::Map<Aws::String, Aws::String> m_tags;
     bool m_tagsHasBeenSet;

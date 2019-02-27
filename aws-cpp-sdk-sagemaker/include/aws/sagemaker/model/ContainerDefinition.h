@@ -360,6 +360,42 @@ namespace Model
      */
     inline ContainerDefinition& AddEnvironment(const char* key, const char* value) { m_environmentHasBeenSet = true; m_environment.emplace(key, value); return *this; }
 
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline const Aws::String& GetModelPackageName() const{ return m_modelPackageName; }
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline void SetModelPackageName(const Aws::String& value) { m_modelPackageNameHasBeenSet = true; m_modelPackageName = value; }
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline void SetModelPackageName(Aws::String&& value) { m_modelPackageNameHasBeenSet = true; m_modelPackageName = std::move(value); }
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline void SetModelPackageName(const char* value) { m_modelPackageNameHasBeenSet = true; m_modelPackageName.assign(value); }
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline ContainerDefinition& WithModelPackageName(const Aws::String& value) { SetModelPackageName(value); return *this;}
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline ContainerDefinition& WithModelPackageName(Aws::String&& value) { SetModelPackageName(std::move(value)); return *this;}
+
+    /**
+     * <p>The name of the model package to use to create the model.</p>
+     */
+    inline ContainerDefinition& WithModelPackageName(const char* value) { SetModelPackageName(value); return *this;}
+
   private:
 
     Aws::String m_containerHostname;
@@ -373,6 +409,9 @@ namespace Model
 
     Aws::Map<Aws::String, Aws::String> m_environment;
     bool m_environmentHasBeenSet;
+
+    Aws::String m_modelPackageName;
+    bool m_modelPackageNameHasBeenSet;
   };
 
 } // namespace Model

@@ -370,6 +370,32 @@ StreamOutcome AWSClient::MakeRequestWithUnparsedResponse(const Aws::Http::URI& u
     return StreamOutcome(httpResponseOutcome.GetError());
 }
 
+XmlOutcome AWSXMLClient::MakeRequestWithEventStream(const Aws::Http::URI& uri,
+    const Aws::AmazonWebServiceRequest& request,
+    Http::HttpMethod method,
+    const char* signerName) const
+{
+    HttpResponseOutcome httpOutcome = AttemptExhaustively(uri, request, method, signerName);
+    if (httpOutcome.IsSuccess())
+    {
+        return XmlOutcome(AmazonWebServiceResult<XmlDocument>(XmlDocument(), httpOutcome.GetResult()->GetHeaders()));
+    }
+
+    return XmlOutcome(httpOutcome.GetError());
+}
+
+XmlOutcome AWSXMLClient::MakeRequestWithEventStream(const Aws::Http::URI& uri, Http::HttpMethod method,
+    const char* signerName, const char* requestName) const
+{
+    HttpResponseOutcome httpOutcome = AttemptExhaustively(uri, method, signerName, requestName);
+    if (httpOutcome.IsSuccess())
+    {
+        return XmlOutcome(AmazonWebServiceResult<XmlDocument>(XmlDocument(), httpOutcome.GetResult()->GetHeaders()));
+    }
+
+    return XmlOutcome(httpOutcome.GetError());
+}
+
 void AWSClient::AddHeadersToRequest(const std::shared_ptr<Aws::Http::HttpRequest>& httpRequest,
     const Http::HeaderValueCollection& headerValues) const
 {
@@ -464,7 +490,7 @@ Aws::String AWSClient::GeneratePresignedUrl(URI& uri, HttpMethod method, long lo
         return request->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 Aws::String AWSClient::GeneratePresignedUrl(URI& uri, HttpMethod method, const Aws::Http::HeaderValueCollection& customizedHeaders, long long expirationInSeconds)
@@ -480,7 +506,7 @@ Aws::String AWSClient::GeneratePresignedUrl(URI& uri, HttpMethod method, const A
         return request->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 Aws::String AWSClient::GeneratePresignedUrl(Aws::Http::URI& uri, Aws::Http::HttpMethod method, const char* region, const char* serviceName, long long expirationInSeconds) const
@@ -492,7 +518,7 @@ Aws::String AWSClient::GeneratePresignedUrl(Aws::Http::URI& uri, Aws::Http::Http
         return request->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 Aws::String AWSClient::GeneratePresignedUrl(URI& uri, HttpMethod method, const char* region, long long expirationInSeconds) const
@@ -504,7 +530,7 @@ Aws::String AWSClient::GeneratePresignedUrl(URI& uri, HttpMethod method, const c
         return request->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 Aws::String AWSClient::GeneratePresignedUrl(const Aws::AmazonWebServiceRequest& request, Aws::Http::URI& uri, Aws::Http::HttpMethod method, const char* region,
@@ -518,7 +544,7 @@ Aws::String AWSClient::GeneratePresignedUrl(const Aws::AmazonWebServiceRequest& 
         return httpRequest->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 Aws::String AWSClient::GeneratePresignedUrl(const Aws::AmazonWebServiceRequest& request, Aws::Http::URI& uri, Aws::Http::HttpMethod method, const char* region, const char* serviceName,
@@ -532,7 +558,7 @@ const Aws::Http::QueryStringParameterCollection& extraParams, long long expirati
         return httpRequest->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 Aws::String AWSClient::GeneratePresignedUrl(const Aws::AmazonWebServiceRequest& request, Aws::Http::URI& uri, Aws::Http::HttpMethod method,
@@ -546,7 +572,7 @@ Aws::String AWSClient::GeneratePresignedUrl(const Aws::AmazonWebServiceRequest& 
         return httpRequest->GetURIString();
     }
 
-    return "";
+    return {};
 }
 
 std::shared_ptr<Aws::Http::HttpRequest> AWSClient::ConvertToRequestForPresigning(const Aws::AmazonWebServiceRequest& request, Aws::Http::URI& uri,
@@ -636,6 +662,7 @@ AWSError<CoreErrors> AWSJsonClient::BuildAWSError(
     if (!httpResponse)
     {
         error = AWSError<CoreErrors>(CoreErrors::NETWORK_CONNECTION, "", "Unable to connect to endpoint", true);
+        error.SetResponseCode(HttpResponseCode::REQUEST_NOT_MADE);
         AWS_LOGSTREAM_ERROR(AWS_CLIENT_LOG_TAG, error);
         return error;
     }

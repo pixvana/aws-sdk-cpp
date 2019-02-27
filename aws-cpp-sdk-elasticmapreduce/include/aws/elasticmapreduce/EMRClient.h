@@ -1230,10 +1230,10 @@ namespace Model
          */
         virtual void TerminateJobFlowsAsync(const Model::TerminateJobFlowsRequest& request, const TerminateJobFlowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+      void OverrideEndpoint(const Aws::String& endpoint);
     private:
       void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
         /**Async helpers**/
         void AddInstanceFleetAsyncHelper(const Model::AddInstanceFleetRequest& request, const AddInstanceFleetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void AddInstanceGroupsAsyncHelper(const Model::AddInstanceGroupsRequest& request, const AddInstanceGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -1263,6 +1263,7 @@ namespace Model
         void TerminateJobFlowsAsyncHelper(const Model::TerminateJobFlowsRequest& request, const TerminateJobFlowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
       Aws::String m_uri;
+      Aws::String m_configScheme;
       std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 

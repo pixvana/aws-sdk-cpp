@@ -29,6 +29,7 @@
 #include <aws/rds/model/DBInstanceStatusInfo.h>
 #include <aws/rds/model/DomainMembership.h>
 #include <aws/rds/model/ProcessorFeature.h>
+#include <aws/rds/model/DBInstanceRole.h>
 #include <utility>
 
 namespace Aws
@@ -971,7 +972,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline const Aws::Vector<Aws::String>& GetReadReplicaDBClusterIdentifiers() const{ return m_readReplicaDBClusterIdentifiers; }
 
@@ -980,7 +982,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline void SetReadReplicaDBClusterIdentifiers(const Aws::Vector<Aws::String>& value) { m_readReplicaDBClusterIdentifiersHasBeenSet = true; m_readReplicaDBClusterIdentifiers = value; }
 
@@ -989,7 +992,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline void SetReadReplicaDBClusterIdentifiers(Aws::Vector<Aws::String>&& value) { m_readReplicaDBClusterIdentifiersHasBeenSet = true; m_readReplicaDBClusterIdentifiers = std::move(value); }
 
@@ -998,7 +1002,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline DBInstance& WithReadReplicaDBClusterIdentifiers(const Aws::Vector<Aws::String>& value) { SetReadReplicaDBClusterIdentifiers(value); return *this;}
 
@@ -1007,7 +1012,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline DBInstance& WithReadReplicaDBClusterIdentifiers(Aws::Vector<Aws::String>&& value) { SetReadReplicaDBClusterIdentifiers(std::move(value)); return *this;}
 
@@ -1016,7 +1022,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline DBInstance& AddReadReplicaDBClusterIdentifiers(const Aws::String& value) { m_readReplicaDBClusterIdentifiersHasBeenSet = true; m_readReplicaDBClusterIdentifiers.push_back(value); return *this; }
 
@@ -1025,7 +1032,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline DBInstance& AddReadReplicaDBClusterIdentifiers(Aws::String&& value) { m_readReplicaDBClusterIdentifiersHasBeenSet = true; m_readReplicaDBClusterIdentifiers.push_back(std::move(value)); return *this; }
 
@@ -1034,7 +1042,8 @@ namespace Model
      * instance is replicated as a Read Replica. For example, when you create an Aurora
      * Read Replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the
      * Aurora Read Replica is shown. This output does not contain information about
-     * cross region Aurora Read Replicas.</p>
+     * cross region Aurora Read Replicas.</p> <note> <p>Currently, each RDS DB instance
+     * can have only one Aurora Read Replica.</p> </note>
      */
     inline DBInstance& AddReadReplicaDBClusterIdentifiers(const char* value) { m_readReplicaDBClusterIdentifiersHasBeenSet = true; m_readReplicaDBClusterIdentifiers.push_back(value); return *this; }
 
@@ -2115,6 +2124,49 @@ namespace Model
 
 
     /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline const Aws::Vector<DBInstanceRole>& GetAssociatedRoles() const{ return m_associatedRoles; }
+
+    /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline void SetAssociatedRoles(const Aws::Vector<DBInstanceRole>& value) { m_associatedRolesHasBeenSet = true; m_associatedRoles = value; }
+
+    /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline void SetAssociatedRoles(Aws::Vector<DBInstanceRole>&& value) { m_associatedRolesHasBeenSet = true; m_associatedRoles = std::move(value); }
+
+    /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline DBInstance& WithAssociatedRoles(const Aws::Vector<DBInstanceRole>& value) { SetAssociatedRoles(value); return *this;}
+
+    /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline DBInstance& WithAssociatedRoles(Aws::Vector<DBInstanceRole>&& value) { SetAssociatedRoles(std::move(value)); return *this;}
+
+    /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline DBInstance& AddAssociatedRoles(const DBInstanceRole& value) { m_associatedRolesHasBeenSet = true; m_associatedRoles.push_back(value); return *this; }
+
+    /**
+     * <p> The AWS Identity and Access Management (IAM) roles associated with the DB
+     * instance. </p>
+     */
+    inline DBInstance& AddAssociatedRoles(DBInstanceRole&& value) { m_associatedRolesHasBeenSet = true; m_associatedRoles.push_back(std::move(value)); return *this; }
+
+
+    /**
      * <p>Specifies the listener connection endpoint for SQL Server Always On.</p>
      */
     inline const Endpoint& GetListenerEndpoint() const{ return m_listenerEndpoint; }
@@ -2305,6 +2357,9 @@ namespace Model
 
     bool m_deletionProtection;
     bool m_deletionProtectionHasBeenSet;
+
+    Aws::Vector<DBInstanceRole> m_associatedRoles;
+    bool m_associatedRolesHasBeenSet;
 
     Endpoint m_listenerEndpoint;
     bool m_listenerEndpointHasBeenSet;

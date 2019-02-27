@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/cloudsearchdomain/CloudSearchDomainClient.h>
 #include <aws/cloudsearchdomain/CloudSearchDomainEndpoint.h>
 #include <aws/cloudsearchdomain/CloudSearchDomainErrorMarshaller.h>
@@ -80,25 +83,32 @@ CloudSearchDomainClient::~CloudSearchDomainClient()
 
 void CloudSearchDomainClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << CloudSearchDomainEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + CloudSearchDomainEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void CloudSearchDomainClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 SearchOutcome CloudSearchDomainClient::Search(const SearchRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/2013-01-01/search";
   uri.SetPath(uri.GetPath() + ss.str());
   ss.str("?format=sdk&pretty=true");
@@ -134,8 +144,8 @@ void CloudSearchDomainClient::SearchAsyncHelper(const SearchRequest& request, co
 
 SuggestOutcome CloudSearchDomainClient::Suggest(const SuggestRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/2013-01-01/suggest";
   uri.SetPath(uri.GetPath() + ss.str());
   ss.str("?format=sdk&pretty=true");
@@ -171,8 +181,8 @@ void CloudSearchDomainClient::SuggestAsyncHelper(const SuggestRequest& request, 
 
 UploadDocumentsOutcome CloudSearchDomainClient::UploadDocuments(const UploadDocumentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/2013-01-01/documents/batch";
   uri.SetPath(uri.GetPath() + ss.str());
   ss.str("?format=sdk");

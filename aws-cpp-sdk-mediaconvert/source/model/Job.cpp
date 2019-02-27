@@ -29,6 +29,7 @@ namespace Model
 {
 
 Job::Job() : 
+    m_accelerationSettingsHasBeenSet(false),
     m_arnHasBeenSet(false),
     m_billingTagsSource(BillingTagsSource::NOT_SET),
     m_billingTagsSourceHasBeenSet(false),
@@ -44,12 +45,15 @@ Job::Job() :
     m_settingsHasBeenSet(false),
     m_status(JobStatus::NOT_SET),
     m_statusHasBeenSet(false),
+    m_statusUpdateIntervalInSecs(0),
+    m_statusUpdateIntervalInSecsHasBeenSet(false),
     m_timingHasBeenSet(false),
     m_userMetadataHasBeenSet(false)
 {
 }
 
 Job::Job(JsonView jsonValue) : 
+    m_accelerationSettingsHasBeenSet(false),
     m_arnHasBeenSet(false),
     m_billingTagsSource(BillingTagsSource::NOT_SET),
     m_billingTagsSourceHasBeenSet(false),
@@ -65,6 +69,8 @@ Job::Job(JsonView jsonValue) :
     m_settingsHasBeenSet(false),
     m_status(JobStatus::NOT_SET),
     m_statusHasBeenSet(false),
+    m_statusUpdateIntervalInSecs(0),
+    m_statusUpdateIntervalInSecsHasBeenSet(false),
     m_timingHasBeenSet(false),
     m_userMetadataHasBeenSet(false)
 {
@@ -73,6 +79,13 @@ Job::Job(JsonView jsonValue) :
 
 Job& Job::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("accelerationSettings"))
+  {
+    m_accelerationSettings = jsonValue.GetObject("accelerationSettings");
+
+    m_accelerationSettingsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("arn"))
   {
     m_arn = jsonValue.GetString("arn");
@@ -160,6 +173,13 @@ Job& Job::operator =(JsonView jsonValue)
     m_statusHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("statusUpdateIntervalInSecs"))
+  {
+    m_statusUpdateIntervalInSecs = jsonValue.GetInt64("statusUpdateIntervalInSecs");
+
+    m_statusUpdateIntervalInSecsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("timing"))
   {
     m_timing = jsonValue.GetObject("timing");
@@ -183,6 +203,12 @@ Job& Job::operator =(JsonView jsonValue)
 JsonValue Job::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_accelerationSettingsHasBeenSet)
+  {
+   payload.WithObject("accelerationSettings", m_accelerationSettings.Jsonize());
+
+  }
 
   if(m_arnHasBeenSet)
   {
@@ -256,6 +282,12 @@ JsonValue Job::Jsonize() const
   if(m_statusHasBeenSet)
   {
    payload.WithString("status", JobStatusMapper::GetNameForJobStatus(m_status));
+  }
+
+  if(m_statusUpdateIntervalInSecsHasBeenSet)
+  {
+   payload.WithInt64("statusUpdateIntervalInSecs", m_statusUpdateIntervalInSecs);
+
   }
 
   if(m_timingHasBeenSet)

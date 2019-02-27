@@ -18,6 +18,7 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/directconnect/model/InterconnectState.h>
 #include <aws/core/utils/DateTime.h>
+#include <aws/directconnect/model/HasLogicalRedundancy.h>
 #include <utility>
 
 namespace Aws
@@ -130,8 +131,9 @@ namespace Model
      * <code>available</code>: The network link is up, and the interconnect is ready
      * for use.</p> </li> <li> <p> <code>down</code>: The network link is down.</p>
      * </li> <li> <p> <code>deleting</code>: The interconnect is being deleted.</p>
-     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li>
-     * </ul>
+     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li> <li>
+     * <p> <code>unknown</code>: The state of the interconnect is not available.</p>
+     * </li> </ul>
      */
     inline const InterconnectState& GetInterconnectState() const{ return m_interconnectState; }
 
@@ -144,8 +146,9 @@ namespace Model
      * <code>available</code>: The network link is up, and the interconnect is ready
      * for use.</p> </li> <li> <p> <code>down</code>: The network link is down.</p>
      * </li> <li> <p> <code>deleting</code>: The interconnect is being deleted.</p>
-     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li>
-     * </ul>
+     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li> <li>
+     * <p> <code>unknown</code>: The state of the interconnect is not available.</p>
+     * </li> </ul>
      */
     inline void SetInterconnectState(const InterconnectState& value) { m_interconnectState = value; }
 
@@ -158,8 +161,9 @@ namespace Model
      * <code>available</code>: The network link is up, and the interconnect is ready
      * for use.</p> </li> <li> <p> <code>down</code>: The network link is down.</p>
      * </li> <li> <p> <code>deleting</code>: The interconnect is being deleted.</p>
-     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li>
-     * </ul>
+     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li> <li>
+     * <p> <code>unknown</code>: The state of the interconnect is not available.</p>
+     * </li> </ul>
      */
     inline void SetInterconnectState(InterconnectState&& value) { m_interconnectState = std::move(value); }
 
@@ -172,8 +176,9 @@ namespace Model
      * <code>available</code>: The network link is up, and the interconnect is ready
      * for use.</p> </li> <li> <p> <code>down</code>: The network link is down.</p>
      * </li> <li> <p> <code>deleting</code>: The interconnect is being deleted.</p>
-     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li>
-     * </ul>
+     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li> <li>
+     * <p> <code>unknown</code>: The state of the interconnect is not available.</p>
+     * </li> </ul>
      */
     inline CreateInterconnectResult& WithInterconnectState(const InterconnectState& value) { SetInterconnectState(value); return *this;}
 
@@ -186,8 +191,9 @@ namespace Model
      * <code>available</code>: The network link is up, and the interconnect is ready
      * for use.</p> </li> <li> <p> <code>down</code>: The network link is down.</p>
      * </li> <li> <p> <code>deleting</code>: The interconnect is being deleted.</p>
-     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li>
-     * </ul>
+     * </li> <li> <p> <code>deleted</code>: The interconnect is deleted.</p> </li> <li>
+     * <p> <code>unknown</code>: The state of the interconnect is not available.</p>
+     * </li> </ul>
      */
     inline CreateInterconnectResult& WithInterconnectState(InterconnectState&& value) { SetInterconnectState(std::move(value)); return *this;}
 
@@ -454,6 +460,37 @@ namespace Model
      */
     inline CreateInterconnectResult& WithAwsDeviceV2(const char* value) { SetAwsDeviceV2(value); return *this;}
 
+
+    /**
+     * <p>Indicates whether the interconnect supports a secondary BGP in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline const HasLogicalRedundancy& GetHasLogicalRedundancy() const{ return m_hasLogicalRedundancy; }
+
+    /**
+     * <p>Indicates whether the interconnect supports a secondary BGP in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline void SetHasLogicalRedundancy(const HasLogicalRedundancy& value) { m_hasLogicalRedundancy = value; }
+
+    /**
+     * <p>Indicates whether the interconnect supports a secondary BGP in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline void SetHasLogicalRedundancy(HasLogicalRedundancy&& value) { m_hasLogicalRedundancy = std::move(value); }
+
+    /**
+     * <p>Indicates whether the interconnect supports a secondary BGP in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline CreateInterconnectResult& WithHasLogicalRedundancy(const HasLogicalRedundancy& value) { SetHasLogicalRedundancy(value); return *this;}
+
+    /**
+     * <p>Indicates whether the interconnect supports a secondary BGP in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline CreateInterconnectResult& WithHasLogicalRedundancy(HasLogicalRedundancy&& value) { SetHasLogicalRedundancy(std::move(value)); return *this;}
+
   private:
 
     Aws::String m_interconnectId;
@@ -477,6 +514,8 @@ namespace Model
     bool m_jumboFrameCapable;
 
     Aws::String m_awsDeviceV2;
+
+    HasLogicalRedundancy m_hasLogicalRedundancy;
   };
 
 } // namespace Model

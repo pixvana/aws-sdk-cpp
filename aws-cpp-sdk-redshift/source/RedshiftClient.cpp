@@ -24,12 +24,17 @@
 #include <aws/core/utils/xml/XmlSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/redshift/RedshiftClient.h>
 #include <aws/redshift/RedshiftEndpoint.h>
 #include <aws/redshift/RedshiftErrorMarshaller.h>
 #include <aws/redshift/model/AcceptReservedNodeExchangeRequest.h>
 #include <aws/redshift/model/AuthorizeClusterSecurityGroupIngressRequest.h>
 #include <aws/redshift/model/AuthorizeSnapshotAccessRequest.h>
+#include <aws/redshift/model/BatchDeleteClusterSnapshotsRequest.h>
+#include <aws/redshift/model/BatchModifyClusterSnapshotsRequest.h>
 #include <aws/redshift/model/CancelResizeRequest.h>
 #include <aws/redshift/model/CopyClusterSnapshotRequest.h>
 #include <aws/redshift/model/CreateClusterRequest.h>
@@ -41,6 +46,7 @@
 #include <aws/redshift/model/CreateHsmClientCertificateRequest.h>
 #include <aws/redshift/model/CreateHsmConfigurationRequest.h>
 #include <aws/redshift/model/CreateSnapshotCopyGrantRequest.h>
+#include <aws/redshift/model/CreateSnapshotScheduleRequest.h>
 #include <aws/redshift/model/CreateTagsRequest.h>
 #include <aws/redshift/model/DeleteClusterRequest.h>
 #include <aws/redshift/model/DeleteClusterParameterGroupRequest.h>
@@ -51,6 +57,7 @@
 #include <aws/redshift/model/DeleteHsmClientCertificateRequest.h>
 #include <aws/redshift/model/DeleteHsmConfigurationRequest.h>
 #include <aws/redshift/model/DeleteSnapshotCopyGrantRequest.h>
+#include <aws/redshift/model/DeleteSnapshotScheduleRequest.h>
 #include <aws/redshift/model/DeleteTagsRequest.h>
 #include <aws/redshift/model/DescribeAccountAttributesRequest.h>
 #include <aws/redshift/model/DescribeClusterDbRevisionsRequest.h>
@@ -74,6 +81,8 @@
 #include <aws/redshift/model/DescribeReservedNodesRequest.h>
 #include <aws/redshift/model/DescribeResizeRequest.h>
 #include <aws/redshift/model/DescribeSnapshotCopyGrantsRequest.h>
+#include <aws/redshift/model/DescribeSnapshotSchedulesRequest.h>
+#include <aws/redshift/model/DescribeStorageRequest.h>
 #include <aws/redshift/model/DescribeTableRestoreStatusRequest.h>
 #include <aws/redshift/model/DescribeTagsRequest.h>
 #include <aws/redshift/model/DisableLoggingRequest.h>
@@ -87,9 +96,12 @@
 #include <aws/redshift/model/ModifyClusterIamRolesRequest.h>
 #include <aws/redshift/model/ModifyClusterMaintenanceRequest.h>
 #include <aws/redshift/model/ModifyClusterParameterGroupRequest.h>
+#include <aws/redshift/model/ModifyClusterSnapshotRequest.h>
+#include <aws/redshift/model/ModifyClusterSnapshotScheduleRequest.h>
 #include <aws/redshift/model/ModifyClusterSubnetGroupRequest.h>
 #include <aws/redshift/model/ModifyEventSubscriptionRequest.h>
 #include <aws/redshift/model/ModifySnapshotCopyRetentionPeriodRequest.h>
+#include <aws/redshift/model/ModifySnapshotScheduleRequest.h>
 #include <aws/redshift/model/PurchaseReservedNodeOfferingRequest.h>
 #include <aws/redshift/model/RebootClusterRequest.h>
 #include <aws/redshift/model/ResetClusterParameterGroupRequest.h>
@@ -150,21 +162,28 @@ RedshiftClient::~RedshiftClient()
 
 void RedshiftClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << RedshiftEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + RedshiftEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void RedshiftClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 Aws::String RedshiftClient::ConvertRequestToPresignedUrl(const AmazonSerializableWebServiceRequest& requestToConvert, const char* region) const
 {
   Aws::StringStream ss;
@@ -177,8 +196,8 @@ Aws::String RedshiftClient::ConvertRequestToPresignedUrl(const AmazonSerializabl
 
 AcceptReservedNodeExchangeOutcome RedshiftClient::AcceptReservedNodeExchange(const AcceptReservedNodeExchangeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -212,8 +231,8 @@ void RedshiftClient::AcceptReservedNodeExchangeAsyncHelper(const AcceptReservedN
 
 AuthorizeClusterSecurityGroupIngressOutcome RedshiftClient::AuthorizeClusterSecurityGroupIngress(const AuthorizeClusterSecurityGroupIngressRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -247,8 +266,8 @@ void RedshiftClient::AuthorizeClusterSecurityGroupIngressAsyncHelper(const Autho
 
 AuthorizeSnapshotAccessOutcome RedshiftClient::AuthorizeSnapshotAccess(const AuthorizeSnapshotAccessRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -280,10 +299,80 @@ void RedshiftClient::AuthorizeSnapshotAccessAsyncHelper(const AuthorizeSnapshotA
   handler(this, request, AuthorizeSnapshotAccess(request), context);
 }
 
+BatchDeleteClusterSnapshotsOutcome RedshiftClient::BatchDeleteClusterSnapshots(const BatchDeleteClusterSnapshotsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return BatchDeleteClusterSnapshotsOutcome(BatchDeleteClusterSnapshotsResult(outcome.GetResult()));
+  }
+  else
+  {
+    return BatchDeleteClusterSnapshotsOutcome(outcome.GetError());
+  }
+}
+
+BatchDeleteClusterSnapshotsOutcomeCallable RedshiftClient::BatchDeleteClusterSnapshotsCallable(const BatchDeleteClusterSnapshotsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< BatchDeleteClusterSnapshotsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->BatchDeleteClusterSnapshots(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::BatchDeleteClusterSnapshotsAsync(const BatchDeleteClusterSnapshotsRequest& request, const BatchDeleteClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->BatchDeleteClusterSnapshotsAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::BatchDeleteClusterSnapshotsAsyncHelper(const BatchDeleteClusterSnapshotsRequest& request, const BatchDeleteClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, BatchDeleteClusterSnapshots(request), context);
+}
+
+BatchModifyClusterSnapshotsOutcome RedshiftClient::BatchModifyClusterSnapshots(const BatchModifyClusterSnapshotsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return BatchModifyClusterSnapshotsOutcome(BatchModifyClusterSnapshotsResult(outcome.GetResult()));
+  }
+  else
+  {
+    return BatchModifyClusterSnapshotsOutcome(outcome.GetError());
+  }
+}
+
+BatchModifyClusterSnapshotsOutcomeCallable RedshiftClient::BatchModifyClusterSnapshotsCallable(const BatchModifyClusterSnapshotsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< BatchModifyClusterSnapshotsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->BatchModifyClusterSnapshots(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::BatchModifyClusterSnapshotsAsync(const BatchModifyClusterSnapshotsRequest& request, const BatchModifyClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->BatchModifyClusterSnapshotsAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::BatchModifyClusterSnapshotsAsyncHelper(const BatchModifyClusterSnapshotsRequest& request, const BatchModifyClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, BatchModifyClusterSnapshots(request), context);
+}
+
 CancelResizeOutcome RedshiftClient::CancelResize(const CancelResizeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -317,8 +406,8 @@ void RedshiftClient::CancelResizeAsyncHelper(const CancelResizeRequest& request,
 
 CopyClusterSnapshotOutcome RedshiftClient::CopyClusterSnapshot(const CopyClusterSnapshotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -352,8 +441,8 @@ void RedshiftClient::CopyClusterSnapshotAsyncHelper(const CopyClusterSnapshotReq
 
 CreateClusterOutcome RedshiftClient::CreateCluster(const CreateClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -387,8 +476,8 @@ void RedshiftClient::CreateClusterAsyncHelper(const CreateClusterRequest& reques
 
 CreateClusterParameterGroupOutcome RedshiftClient::CreateClusterParameterGroup(const CreateClusterParameterGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -422,8 +511,8 @@ void RedshiftClient::CreateClusterParameterGroupAsyncHelper(const CreateClusterP
 
 CreateClusterSecurityGroupOutcome RedshiftClient::CreateClusterSecurityGroup(const CreateClusterSecurityGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -457,8 +546,8 @@ void RedshiftClient::CreateClusterSecurityGroupAsyncHelper(const CreateClusterSe
 
 CreateClusterSnapshotOutcome RedshiftClient::CreateClusterSnapshot(const CreateClusterSnapshotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -492,8 +581,8 @@ void RedshiftClient::CreateClusterSnapshotAsyncHelper(const CreateClusterSnapsho
 
 CreateClusterSubnetGroupOutcome RedshiftClient::CreateClusterSubnetGroup(const CreateClusterSubnetGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -527,8 +616,8 @@ void RedshiftClient::CreateClusterSubnetGroupAsyncHelper(const CreateClusterSubn
 
 CreateEventSubscriptionOutcome RedshiftClient::CreateEventSubscription(const CreateEventSubscriptionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -562,8 +651,8 @@ void RedshiftClient::CreateEventSubscriptionAsyncHelper(const CreateEventSubscri
 
 CreateHsmClientCertificateOutcome RedshiftClient::CreateHsmClientCertificate(const CreateHsmClientCertificateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -597,8 +686,8 @@ void RedshiftClient::CreateHsmClientCertificateAsyncHelper(const CreateHsmClient
 
 CreateHsmConfigurationOutcome RedshiftClient::CreateHsmConfiguration(const CreateHsmConfigurationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -632,8 +721,8 @@ void RedshiftClient::CreateHsmConfigurationAsyncHelper(const CreateHsmConfigurat
 
 CreateSnapshotCopyGrantOutcome RedshiftClient::CreateSnapshotCopyGrant(const CreateSnapshotCopyGrantRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -665,10 +754,45 @@ void RedshiftClient::CreateSnapshotCopyGrantAsyncHelper(const CreateSnapshotCopy
   handler(this, request, CreateSnapshotCopyGrant(request), context);
 }
 
+CreateSnapshotScheduleOutcome RedshiftClient::CreateSnapshotSchedule(const CreateSnapshotScheduleRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return CreateSnapshotScheduleOutcome(CreateSnapshotScheduleResult(outcome.GetResult()));
+  }
+  else
+  {
+    return CreateSnapshotScheduleOutcome(outcome.GetError());
+  }
+}
+
+CreateSnapshotScheduleOutcomeCallable RedshiftClient::CreateSnapshotScheduleCallable(const CreateSnapshotScheduleRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< CreateSnapshotScheduleOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->CreateSnapshotSchedule(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::CreateSnapshotScheduleAsync(const CreateSnapshotScheduleRequest& request, const CreateSnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->CreateSnapshotScheduleAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::CreateSnapshotScheduleAsyncHelper(const CreateSnapshotScheduleRequest& request, const CreateSnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, CreateSnapshotSchedule(request), context);
+}
+
 CreateTagsOutcome RedshiftClient::CreateTags(const CreateTagsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -702,8 +826,8 @@ void RedshiftClient::CreateTagsAsyncHelper(const CreateTagsRequest& request, con
 
 DeleteClusterOutcome RedshiftClient::DeleteCluster(const DeleteClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -737,8 +861,8 @@ void RedshiftClient::DeleteClusterAsyncHelper(const DeleteClusterRequest& reques
 
 DeleteClusterParameterGroupOutcome RedshiftClient::DeleteClusterParameterGroup(const DeleteClusterParameterGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -772,8 +896,8 @@ void RedshiftClient::DeleteClusterParameterGroupAsyncHelper(const DeleteClusterP
 
 DeleteClusterSecurityGroupOutcome RedshiftClient::DeleteClusterSecurityGroup(const DeleteClusterSecurityGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -807,8 +931,8 @@ void RedshiftClient::DeleteClusterSecurityGroupAsyncHelper(const DeleteClusterSe
 
 DeleteClusterSnapshotOutcome RedshiftClient::DeleteClusterSnapshot(const DeleteClusterSnapshotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -842,8 +966,8 @@ void RedshiftClient::DeleteClusterSnapshotAsyncHelper(const DeleteClusterSnapsho
 
 DeleteClusterSubnetGroupOutcome RedshiftClient::DeleteClusterSubnetGroup(const DeleteClusterSubnetGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -877,8 +1001,8 @@ void RedshiftClient::DeleteClusterSubnetGroupAsyncHelper(const DeleteClusterSubn
 
 DeleteEventSubscriptionOutcome RedshiftClient::DeleteEventSubscription(const DeleteEventSubscriptionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -912,8 +1036,8 @@ void RedshiftClient::DeleteEventSubscriptionAsyncHelper(const DeleteEventSubscri
 
 DeleteHsmClientCertificateOutcome RedshiftClient::DeleteHsmClientCertificate(const DeleteHsmClientCertificateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -947,8 +1071,8 @@ void RedshiftClient::DeleteHsmClientCertificateAsyncHelper(const DeleteHsmClient
 
 DeleteHsmConfigurationOutcome RedshiftClient::DeleteHsmConfiguration(const DeleteHsmConfigurationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -982,8 +1106,8 @@ void RedshiftClient::DeleteHsmConfigurationAsyncHelper(const DeleteHsmConfigurat
 
 DeleteSnapshotCopyGrantOutcome RedshiftClient::DeleteSnapshotCopyGrant(const DeleteSnapshotCopyGrantRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1015,10 +1139,45 @@ void RedshiftClient::DeleteSnapshotCopyGrantAsyncHelper(const DeleteSnapshotCopy
   handler(this, request, DeleteSnapshotCopyGrant(request), context);
 }
 
+DeleteSnapshotScheduleOutcome RedshiftClient::DeleteSnapshotSchedule(const DeleteSnapshotScheduleRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return DeleteSnapshotScheduleOutcome(NoResult());
+  }
+  else
+  {
+    return DeleteSnapshotScheduleOutcome(outcome.GetError());
+  }
+}
+
+DeleteSnapshotScheduleOutcomeCallable RedshiftClient::DeleteSnapshotScheduleCallable(const DeleteSnapshotScheduleRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DeleteSnapshotScheduleOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DeleteSnapshotSchedule(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::DeleteSnapshotScheduleAsync(const DeleteSnapshotScheduleRequest& request, const DeleteSnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DeleteSnapshotScheduleAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::DeleteSnapshotScheduleAsyncHelper(const DeleteSnapshotScheduleRequest& request, const DeleteSnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DeleteSnapshotSchedule(request), context);
+}
+
 DeleteTagsOutcome RedshiftClient::DeleteTags(const DeleteTagsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1052,8 +1211,8 @@ void RedshiftClient::DeleteTagsAsyncHelper(const DeleteTagsRequest& request, con
 
 DescribeAccountAttributesOutcome RedshiftClient::DescribeAccountAttributes(const DescribeAccountAttributesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1087,8 +1246,8 @@ void RedshiftClient::DescribeAccountAttributesAsyncHelper(const DescribeAccountA
 
 DescribeClusterDbRevisionsOutcome RedshiftClient::DescribeClusterDbRevisions(const DescribeClusterDbRevisionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1122,8 +1281,8 @@ void RedshiftClient::DescribeClusterDbRevisionsAsyncHelper(const DescribeCluster
 
 DescribeClusterParameterGroupsOutcome RedshiftClient::DescribeClusterParameterGroups(const DescribeClusterParameterGroupsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1157,8 +1316,8 @@ void RedshiftClient::DescribeClusterParameterGroupsAsyncHelper(const DescribeClu
 
 DescribeClusterParametersOutcome RedshiftClient::DescribeClusterParameters(const DescribeClusterParametersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1192,8 +1351,8 @@ void RedshiftClient::DescribeClusterParametersAsyncHelper(const DescribeClusterP
 
 DescribeClusterSecurityGroupsOutcome RedshiftClient::DescribeClusterSecurityGroups(const DescribeClusterSecurityGroupsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1227,8 +1386,8 @@ void RedshiftClient::DescribeClusterSecurityGroupsAsyncHelper(const DescribeClus
 
 DescribeClusterSnapshotsOutcome RedshiftClient::DescribeClusterSnapshots(const DescribeClusterSnapshotsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1262,8 +1421,8 @@ void RedshiftClient::DescribeClusterSnapshotsAsyncHelper(const DescribeClusterSn
 
 DescribeClusterSubnetGroupsOutcome RedshiftClient::DescribeClusterSubnetGroups(const DescribeClusterSubnetGroupsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1297,8 +1456,8 @@ void RedshiftClient::DescribeClusterSubnetGroupsAsyncHelper(const DescribeCluste
 
 DescribeClusterTracksOutcome RedshiftClient::DescribeClusterTracks(const DescribeClusterTracksRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1332,8 +1491,8 @@ void RedshiftClient::DescribeClusterTracksAsyncHelper(const DescribeClusterTrack
 
 DescribeClusterVersionsOutcome RedshiftClient::DescribeClusterVersions(const DescribeClusterVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1367,8 +1526,8 @@ void RedshiftClient::DescribeClusterVersionsAsyncHelper(const DescribeClusterVer
 
 DescribeClustersOutcome RedshiftClient::DescribeClusters(const DescribeClustersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1402,8 +1561,8 @@ void RedshiftClient::DescribeClustersAsyncHelper(const DescribeClustersRequest& 
 
 DescribeDefaultClusterParametersOutcome RedshiftClient::DescribeDefaultClusterParameters(const DescribeDefaultClusterParametersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1437,8 +1596,8 @@ void RedshiftClient::DescribeDefaultClusterParametersAsyncHelper(const DescribeD
 
 DescribeEventCategoriesOutcome RedshiftClient::DescribeEventCategories(const DescribeEventCategoriesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1472,8 +1631,8 @@ void RedshiftClient::DescribeEventCategoriesAsyncHelper(const DescribeEventCateg
 
 DescribeEventSubscriptionsOutcome RedshiftClient::DescribeEventSubscriptions(const DescribeEventSubscriptionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1507,8 +1666,8 @@ void RedshiftClient::DescribeEventSubscriptionsAsyncHelper(const DescribeEventSu
 
 DescribeEventsOutcome RedshiftClient::DescribeEvents(const DescribeEventsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1542,8 +1701,8 @@ void RedshiftClient::DescribeEventsAsyncHelper(const DescribeEventsRequest& requ
 
 DescribeHsmClientCertificatesOutcome RedshiftClient::DescribeHsmClientCertificates(const DescribeHsmClientCertificatesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1577,8 +1736,8 @@ void RedshiftClient::DescribeHsmClientCertificatesAsyncHelper(const DescribeHsmC
 
 DescribeHsmConfigurationsOutcome RedshiftClient::DescribeHsmConfigurations(const DescribeHsmConfigurationsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1612,8 +1771,8 @@ void RedshiftClient::DescribeHsmConfigurationsAsyncHelper(const DescribeHsmConfi
 
 DescribeLoggingStatusOutcome RedshiftClient::DescribeLoggingStatus(const DescribeLoggingStatusRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1647,8 +1806,8 @@ void RedshiftClient::DescribeLoggingStatusAsyncHelper(const DescribeLoggingStatu
 
 DescribeOrderableClusterOptionsOutcome RedshiftClient::DescribeOrderableClusterOptions(const DescribeOrderableClusterOptionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1682,8 +1841,8 @@ void RedshiftClient::DescribeOrderableClusterOptionsAsyncHelper(const DescribeOr
 
 DescribeReservedNodeOfferingsOutcome RedshiftClient::DescribeReservedNodeOfferings(const DescribeReservedNodeOfferingsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1717,8 +1876,8 @@ void RedshiftClient::DescribeReservedNodeOfferingsAsyncHelper(const DescribeRese
 
 DescribeReservedNodesOutcome RedshiftClient::DescribeReservedNodes(const DescribeReservedNodesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1752,8 +1911,8 @@ void RedshiftClient::DescribeReservedNodesAsyncHelper(const DescribeReservedNode
 
 DescribeResizeOutcome RedshiftClient::DescribeResize(const DescribeResizeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1787,8 +1946,8 @@ void RedshiftClient::DescribeResizeAsyncHelper(const DescribeResizeRequest& requ
 
 DescribeSnapshotCopyGrantsOutcome RedshiftClient::DescribeSnapshotCopyGrants(const DescribeSnapshotCopyGrantsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1820,10 +1979,80 @@ void RedshiftClient::DescribeSnapshotCopyGrantsAsyncHelper(const DescribeSnapsho
   handler(this, request, DescribeSnapshotCopyGrants(request), context);
 }
 
+DescribeSnapshotSchedulesOutcome RedshiftClient::DescribeSnapshotSchedules(const DescribeSnapshotSchedulesRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return DescribeSnapshotSchedulesOutcome(DescribeSnapshotSchedulesResult(outcome.GetResult()));
+  }
+  else
+  {
+    return DescribeSnapshotSchedulesOutcome(outcome.GetError());
+  }
+}
+
+DescribeSnapshotSchedulesOutcomeCallable RedshiftClient::DescribeSnapshotSchedulesCallable(const DescribeSnapshotSchedulesRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DescribeSnapshotSchedulesOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DescribeSnapshotSchedules(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::DescribeSnapshotSchedulesAsync(const DescribeSnapshotSchedulesRequest& request, const DescribeSnapshotSchedulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DescribeSnapshotSchedulesAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::DescribeSnapshotSchedulesAsyncHelper(const DescribeSnapshotSchedulesRequest& request, const DescribeSnapshotSchedulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DescribeSnapshotSchedules(request), context);
+}
+
+DescribeStorageOutcome RedshiftClient::DescribeStorage(const DescribeStorageRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return DescribeStorageOutcome(DescribeStorageResult(outcome.GetResult()));
+  }
+  else
+  {
+    return DescribeStorageOutcome(outcome.GetError());
+  }
+}
+
+DescribeStorageOutcomeCallable RedshiftClient::DescribeStorageCallable(const DescribeStorageRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DescribeStorageOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DescribeStorage(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::DescribeStorageAsync(const DescribeStorageRequest& request, const DescribeStorageResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DescribeStorageAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::DescribeStorageAsyncHelper(const DescribeStorageRequest& request, const DescribeStorageResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DescribeStorage(request), context);
+}
+
 DescribeTableRestoreStatusOutcome RedshiftClient::DescribeTableRestoreStatus(const DescribeTableRestoreStatusRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1857,8 +2086,8 @@ void RedshiftClient::DescribeTableRestoreStatusAsyncHelper(const DescribeTableRe
 
 DescribeTagsOutcome RedshiftClient::DescribeTags(const DescribeTagsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1892,8 +2121,8 @@ void RedshiftClient::DescribeTagsAsyncHelper(const DescribeTagsRequest& request,
 
 DisableLoggingOutcome RedshiftClient::DisableLogging(const DisableLoggingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1927,8 +2156,8 @@ void RedshiftClient::DisableLoggingAsyncHelper(const DisableLoggingRequest& requ
 
 DisableSnapshotCopyOutcome RedshiftClient::DisableSnapshotCopy(const DisableSnapshotCopyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1962,8 +2191,8 @@ void RedshiftClient::DisableSnapshotCopyAsyncHelper(const DisableSnapshotCopyReq
 
 EnableLoggingOutcome RedshiftClient::EnableLogging(const EnableLoggingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -1997,8 +2226,8 @@ void RedshiftClient::EnableLoggingAsyncHelper(const EnableLoggingRequest& reques
 
 EnableSnapshotCopyOutcome RedshiftClient::EnableSnapshotCopy(const EnableSnapshotCopyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2032,8 +2261,8 @@ void RedshiftClient::EnableSnapshotCopyAsyncHelper(const EnableSnapshotCopyReque
 
 GetClusterCredentialsOutcome RedshiftClient::GetClusterCredentials(const GetClusterCredentialsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2067,8 +2296,8 @@ void RedshiftClient::GetClusterCredentialsAsyncHelper(const GetClusterCredential
 
 GetReservedNodeExchangeOfferingsOutcome RedshiftClient::GetReservedNodeExchangeOfferings(const GetReservedNodeExchangeOfferingsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2102,8 +2331,8 @@ void RedshiftClient::GetReservedNodeExchangeOfferingsAsyncHelper(const GetReserv
 
 ModifyClusterOutcome RedshiftClient::ModifyCluster(const ModifyClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2137,8 +2366,8 @@ void RedshiftClient::ModifyClusterAsyncHelper(const ModifyClusterRequest& reques
 
 ModifyClusterDbRevisionOutcome RedshiftClient::ModifyClusterDbRevision(const ModifyClusterDbRevisionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2172,8 +2401,8 @@ void RedshiftClient::ModifyClusterDbRevisionAsyncHelper(const ModifyClusterDbRev
 
 ModifyClusterIamRolesOutcome RedshiftClient::ModifyClusterIamRoles(const ModifyClusterIamRolesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2207,8 +2436,8 @@ void RedshiftClient::ModifyClusterIamRolesAsyncHelper(const ModifyClusterIamRole
 
 ModifyClusterMaintenanceOutcome RedshiftClient::ModifyClusterMaintenance(const ModifyClusterMaintenanceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2242,8 +2471,8 @@ void RedshiftClient::ModifyClusterMaintenanceAsyncHelper(const ModifyClusterMain
 
 ModifyClusterParameterGroupOutcome RedshiftClient::ModifyClusterParameterGroup(const ModifyClusterParameterGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2275,10 +2504,80 @@ void RedshiftClient::ModifyClusterParameterGroupAsyncHelper(const ModifyClusterP
   handler(this, request, ModifyClusterParameterGroup(request), context);
 }
 
+ModifyClusterSnapshotOutcome RedshiftClient::ModifyClusterSnapshot(const ModifyClusterSnapshotRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return ModifyClusterSnapshotOutcome(ModifyClusterSnapshotResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ModifyClusterSnapshotOutcome(outcome.GetError());
+  }
+}
+
+ModifyClusterSnapshotOutcomeCallable RedshiftClient::ModifyClusterSnapshotCallable(const ModifyClusterSnapshotRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ModifyClusterSnapshotOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ModifyClusterSnapshot(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::ModifyClusterSnapshotAsync(const ModifyClusterSnapshotRequest& request, const ModifyClusterSnapshotResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ModifyClusterSnapshotAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::ModifyClusterSnapshotAsyncHelper(const ModifyClusterSnapshotRequest& request, const ModifyClusterSnapshotResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ModifyClusterSnapshot(request), context);
+}
+
+ModifyClusterSnapshotScheduleOutcome RedshiftClient::ModifyClusterSnapshotSchedule(const ModifyClusterSnapshotScheduleRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return ModifyClusterSnapshotScheduleOutcome(NoResult());
+  }
+  else
+  {
+    return ModifyClusterSnapshotScheduleOutcome(outcome.GetError());
+  }
+}
+
+ModifyClusterSnapshotScheduleOutcomeCallable RedshiftClient::ModifyClusterSnapshotScheduleCallable(const ModifyClusterSnapshotScheduleRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ModifyClusterSnapshotScheduleOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ModifyClusterSnapshotSchedule(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::ModifyClusterSnapshotScheduleAsync(const ModifyClusterSnapshotScheduleRequest& request, const ModifyClusterSnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ModifyClusterSnapshotScheduleAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::ModifyClusterSnapshotScheduleAsyncHelper(const ModifyClusterSnapshotScheduleRequest& request, const ModifyClusterSnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ModifyClusterSnapshotSchedule(request), context);
+}
+
 ModifyClusterSubnetGroupOutcome RedshiftClient::ModifyClusterSubnetGroup(const ModifyClusterSubnetGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2312,8 +2611,8 @@ void RedshiftClient::ModifyClusterSubnetGroupAsyncHelper(const ModifyClusterSubn
 
 ModifyEventSubscriptionOutcome RedshiftClient::ModifyEventSubscription(const ModifyEventSubscriptionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2347,8 +2646,8 @@ void RedshiftClient::ModifyEventSubscriptionAsyncHelper(const ModifyEventSubscri
 
 ModifySnapshotCopyRetentionPeriodOutcome RedshiftClient::ModifySnapshotCopyRetentionPeriod(const ModifySnapshotCopyRetentionPeriodRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2380,10 +2679,45 @@ void RedshiftClient::ModifySnapshotCopyRetentionPeriodAsyncHelper(const ModifySn
   handler(this, request, ModifySnapshotCopyRetentionPeriod(request), context);
 }
 
+ModifySnapshotScheduleOutcome RedshiftClient::ModifySnapshotSchedule(const ModifySnapshotScheduleRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
+  if(outcome.IsSuccess())
+  {
+    return ModifySnapshotScheduleOutcome(ModifySnapshotScheduleResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ModifySnapshotScheduleOutcome(outcome.GetError());
+  }
+}
+
+ModifySnapshotScheduleOutcomeCallable RedshiftClient::ModifySnapshotScheduleCallable(const ModifySnapshotScheduleRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ModifySnapshotScheduleOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ModifySnapshotSchedule(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void RedshiftClient::ModifySnapshotScheduleAsync(const ModifySnapshotScheduleRequest& request, const ModifySnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ModifySnapshotScheduleAsyncHelper( request, handler, context ); } );
+}
+
+void RedshiftClient::ModifySnapshotScheduleAsyncHelper(const ModifySnapshotScheduleRequest& request, const ModifySnapshotScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ModifySnapshotSchedule(request), context);
+}
+
 PurchaseReservedNodeOfferingOutcome RedshiftClient::PurchaseReservedNodeOffering(const PurchaseReservedNodeOfferingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2417,8 +2751,8 @@ void RedshiftClient::PurchaseReservedNodeOfferingAsyncHelper(const PurchaseReser
 
 RebootClusterOutcome RedshiftClient::RebootCluster(const RebootClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2452,8 +2786,8 @@ void RedshiftClient::RebootClusterAsyncHelper(const RebootClusterRequest& reques
 
 ResetClusterParameterGroupOutcome RedshiftClient::ResetClusterParameterGroup(const ResetClusterParameterGroupRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2487,8 +2821,8 @@ void RedshiftClient::ResetClusterParameterGroupAsyncHelper(const ResetClusterPar
 
 ResizeClusterOutcome RedshiftClient::ResizeCluster(const ResizeClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2522,8 +2856,8 @@ void RedshiftClient::ResizeClusterAsyncHelper(const ResizeClusterRequest& reques
 
 RestoreFromClusterSnapshotOutcome RedshiftClient::RestoreFromClusterSnapshot(const RestoreFromClusterSnapshotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2557,8 +2891,8 @@ void RedshiftClient::RestoreFromClusterSnapshotAsyncHelper(const RestoreFromClus
 
 RestoreTableFromClusterSnapshotOutcome RedshiftClient::RestoreTableFromClusterSnapshot(const RestoreTableFromClusterSnapshotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2592,8 +2926,8 @@ void RedshiftClient::RestoreTableFromClusterSnapshotAsyncHelper(const RestoreTab
 
 RevokeClusterSecurityGroupIngressOutcome RedshiftClient::RevokeClusterSecurityGroupIngress(const RevokeClusterSecurityGroupIngressRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2627,8 +2961,8 @@ void RedshiftClient::RevokeClusterSecurityGroupIngressAsyncHelper(const RevokeCl
 
 RevokeSnapshotAccessOutcome RedshiftClient::RevokeSnapshotAccess(const RevokeSnapshotAccessRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);
@@ -2662,8 +2996,8 @@ void RedshiftClient::RevokeSnapshotAccessAsyncHelper(const RevokeSnapshotAccessR
 
 RotateEncryptionKeyOutcome RedshiftClient::RotateEncryptionKey(const RotateEncryptionKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   XmlOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST);

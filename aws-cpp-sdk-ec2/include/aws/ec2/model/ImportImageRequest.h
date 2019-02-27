@@ -259,7 +259,7 @@ namespace Model
      * encrypted. The default CMK for EBS is used unless you specify a non-default AWS
      * Key Management Service (AWS KMS) CMK using <code>KmsKeyId</code>. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">Amazon
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">Amazon
      * EBS Encryption</a> in the <i>Amazon Elastic Compute Cloud User Guide</i>.</p>
      */
     inline bool GetEncrypted() const{ return m_encrypted; }
@@ -269,7 +269,7 @@ namespace Model
      * encrypted. The default CMK for EBS is used unless you specify a non-default AWS
      * Key Management Service (AWS KMS) CMK using <code>KmsKeyId</code>. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">Amazon
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">Amazon
      * EBS Encryption</a> in the <i>Amazon Elastic Compute Cloud User Guide</i>.</p>
      */
     inline void SetEncrypted(bool value) { m_encryptedHasBeenSet = true; m_encrypted = value; }
@@ -279,7 +279,7 @@ namespace Model
      * encrypted. The default CMK for EBS is used unless you specify a non-default AWS
      * Key Management Service (AWS KMS) CMK using <code>KmsKeyId</code>. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">Amazon
+     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">Amazon
      * EBS Encryption</a> in the <i>Amazon Elastic Compute Cloud User Guide</i>.</p>
      */
     inline ImportImageRequest& WithEncrypted(bool value) { SetEncrypted(value); return *this;}
@@ -502,9 +502,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline const Aws::String& GetLicenseType() const{ return m_licenseType; }
 
@@ -513,9 +517,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline void SetLicenseType(const Aws::String& value) { m_licenseTypeHasBeenSet = true; m_licenseType = value; }
 
@@ -524,9 +532,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline void SetLicenseType(Aws::String&& value) { m_licenseTypeHasBeenSet = true; m_licenseType = std::move(value); }
 
@@ -535,9 +547,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline void SetLicenseType(const char* value) { m_licenseTypeHasBeenSet = true; m_licenseType.assign(value); }
 
@@ -546,9 +562,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline ImportImageRequest& WithLicenseType(const Aws::String& value) { SetLicenseType(value); return *this;}
 
@@ -557,9 +577,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline ImportImageRequest& WithLicenseType(Aws::String&& value) { SetLicenseType(std::move(value)); return *this;}
 
@@ -568,9 +592,13 @@ namespace Model
      * importing.</p> <p> <b>Note:</b> You may only use BYOL if you have existing
      * licenses with rights to use these licenses in a third party cloud like AWS. For
      * more information, see <a
-     * href="http://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
-     * in the VM Import/Export User Guide.</p> <p>Valid values: <code>AWS</code> |
-     * <code>BYOL</code> </p>
+     * href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html#prerequisites-image">Prerequisites</a>
+     * in the VM Import/Export User Guide.</p> <p>Valid values include:</p> <ul> <li>
+     * <p> <code>Auto</code> - Detects the source-system operating system (OS) and
+     * applies the appropriate license.</p> </li> <li> <p> <code>AWS</code> - Replaces
+     * the source-system license with an AWS license, if appropriate.</p> </li> <li>
+     * <p> <code>BYOL</code> - Retains the source-system license, if appropriate.</p>
+     * </li> </ul> <p>Default value: <code>Auto</code> </p>
      */
     inline ImportImageRequest& WithLicenseType(const char* value) { SetLicenseType(value); return *this;}
 

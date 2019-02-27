@@ -46,6 +46,7 @@ Service::Service() :
     m_platformVersionHasBeenSet(false),
     m_taskDefinitionHasBeenSet(false),
     m_deploymentConfigurationHasBeenSet(false),
+    m_taskSetsHasBeenSet(false),
     m_deploymentsHasBeenSet(false),
     m_roleArnHasBeenSet(false),
     m_eventsHasBeenSet(false),
@@ -56,7 +57,14 @@ Service::Service() :
     m_healthCheckGracePeriodSeconds(0),
     m_healthCheckGracePeriodSecondsHasBeenSet(false),
     m_schedulingStrategy(SchedulingStrategy::NOT_SET),
-    m_schedulingStrategyHasBeenSet(false)
+    m_schedulingStrategyHasBeenSet(false),
+    m_deploymentControllerHasBeenSet(false),
+    m_tagsHasBeenSet(false),
+    m_createdByHasBeenSet(false),
+    m_enableECSManagedTags(false),
+    m_enableECSManagedTagsHasBeenSet(false),
+    m_propagateTags(PropagateTags::NOT_SET),
+    m_propagateTagsHasBeenSet(false)
 {
 }
 
@@ -78,6 +86,7 @@ Service::Service(JsonView jsonValue) :
     m_platformVersionHasBeenSet(false),
     m_taskDefinitionHasBeenSet(false),
     m_deploymentConfigurationHasBeenSet(false),
+    m_taskSetsHasBeenSet(false),
     m_deploymentsHasBeenSet(false),
     m_roleArnHasBeenSet(false),
     m_eventsHasBeenSet(false),
@@ -88,7 +97,14 @@ Service::Service(JsonView jsonValue) :
     m_healthCheckGracePeriodSeconds(0),
     m_healthCheckGracePeriodSecondsHasBeenSet(false),
     m_schedulingStrategy(SchedulingStrategy::NOT_SET),
-    m_schedulingStrategyHasBeenSet(false)
+    m_schedulingStrategyHasBeenSet(false),
+    m_deploymentControllerHasBeenSet(false),
+    m_tagsHasBeenSet(false),
+    m_createdByHasBeenSet(false),
+    m_enableECSManagedTags(false),
+    m_enableECSManagedTagsHasBeenSet(false),
+    m_propagateTags(PropagateTags::NOT_SET),
+    m_propagateTagsHasBeenSet(false)
 {
   *this = jsonValue;
 }
@@ -192,6 +208,16 @@ Service& Service::operator =(JsonView jsonValue)
     m_deploymentConfigurationHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("taskSets"))
+  {
+    Array<JsonView> taskSetsJsonList = jsonValue.GetArray("taskSets");
+    for(unsigned taskSetsIndex = 0; taskSetsIndex < taskSetsJsonList.GetLength(); ++taskSetsIndex)
+    {
+      m_taskSets.push_back(taskSetsJsonList[taskSetsIndex].AsObject());
+    }
+    m_taskSetsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("deployments"))
   {
     Array<JsonView> deploymentsJsonList = jsonValue.GetArray("deployments");
@@ -265,6 +291,44 @@ Service& Service::operator =(JsonView jsonValue)
     m_schedulingStrategy = SchedulingStrategyMapper::GetSchedulingStrategyForName(jsonValue.GetString("schedulingStrategy"));
 
     m_schedulingStrategyHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("deploymentController"))
+  {
+    m_deploymentController = jsonValue.GetObject("deploymentController");
+
+    m_deploymentControllerHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("tags"))
+  {
+    Array<JsonView> tagsJsonList = jsonValue.GetArray("tags");
+    for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+    {
+      m_tags.push_back(tagsJsonList[tagsIndex].AsObject());
+    }
+    m_tagsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("createdBy"))
+  {
+    m_createdBy = jsonValue.GetString("createdBy");
+
+    m_createdByHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("enableECSManagedTags"))
+  {
+    m_enableECSManagedTags = jsonValue.GetBool("enableECSManagedTags");
+
+    m_enableECSManagedTagsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("propagateTags"))
+  {
+    m_propagateTags = PropagateTagsMapper::GetPropagateTagsForName(jsonValue.GetString("propagateTags"));
+
+    m_propagateTagsHasBeenSet = true;
   }
 
   return *this;
@@ -361,6 +425,17 @@ JsonValue Service::Jsonize() const
 
   }
 
+  if(m_taskSetsHasBeenSet)
+  {
+   Array<JsonValue> taskSetsJsonList(m_taskSets.size());
+   for(unsigned taskSetsIndex = 0; taskSetsIndex < taskSetsJsonList.GetLength(); ++taskSetsIndex)
+   {
+     taskSetsJsonList[taskSetsIndex].AsObject(m_taskSets[taskSetsIndex].Jsonize());
+   }
+   payload.WithArray("taskSets", std::move(taskSetsJsonList));
+
+  }
+
   if(m_deploymentsHasBeenSet)
   {
    Array<JsonValue> deploymentsJsonList(m_deployments.size());
@@ -431,6 +506,40 @@ JsonValue Service::Jsonize() const
   if(m_schedulingStrategyHasBeenSet)
   {
    payload.WithString("schedulingStrategy", SchedulingStrategyMapper::GetNameForSchedulingStrategy(m_schedulingStrategy));
+  }
+
+  if(m_deploymentControllerHasBeenSet)
+  {
+   payload.WithObject("deploymentController", m_deploymentController.Jsonize());
+
+  }
+
+  if(m_tagsHasBeenSet)
+  {
+   Array<JsonValue> tagsJsonList(m_tags.size());
+   for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+   {
+     tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
+   }
+   payload.WithArray("tags", std::move(tagsJsonList));
+
+  }
+
+  if(m_createdByHasBeenSet)
+  {
+   payload.WithString("createdBy", m_createdBy);
+
+  }
+
+  if(m_enableECSManagedTagsHasBeenSet)
+  {
+   payload.WithBool("enableECSManagedTags", m_enableECSManagedTags);
+
+  }
+
+  if(m_propagateTagsHasBeenSet)
+  {
+   payload.WithString("propagateTags", PropagateTagsMapper::GetNameForPropagateTags(m_propagateTags));
   }
 
   return payload;

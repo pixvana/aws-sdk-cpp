@@ -15,6 +15,7 @@
 
 #pragma once
 #include <aws/mediaconvert/MediaConvert_EXPORTS.h>
+#include <aws/mediaconvert/model/AccelerationSettings.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/utils/DateTime.h>
 #include <aws/mediaconvert/model/JobTemplateSettings.h>
@@ -49,6 +50,32 @@ namespace Model
     JobTemplate(Aws::Utils::Json::JsonView jsonValue);
     JobTemplate& operator=(Aws::Utils::Json::JsonView jsonValue);
     Aws::Utils::Json::JsonValue Jsonize() const;
+
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline const AccelerationSettings& GetAccelerationSettings() const{ return m_accelerationSettings; }
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline void SetAccelerationSettings(const AccelerationSettings& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = value; }
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline void SetAccelerationSettings(AccelerationSettings&& value) { m_accelerationSettingsHasBeenSet = true; m_accelerationSettings = std::move(value); }
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline JobTemplate& WithAccelerationSettings(const AccelerationSettings& value) { SetAccelerationSettings(value); return *this;}
+
+    /**
+     * Acceleration settings for job execution.
+     */
+    inline JobTemplate& WithAccelerationSettings(AccelerationSettings&& value) { SetAccelerationSettings(std::move(value)); return *this;}
 
 
     /**
@@ -314,6 +341,31 @@ namespace Model
 
 
     /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline long long GetStatusUpdateIntervalInSecs() const{ return m_statusUpdateIntervalInSecs; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline void SetStatusUpdateIntervalInSecs(long long value) { m_statusUpdateIntervalInSecsHasBeenSet = true; m_statusUpdateIntervalInSecs = value; }
+
+    /**
+     * Specify how often MediaConvert sends STATUS_UPDATE events to Amazon CloudWatch
+     * Events. Set the interval, in seconds, between status updates. MediaConvert sends
+     * an update at this interval from the time the service begins processing your job
+     * to the time it completes the transcode or encounters an error.
+     */
+    inline JobTemplate& WithStatusUpdateIntervalInSecs(long long value) { SetStatusUpdateIntervalInSecs(value); return *this;}
+
+
+    /**
      * A job template can be of two types: system or custom. System or built-in job
      * templates can't be modified or deleted by the user.
      */
@@ -345,6 +397,9 @@ namespace Model
 
   private:
 
+    AccelerationSettings m_accelerationSettings;
+    bool m_accelerationSettingsHasBeenSet;
+
     Aws::String m_arn;
     bool m_arnHasBeenSet;
 
@@ -368,6 +423,9 @@ namespace Model
 
     JobTemplateSettings m_settings;
     bool m_settingsHasBeenSet;
+
+    long long m_statusUpdateIntervalInSecs;
+    bool m_statusUpdateIntervalInSecsHasBeenSet;
 
     Type m_type;
     bool m_typeHasBeenSet;

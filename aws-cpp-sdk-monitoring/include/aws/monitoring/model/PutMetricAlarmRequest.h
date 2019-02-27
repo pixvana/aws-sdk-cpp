@@ -22,6 +22,7 @@
 #include <aws/monitoring/model/StandardUnit.h>
 #include <aws/monitoring/model/ComparisonOperator.h>
 #include <aws/monitoring/model/Dimension.h>
+#include <aws/monitoring/model/MetricDataQuery.h>
 #include <utility>
 
 namespace Aws
@@ -52,37 +53,37 @@ namespace Model
   public:
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline const Aws::String& GetAlarmName() const{ return m_alarmName; }
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline void SetAlarmName(const Aws::String& value) { m_alarmNameHasBeenSet = true; m_alarmName = value; }
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline void SetAlarmName(Aws::String&& value) { m_alarmNameHasBeenSet = true; m_alarmName = std::move(value); }
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline void SetAlarmName(const char* value) { m_alarmNameHasBeenSet = true; m_alarmName.assign(value); }
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline PutMetricAlarmRequest& WithAlarmName(const Aws::String& value) { SetAlarmName(value); return *this;}
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline PutMetricAlarmRequest& WithAlarmName(Aws::String&& value) { SetAlarmName(std::move(value)); return *this;}
 
     /**
-     * <p>The name for the alarm. This name must be unique within the AWS account.</p>
+     * <p>The name for the alarm. This name must be unique within your AWS account.</p>
      */
     inline PutMetricAlarmRequest& WithAlarmName(const char* value) { SetAlarmName(value); return *this;}
 
@@ -125,19 +126,19 @@ namespace Model
 
     /**
      * <p>Indicates whether actions should be executed during any changes to the alarm
-     * state.</p>
+     * state. The default is TRUE.</p>
      */
     inline bool GetActionsEnabled() const{ return m_actionsEnabled; }
 
     /**
      * <p>Indicates whether actions should be executed during any changes to the alarm
-     * state.</p>
+     * state. The default is TRUE.</p>
      */
     inline void SetActionsEnabled(bool value) { m_actionsEnabledHasBeenSet = true; m_actionsEnabled = value; }
 
     /**
      * <p>Indicates whether actions should be executed during any changes to the alarm
-     * state.</p>
+     * state. The default is TRUE.</p>
      */
     inline PutMetricAlarmRequest& WithActionsEnabled(bool value) { SetActionsEnabled(value); return *this;}
 
@@ -148,6 +149,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -167,6 +169,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -186,6 +189,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -205,6 +209,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -224,6 +229,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -243,6 +249,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -262,6 +269,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -281,6 +289,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -301,6 +310,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -320,6 +330,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -339,6 +350,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -358,6 +370,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -377,6 +390,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -396,6 +410,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -415,6 +430,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -434,6 +450,7 @@ namespace Model
      * (ARN).</p> <p>Valid Values: <code>arn:aws:automate:<i>region</i>:ec2:stop</code>
      * | <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -455,6 +472,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -475,6 +493,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -495,6 +514,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -515,6 +535,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -535,6 +556,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -555,6 +577,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -575,6 +598,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -595,6 +619,7 @@ namespace Model
      * <code>arn:aws:automate:<i>region</i>:ec2:stop</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:terminate</code> |
      * <code>arn:aws:automate:<i>region</i>:ec2:recover</code> |
+     * <code>arn:aws:automate:<i>region</i>:ec2:reboot</code> |
      * <code>arn:aws:sns:<i>region</i>:<i>account-id</i>:<i>sns-topic-name</i> </code>
      * |
      * <code>arn:aws:autoscaling:<i>region</i>:<i>account-id</i>:scalingPolicy:<i>policy-id</i>autoScalingGroupName/<i>group-friendly-name</i>:policyName/<i>policy-friendly-name</i>
@@ -610,222 +635,263 @@ namespace Model
 
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline const Aws::String& GetMetricName() const{ return m_metricName; }
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline void SetMetricName(const Aws::String& value) { m_metricNameHasBeenSet = true; m_metricName = value; }
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline void SetMetricName(Aws::String&& value) { m_metricNameHasBeenSet = true; m_metricName = std::move(value); }
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline void SetMetricName(const char* value) { m_metricNameHasBeenSet = true; m_metricName.assign(value); }
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline PutMetricAlarmRequest& WithMetricName(const Aws::String& value) { SetMetricName(value); return *this;}
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline PutMetricAlarmRequest& WithMetricName(Aws::String&& value) { SetMetricName(std::move(value)); return *this;}
 
     /**
-     * <p>The name for the metric associated with the alarm.</p>
+     * <p>The name for the metric associated with the alarm.</p> <p>If you are creating
+     * an alarm based on a math expression, you cannot specify this parameter, or any
+     * of the <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters. Instead,
+     * you specify all this information in the <code>Metrics</code> array.</p>
      */
     inline PutMetricAlarmRequest& WithMetricName(const char* value) { SetMetricName(value); return *this;}
 
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline const Aws::String& GetNamespace() const{ return m_namespace; }
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline void SetNamespace(const Aws::String& value) { m_namespaceHasBeenSet = true; m_namespace = value; }
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline void SetNamespace(Aws::String&& value) { m_namespaceHasBeenSet = true; m_namespace = std::move(value); }
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline void SetNamespace(const char* value) { m_namespaceHasBeenSet = true; m_namespace.assign(value); }
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& WithNamespace(const Aws::String& value) { SetNamespace(value); return *this;}
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& WithNamespace(Aws::String&& value) { SetNamespace(std::move(value)); return *this;}
 
     /**
-     * <p>The namespace for the metric associated with the alarm.</p>
+     * <p>The namespace for the metric associated specified in
+     * <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& WithNamespace(const char* value) { SetNamespace(value); return *this;}
 
 
     /**
-     * <p>The statistic for the metric associated with the alarm, other than
+     * <p>The statistic for the metric specified in <code>MetricName</code>, other than
      * percentile. For percentile statistics, use <code>ExtendedStatistic</code>. When
-     * you call <code>PutMetricAlarm</code>, you must specify either
-     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
+     * you call <code>PutMetricAlarm</code> and specify a <code>MetricName</code>, you
+     * must specify either <code>Statistic</code> or <code>ExtendedStatistic,</code>
+     * but not both.</p>
      */
     inline const Statistic& GetStatistic() const{ return m_statistic; }
 
     /**
-     * <p>The statistic for the metric associated with the alarm, other than
+     * <p>The statistic for the metric specified in <code>MetricName</code>, other than
      * percentile. For percentile statistics, use <code>ExtendedStatistic</code>. When
-     * you call <code>PutMetricAlarm</code>, you must specify either
-     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
+     * you call <code>PutMetricAlarm</code> and specify a <code>MetricName</code>, you
+     * must specify either <code>Statistic</code> or <code>ExtendedStatistic,</code>
+     * but not both.</p>
      */
     inline void SetStatistic(const Statistic& value) { m_statisticHasBeenSet = true; m_statistic = value; }
 
     /**
-     * <p>The statistic for the metric associated with the alarm, other than
+     * <p>The statistic for the metric specified in <code>MetricName</code>, other than
      * percentile. For percentile statistics, use <code>ExtendedStatistic</code>. When
-     * you call <code>PutMetricAlarm</code>, you must specify either
-     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
+     * you call <code>PutMetricAlarm</code> and specify a <code>MetricName</code>, you
+     * must specify either <code>Statistic</code> or <code>ExtendedStatistic,</code>
+     * but not both.</p>
      */
     inline void SetStatistic(Statistic&& value) { m_statisticHasBeenSet = true; m_statistic = std::move(value); }
 
     /**
-     * <p>The statistic for the metric associated with the alarm, other than
+     * <p>The statistic for the metric specified in <code>MetricName</code>, other than
      * percentile. For percentile statistics, use <code>ExtendedStatistic</code>. When
-     * you call <code>PutMetricAlarm</code>, you must specify either
-     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
+     * you call <code>PutMetricAlarm</code> and specify a <code>MetricName</code>, you
+     * must specify either <code>Statistic</code> or <code>ExtendedStatistic,</code>
+     * but not both.</p>
      */
     inline PutMetricAlarmRequest& WithStatistic(const Statistic& value) { SetStatistic(value); return *this;}
 
     /**
-     * <p>The statistic for the metric associated with the alarm, other than
+     * <p>The statistic for the metric specified in <code>MetricName</code>, other than
      * percentile. For percentile statistics, use <code>ExtendedStatistic</code>. When
-     * you call <code>PutMetricAlarm</code>, you must specify either
-     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
+     * you call <code>PutMetricAlarm</code> and specify a <code>MetricName</code>, you
+     * must specify either <code>Statistic</code> or <code>ExtendedStatistic,</code>
+     * but not both.</p>
      */
     inline PutMetricAlarmRequest& WithStatistic(Statistic&& value) { SetStatistic(std::move(value)); return *this;}
 
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline const Aws::String& GetExtendedStatistic() const{ return m_extendedStatistic; }
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline void SetExtendedStatistic(const Aws::String& value) { m_extendedStatisticHasBeenSet = true; m_extendedStatistic = value; }
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline void SetExtendedStatistic(Aws::String&& value) { m_extendedStatisticHasBeenSet = true; m_extendedStatistic = std::move(value); }
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline void SetExtendedStatistic(const char* value) { m_extendedStatisticHasBeenSet = true; m_extendedStatistic.assign(value); }
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline PutMetricAlarmRequest& WithExtendedStatistic(const Aws::String& value) { SetExtendedStatistic(value); return *this;}
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline PutMetricAlarmRequest& WithExtendedStatistic(Aws::String&& value) { SetExtendedStatistic(std::move(value)); return *this;}
 
     /**
-     * <p>The percentile statistic for the metric associated with the alarm. Specify a
-     * value between p0.0 and p100. When you call <code>PutMetricAlarm</code>, you must
-     * specify either <code>Statistic</code> or <code>ExtendedStatistic,</code> but not
-     * both.</p>
+     * <p>The percentile statistic for the metric specified in <code>MetricName</code>.
+     * Specify a value between p0.0 and p100. When you call <code>PutMetricAlarm</code>
+     * and specify a <code>MetricName</code>, you must specify either
+     * <code>Statistic</code> or <code>ExtendedStatistic,</code> but not both.</p>
      */
     inline PutMetricAlarmRequest& WithExtendedStatistic(const char* value) { SetExtendedStatistic(value); return *this;}
 
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline const Aws::Vector<Dimension>& GetDimensions() const{ return m_dimensions; }
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline void SetDimensions(const Aws::Vector<Dimension>& value) { m_dimensionsHasBeenSet = true; m_dimensions = value; }
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline void SetDimensions(Aws::Vector<Dimension>&& value) { m_dimensionsHasBeenSet = true; m_dimensions = std::move(value); }
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& WithDimensions(const Aws::Vector<Dimension>& value) { SetDimensions(value); return *this;}
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& WithDimensions(Aws::Vector<Dimension>&& value) { SetDimensions(std::move(value)); return *this;}
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& AddDimensions(const Dimension& value) { m_dimensionsHasBeenSet = true; m_dimensions.push_back(value); return *this; }
 
     /**
-     * <p>The dimensions for the metric associated with the alarm.</p>
+     * <p>The dimensions for the metric specified in <code>MetricName</code>.</p>
      */
     inline PutMetricAlarmRequest& AddDimensions(Dimension&& value) { m_dimensionsHasBeenSet = true; m_dimensions.push_back(std::move(value)); return *this; }
 
 
     /**
-     * <p>The period, in seconds, over which the specified statistic is applied. Valid
-     * values are 10, 30, and any multiple of 60.</p> <p>Be sure to specify 10 or 30
-     * only for metrics that are stored by a <code>PutMetricData</code> call with a
-     * <code>StorageResolution</code> of 1. If you specify a period of 10 or 30 for a
-     * metric that does not have sub-minute resolution, the alarm still attempts to
-     * gather data at the period rate that you specify. In this case, it does not
-     * receive data for the attempts that do not correspond to a one-minute data
-     * resolution, and the alarm may often lapse into INSUFFICENT_DATA status.
-     * Specifying 10 or 30 also sets this alarm as a high-resolution alarm, which has a
-     * higher charge than other alarms. For more information about pricing, see <a
+     * <p>The length, in seconds, used each time the metric specified in
+     * <code>MetricName</code> is evaluated. Valid values are 10, 30, and any multiple
+     * of 60.</p> <p>Be sure to specify 10 or 30 only for metrics that are stored by a
+     * <code>PutMetricData</code> call with a <code>StorageResolution</code> of 1. If
+     * you specify a period of 10 or 30 for a metric that does not have sub-minute
+     * resolution, the alarm still attempts to gather data at the period rate that you
+     * specify. In this case, it does not receive data for the attempts that do not
+     * correspond to a one-minute data resolution, and the alarm may often lapse into
+     * INSUFFICENT_DATA status. Specifying 10 or 30 also sets this alarm as a
+     * high-resolution alarm, which has a higher charge than other alarms. For more
+     * information about pricing, see <a
      * href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch
      * Pricing</a>.</p> <p>An alarm's total current evaluation period can be no longer
      * than one day, so <code>Period</code> multiplied by
@@ -834,16 +900,17 @@ namespace Model
     inline int GetPeriod() const{ return m_period; }
 
     /**
-     * <p>The period, in seconds, over which the specified statistic is applied. Valid
-     * values are 10, 30, and any multiple of 60.</p> <p>Be sure to specify 10 or 30
-     * only for metrics that are stored by a <code>PutMetricData</code> call with a
-     * <code>StorageResolution</code> of 1. If you specify a period of 10 or 30 for a
-     * metric that does not have sub-minute resolution, the alarm still attempts to
-     * gather data at the period rate that you specify. In this case, it does not
-     * receive data for the attempts that do not correspond to a one-minute data
-     * resolution, and the alarm may often lapse into INSUFFICENT_DATA status.
-     * Specifying 10 or 30 also sets this alarm as a high-resolution alarm, which has a
-     * higher charge than other alarms. For more information about pricing, see <a
+     * <p>The length, in seconds, used each time the metric specified in
+     * <code>MetricName</code> is evaluated. Valid values are 10, 30, and any multiple
+     * of 60.</p> <p>Be sure to specify 10 or 30 only for metrics that are stored by a
+     * <code>PutMetricData</code> call with a <code>StorageResolution</code> of 1. If
+     * you specify a period of 10 or 30 for a metric that does not have sub-minute
+     * resolution, the alarm still attempts to gather data at the period rate that you
+     * specify. In this case, it does not receive data for the attempts that do not
+     * correspond to a one-minute data resolution, and the alarm may often lapse into
+     * INSUFFICENT_DATA status. Specifying 10 or 30 also sets this alarm as a
+     * high-resolution alarm, which has a higher charge than other alarms. For more
+     * information about pricing, see <a
      * href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch
      * Pricing</a>.</p> <p>An alarm's total current evaluation period can be no longer
      * than one day, so <code>Period</code> multiplied by
@@ -852,16 +919,17 @@ namespace Model
     inline void SetPeriod(int value) { m_periodHasBeenSet = true; m_period = value; }
 
     /**
-     * <p>The period, in seconds, over which the specified statistic is applied. Valid
-     * values are 10, 30, and any multiple of 60.</p> <p>Be sure to specify 10 or 30
-     * only for metrics that are stored by a <code>PutMetricData</code> call with a
-     * <code>StorageResolution</code> of 1. If you specify a period of 10 or 30 for a
-     * metric that does not have sub-minute resolution, the alarm still attempts to
-     * gather data at the period rate that you specify. In this case, it does not
-     * receive data for the attempts that do not correspond to a one-minute data
-     * resolution, and the alarm may often lapse into INSUFFICENT_DATA status.
-     * Specifying 10 or 30 also sets this alarm as a high-resolution alarm, which has a
-     * higher charge than other alarms. For more information about pricing, see <a
+     * <p>The length, in seconds, used each time the metric specified in
+     * <code>MetricName</code> is evaluated. Valid values are 10, 30, and any multiple
+     * of 60.</p> <p>Be sure to specify 10 or 30 only for metrics that are stored by a
+     * <code>PutMetricData</code> call with a <code>StorageResolution</code> of 1. If
+     * you specify a period of 10 or 30 for a metric that does not have sub-minute
+     * resolution, the alarm still attempts to gather data at the period rate that you
+     * specify. In this case, it does not receive data for the attempts that do not
+     * correspond to a one-minute data resolution, and the alarm may often lapse into
+     * INSUFFICENT_DATA status. Specifying 10 or 30 also sets this alarm as a
+     * high-resolution alarm, which has a higher charge than other alarms. For more
+     * information about pricing, see <a
      * href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch
      * Pricing</a>.</p> <p>An alarm's total current evaluation period can be no longer
      * than one day, so <code>Period</code> multiplied by
@@ -933,7 +1001,7 @@ namespace Model
 
     /**
      * <p>The number of periods over which data is compared to the specified threshold.
-     * If you are setting an alarm which requires that a number of consecutive data
+     * If you are setting an alarm that requires that a number of consecutive data
      * points be breaching to trigger the alarm, this value specifies that number. If
      * you are setting an "M out of N" alarm, this value is the N.</p> <p>An alarm's
      * total current evaluation period can be no longer than one day, so this number
@@ -943,7 +1011,7 @@ namespace Model
 
     /**
      * <p>The number of periods over which data is compared to the specified threshold.
-     * If you are setting an alarm which requires that a number of consecutive data
+     * If you are setting an alarm that requires that a number of consecutive data
      * points be breaching to trigger the alarm, this value specifies that number. If
      * you are setting an "M out of N" alarm, this value is the N.</p> <p>An alarm's
      * total current evaluation period can be no longer than one day, so this number
@@ -953,7 +1021,7 @@ namespace Model
 
     /**
      * <p>The number of periods over which data is compared to the specified threshold.
-     * If you are setting an alarm which requires that a number of consecutive data
+     * If you are setting an alarm that requires that a number of consecutive data
      * points be breaching to trigger the alarm, this value specifies that number. If
      * you are setting an "M out of N" alarm, this value is the N.</p> <p>An alarm's
      * total current evaluation period can be no longer than one day, so this number
@@ -966,7 +1034,7 @@ namespace Model
      * <p>The number of datapoints that must be breaching to trigger the alarm. This is
      * used only if you are setting an "M out of N" alarm. In that case, this value is
      * the M. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation">Evaluating
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation">Evaluating
      * an Alarm</a> in the <i>Amazon CloudWatch User Guide</i>.</p>
      */
     inline int GetDatapointsToAlarm() const{ return m_datapointsToAlarm; }
@@ -975,7 +1043,7 @@ namespace Model
      * <p>The number of datapoints that must be breaching to trigger the alarm. This is
      * used only if you are setting an "M out of N" alarm. In that case, this value is
      * the M. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation">Evaluating
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation">Evaluating
      * an Alarm</a> in the <i>Amazon CloudWatch User Guide</i>.</p>
      */
     inline void SetDatapointsToAlarm(int value) { m_datapointsToAlarmHasBeenSet = true; m_datapointsToAlarm = value; }
@@ -984,7 +1052,7 @@ namespace Model
      * <p>The number of datapoints that must be breaching to trigger the alarm. This is
      * used only if you are setting an "M out of N" alarm. In that case, this value is
      * the M. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation">Evaluating
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation">Evaluating
      * an Alarm</a> in the <i>Amazon CloudWatch User Guide</i>.</p>
      */
     inline PutMetricAlarmRequest& WithDatapointsToAlarm(int value) { SetDatapointsToAlarm(value); return *this;}
@@ -1041,7 +1109,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1051,7 +1119,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1061,7 +1129,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1071,7 +1139,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1081,7 +1149,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1091,7 +1159,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1101,7 +1169,7 @@ namespace Model
      * <p> Sets how this alarm is to handle missing data points. If
      * <code>TreatMissingData</code> is omitted, the default behavior of
      * <code>missing</code> is used. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarms-and-missing-data">Configuring
      * How CloudWatch Alarms Treats Missing Data</a>.</p> <p>Valid Values:
      * <code>breaching | notBreaching | ignore | missing</code> </p>
      */
@@ -1115,7 +1183,7 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
@@ -1128,7 +1196,7 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
@@ -1141,7 +1209,7 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
@@ -1154,7 +1222,7 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
@@ -1167,7 +1235,7 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
@@ -1180,7 +1248,7 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
@@ -1193,11 +1261,131 @@ namespace Model
      * <code>evaluate</code> or omit this parameter, the alarm is always evaluated and
      * possibly changes state no matter how many data points are available. For more
      * information, see <a
-     * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
+     * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#percentiles-with-low-samples">Percentile-Based
      * CloudWatch Alarms and Low Data Samples</a>.</p> <p>Valid Values: <code>evaluate
      * | ignore</code> </p>
      */
     inline PutMetricAlarmRequest& WithEvaluateLowSampleCountPercentile(const char* value) { SetEvaluateLowSampleCountPercentile(value); return *this;}
+
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline const Aws::Vector<MetricDataQuery>& GetMetrics() const{ return m_metrics; }
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline void SetMetrics(const Aws::Vector<MetricDataQuery>& value) { m_metricsHasBeenSet = true; m_metrics = value; }
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline void SetMetrics(Aws::Vector<MetricDataQuery>&& value) { m_metricsHasBeenSet = true; m_metrics = std::move(value); }
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline PutMetricAlarmRequest& WithMetrics(const Aws::Vector<MetricDataQuery>& value) { SetMetrics(value); return *this;}
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline PutMetricAlarmRequest& WithMetrics(Aws::Vector<MetricDataQuery>&& value) { SetMetrics(std::move(value)); return *this;}
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline PutMetricAlarmRequest& AddMetrics(const MetricDataQuery& value) { m_metricsHasBeenSet = true; m_metrics.push_back(value); return *this; }
+
+    /**
+     * <p>An array of <code>MetricDataQuery</code> structures that enable you to create
+     * an alarm based on the result of a metric math expression. Each item in the
+     * <code>Metrics</code> array either retrieves a metric or performs a math
+     * expression.</p> <p>One item in the <code>Metrics</code> array is the expression
+     * that the alarm watches. You designate this expression by setting
+     * <code>ReturnValue</code> to true for this object in the array. For more
+     * information, see <a>MetricDataQuery</a>.</p> <p>If you use the
+     * <code>Metrics</code> parameter, you cannot include the <code>MetricName</code>,
+     * <code>Dimensions</code>, <code>Period</code>, <code>Namespace</code>,
+     * <code>Statistic</code>, or <code>ExtendedStatistic</code> parameters of
+     * <code>PutMetricAlarm</code> in the same operation. Instead, you retrieve the
+     * metrics you are using in your math expression as part of the
+     * <code>Metrics</code> array.</p>
+     */
+    inline PutMetricAlarmRequest& AddMetrics(MetricDataQuery&& value) { m_metricsHasBeenSet = true; m_metrics.push_back(std::move(value)); return *this; }
 
   private:
 
@@ -1257,6 +1445,9 @@ namespace Model
 
     Aws::String m_evaluateLowSampleCountPercentile;
     bool m_evaluateLowSampleCountPercentileHasBeenSet;
+
+    Aws::Vector<MetricDataQuery> m_metrics;
+    bool m_metricsHasBeenSet;
   };
 
 } // namespace Model

@@ -21,6 +21,8 @@
 #include <aws/lambda/model/DeadLetterConfig.h>
 #include <aws/lambda/model/EnvironmentResponse.h>
 #include <aws/lambda/model/TracingConfigResponse.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/lambda/model/Layer.h>
 #include <utility>
 
 namespace Aws
@@ -39,7 +41,7 @@ namespace Model
 {
 
   /**
-   * <p>A Lambda function's configuration settings.</p><p><h3>See Also:</h3>   <a
+   * <p>Details about a function's configuration.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/lambda-2015-03-31/FunctionConfiguration">AWS
    * API Reference</a></p>
    */
@@ -89,37 +91,37 @@ namespace Model
 
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline const Aws::String& GetFunctionArn() const{ return m_functionArn; }
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline void SetFunctionArn(const Aws::String& value) { m_functionArnHasBeenSet = true; m_functionArn = value; }
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline void SetFunctionArn(Aws::String&& value) { m_functionArnHasBeenSet = true; m_functionArn = std::move(value); }
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline void SetFunctionArn(const char* value) { m_functionArnHasBeenSet = true; m_functionArn.assign(value); }
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline FunctionConfiguration& WithFunctionArn(const Aws::String& value) { SetFunctionArn(value); return *this;}
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline FunctionConfiguration& WithFunctionArn(Aws::String&& value) { SetFunctionArn(std::move(value)); return *this;}
 
     /**
-     * <p>The function's Amazon Resource Name.</p>
+     * <p>The function's Amazon Resource Name (ARN).</p>
      */
     inline FunctionConfiguration& WithFunctionArn(const char* value) { SetFunctionArn(value); return *this;}
 
@@ -187,53 +189,53 @@ namespace Model
 
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline const Aws::String& GetHandler() const{ return m_handler; }
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline void SetHandler(const Aws::String& value) { m_handlerHasBeenSet = true; m_handler = value; }
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline void SetHandler(Aws::String&& value) { m_handlerHasBeenSet = true; m_handler = std::move(value); }
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline void SetHandler(const char* value) { m_handlerHasBeenSet = true; m_handler.assign(value); }
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline FunctionConfiguration& WithHandler(const Aws::String& value) { SetHandler(value); return *this;}
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline FunctionConfiguration& WithHandler(Aws::String&& value) { SetHandler(std::move(value)); return *this;}
 
     /**
-     * <p>The function Lambda calls to begin executing your function.</p>
+     * <p>The function that Lambda calls to begin executing your function.</p>
      */
     inline FunctionConfiguration& WithHandler(const char* value) { SetHandler(value); return *this;}
 
 
     /**
-     * <p>The size of the function's deployment package in bytes.</p>
+     * <p>The size of the function's deployment package, in bytes.</p>
      */
     inline long long GetCodeSize() const{ return m_codeSize; }
 
     /**
-     * <p>The size of the function's deployment package in bytes.</p>
+     * <p>The size of the function's deployment package, in bytes.</p>
      */
     inline void SetCodeSize(long long value) { m_codeSizeHasBeenSet = true; m_codeSize = value; }
 
     /**
-     * <p>The size of the function's deployment package in bytes.</p>
+     * <p>The size of the function's deployment package, in bytes.</p>
      */
     inline FunctionConfiguration& WithCodeSize(long long value) { SetCodeSize(value); return *this;}
 
@@ -275,36 +277,36 @@ namespace Model
 
 
     /**
-     * <p>The amount of time that Lambda allows a function to run before terminating
+     * <p>The amount of time that Lambda allows a function to run before stopping
      * it.</p>
      */
     inline int GetTimeout() const{ return m_timeout; }
 
     /**
-     * <p>The amount of time that Lambda allows a function to run before terminating
+     * <p>The amount of time that Lambda allows a function to run before stopping
      * it.</p>
      */
     inline void SetTimeout(int value) { m_timeoutHasBeenSet = true; m_timeout = value; }
 
     /**
-     * <p>The amount of time that Lambda allows a function to run before terminating
+     * <p>The amount of time that Lambda allows a function to run before stopping
      * it.</p>
      */
     inline FunctionConfiguration& WithTimeout(int value) { SetTimeout(value); return *this;}
 
 
     /**
-     * <p>The memory allocated to the function</p>
+     * <p>The memory that's allocated to the function.</p>
      */
     inline int GetMemorySize() const{ return m_memorySize; }
 
     /**
-     * <p>The memory allocated to the function</p>
+     * <p>The memory that's allocated to the function.</p>
      */
     inline void SetMemorySize(int value) { m_memorySizeHasBeenSet = true; m_memorySize = value; }
 
     /**
-     * <p>The memory allocated to the function</p>
+     * <p>The memory that's allocated to the function.</p>
      */
     inline FunctionConfiguration& WithMemorySize(int value) { SetMemorySize(value); return *this;}
 
@@ -312,49 +314,49 @@ namespace Model
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline const Aws::String& GetLastModified() const{ return m_lastModified; }
 
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline void SetLastModified(const Aws::String& value) { m_lastModifiedHasBeenSet = true; m_lastModified = value; }
 
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline void SetLastModified(Aws::String&& value) { m_lastModifiedHasBeenSet = true; m_lastModified = std::move(value); }
 
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline void SetLastModified(const char* value) { m_lastModifiedHasBeenSet = true; m_lastModified.assign(value); }
 
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline FunctionConfiguration& WithLastModified(const Aws::String& value) { SetLastModified(value); return *this;}
 
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline FunctionConfiguration& WithLastModified(Aws::String&& value) { SetLastModified(std::move(value)); return *this;}
 
     /**
      * <p>The date and time that the function was last updated, in <a
      * href="https://www.w3.org/TR/NOTE-datetime">ISO-8601 format</a>
-     * (YYYY-MM-DDThh:mm:ssTZD).</p>
+     * (YYYY-MM-DDThh:mm:ss.sTZD).</p>
      */
     inline FunctionConfiguration& WithLastModified(const char* value) { SetLastModified(value); return *this;}
 
@@ -510,44 +512,44 @@ namespace Model
 
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline const Aws::String& GetKMSKeyArn() const{ return m_kMSKeyArn; }
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline void SetKMSKeyArn(const Aws::String& value) { m_kMSKeyArnHasBeenSet = true; m_kMSKeyArn = value; }
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline void SetKMSKeyArn(Aws::String&& value) { m_kMSKeyArnHasBeenSet = true; m_kMSKeyArn = std::move(value); }
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline void SetKMSKeyArn(const char* value) { m_kMSKeyArnHasBeenSet = true; m_kMSKeyArn.assign(value); }
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline FunctionConfiguration& WithKMSKeyArn(const Aws::String& value) { SetKMSKeyArn(value); return *this;}
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline FunctionConfiguration& WithKMSKeyArn(Aws::String&& value) { SetKMSKeyArn(std::move(value)); return *this;}
 
     /**
-     * <p>The KMS key used to encrypt the function's environment variables. Only
-     * returned if you've configured a customer managed CMK.</p>
+     * <p>The KMS key that's used to encrypt the function's environment variables. This
+     * key is only returned if you've configured a customer-managed CMK.</p>
      */
     inline FunctionConfiguration& WithKMSKeyArn(const char* value) { SetKMSKeyArn(value); return *this;}
 
@@ -579,75 +581,125 @@ namespace Model
 
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline const Aws::String& GetMasterArn() const{ return m_masterArn; }
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline void SetMasterArn(const Aws::String& value) { m_masterArnHasBeenSet = true; m_masterArn = value; }
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline void SetMasterArn(Aws::String&& value) { m_masterArnHasBeenSet = true; m_masterArn = std::move(value); }
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline void SetMasterArn(const char* value) { m_masterArnHasBeenSet = true; m_masterArn.assign(value); }
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline FunctionConfiguration& WithMasterArn(const Aws::String& value) { SetMasterArn(value); return *this;}
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline FunctionConfiguration& WithMasterArn(Aws::String&& value) { SetMasterArn(std::move(value)); return *this;}
 
     /**
-     * <p>The ARN of the master function.</p>
+     * <p>For Lambda@Edge functions, the ARN of the master function.</p>
      */
     inline FunctionConfiguration& WithMasterArn(const char* value) { SetMasterArn(value); return *this;}
 
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline const Aws::String& GetRevisionId() const{ return m_revisionId; }
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline void SetRevisionId(const Aws::String& value) { m_revisionIdHasBeenSet = true; m_revisionId = value; }
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline void SetRevisionId(Aws::String&& value) { m_revisionIdHasBeenSet = true; m_revisionId = std::move(value); }
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline void SetRevisionId(const char* value) { m_revisionIdHasBeenSet = true; m_revisionId.assign(value); }
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline FunctionConfiguration& WithRevisionId(const Aws::String& value) { SetRevisionId(value); return *this;}
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline FunctionConfiguration& WithRevisionId(Aws::String&& value) { SetRevisionId(std::move(value)); return *this;}
 
     /**
-     * <p>Represents the latest updated revision of the function or alias.</p>
+     * <p>The latest updated revision of the function or alias.</p>
      */
     inline FunctionConfiguration& WithRevisionId(const char* value) { SetRevisionId(value); return *this;}
+
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline const Aws::Vector<Layer>& GetLayers() const{ return m_layers; }
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline void SetLayers(const Aws::Vector<Layer>& value) { m_layersHasBeenSet = true; m_layers = value; }
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline void SetLayers(Aws::Vector<Layer>&& value) { m_layersHasBeenSet = true; m_layers = std::move(value); }
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline FunctionConfiguration& WithLayers(const Aws::Vector<Layer>& value) { SetLayers(value); return *this;}
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline FunctionConfiguration& WithLayers(Aws::Vector<Layer>&& value) { SetLayers(std::move(value)); return *this;}
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline FunctionConfiguration& AddLayers(const Layer& value) { m_layersHasBeenSet = true; m_layers.push_back(value); return *this; }
+
+    /**
+     * <p>The function's <a
+     * href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html">
+     * layers</a>.</p>
+     */
+    inline FunctionConfiguration& AddLayers(Layer&& value) { m_layersHasBeenSet = true; m_layers.push_back(std::move(value)); return *this; }
 
   private:
 
@@ -707,6 +759,9 @@ namespace Model
 
     Aws::String m_revisionId;
     bool m_revisionIdHasBeenSet;
+
+    Aws::Vector<Layer> m_layers;
+    bool m_layersHasBeenSet;
   };
 
 } // namespace Model

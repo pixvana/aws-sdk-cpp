@@ -19,6 +19,8 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/utils/DateTime.h>
 #include <aws/iam/model/AttachedPermissionsBoundary.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/iam/model/Tag.h>
 #include <utility>
 
 namespace Aws
@@ -293,11 +295,11 @@ namespace Model
      * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html">Credential
      * Reports</a> topic in the <i>Using IAM</i> guide. If a password is used more than
      * once in a five-minute span, only the first use is returned in this field. If the
-     * field is null (no value) then it indicates that they never signed in with a
+     * field is null (no value), then it indicates that they never signed in with a
      * password. This can be because:</p> <ul> <li> <p>The user never had a
      * password.</p> </li> <li> <p>A password exists but has not been used since IAM
-     * started tracking this information on October 20th, 2014.</p> </li> </ul> <p>A
-     * null does not mean that the user <i>never</i> had a password. Also, if the user
+     * started tracking this information on October 20, 2014.</p> </li> </ul> <p>A null
+     * valuedoes not mean that the user <i>never</i> had a password. Also, if the user
      * does not currently have a password, but had one in the past, then this field
      * contains the date and time the most recent password was used.</p> <p>This value
      * is returned only in the <a>GetUser</a> and <a>ListUsers</a> operations. </p>
@@ -312,11 +314,11 @@ namespace Model
      * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html">Credential
      * Reports</a> topic in the <i>Using IAM</i> guide. If a password is used more than
      * once in a five-minute span, only the first use is returned in this field. If the
-     * field is null (no value) then it indicates that they never signed in with a
+     * field is null (no value), then it indicates that they never signed in with a
      * password. This can be because:</p> <ul> <li> <p>The user never had a
      * password.</p> </li> <li> <p>A password exists but has not been used since IAM
-     * started tracking this information on October 20th, 2014.</p> </li> </ul> <p>A
-     * null does not mean that the user <i>never</i> had a password. Also, if the user
+     * started tracking this information on October 20, 2014.</p> </li> </ul> <p>A null
+     * valuedoes not mean that the user <i>never</i> had a password. Also, if the user
      * does not currently have a password, but had one in the past, then this field
      * contains the date and time the most recent password was used.</p> <p>This value
      * is returned only in the <a>GetUser</a> and <a>ListUsers</a> operations. </p>
@@ -331,11 +333,11 @@ namespace Model
      * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html">Credential
      * Reports</a> topic in the <i>Using IAM</i> guide. If a password is used more than
      * once in a five-minute span, only the first use is returned in this field. If the
-     * field is null (no value) then it indicates that they never signed in with a
+     * field is null (no value), then it indicates that they never signed in with a
      * password. This can be because:</p> <ul> <li> <p>The user never had a
      * password.</p> </li> <li> <p>A password exists but has not been used since IAM
-     * started tracking this information on October 20th, 2014.</p> </li> </ul> <p>A
-     * null does not mean that the user <i>never</i> had a password. Also, if the user
+     * started tracking this information on October 20, 2014.</p> </li> </ul> <p>A null
+     * valuedoes not mean that the user <i>never</i> had a password. Also, if the user
      * does not currently have a password, but had one in the past, then this field
      * contains the date and time the most recent password was used.</p> <p>This value
      * is returned only in the <a>GetUser</a> and <a>ListUsers</a> operations. </p>
@@ -350,11 +352,11 @@ namespace Model
      * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html">Credential
      * Reports</a> topic in the <i>Using IAM</i> guide. If a password is used more than
      * once in a five-minute span, only the first use is returned in this field. If the
-     * field is null (no value) then it indicates that they never signed in with a
+     * field is null (no value), then it indicates that they never signed in with a
      * password. This can be because:</p> <ul> <li> <p>The user never had a
      * password.</p> </li> <li> <p>A password exists but has not been used since IAM
-     * started tracking this information on October 20th, 2014.</p> </li> </ul> <p>A
-     * null does not mean that the user <i>never</i> had a password. Also, if the user
+     * started tracking this information on October 20, 2014.</p> </li> </ul> <p>A null
+     * valuedoes not mean that the user <i>never</i> had a password. Also, if the user
      * does not currently have a password, but had one in the past, then this field
      * contains the date and time the most recent password was used.</p> <p>This value
      * is returned only in the <a>GetUser</a> and <a>ListUsers</a> operations. </p>
@@ -369,11 +371,11 @@ namespace Model
      * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html">Credential
      * Reports</a> topic in the <i>Using IAM</i> guide. If a password is used more than
      * once in a five-minute span, only the first use is returned in this field. If the
-     * field is null (no value) then it indicates that they never signed in with a
+     * field is null (no value), then it indicates that they never signed in with a
      * password. This can be because:</p> <ul> <li> <p>The user never had a
      * password.</p> </li> <li> <p>A password exists but has not been used since IAM
-     * started tracking this information on October 20th, 2014.</p> </li> </ul> <p>A
-     * null does not mean that the user <i>never</i> had a password. Also, if the user
+     * started tracking this information on October 20, 2014.</p> </li> </ul> <p>A null
+     * valuedoes not mean that the user <i>never</i> had a password. Also, if the user
      * does not currently have a password, but had one in the past, then this field
      * contains the date and time the most recent password was used.</p> <p>This value
      * is returned only in the <a>GetUser</a> and <a>ListUsers</a> operations. </p>
@@ -384,7 +386,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the user.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline const AttachedPermissionsBoundary& GetPermissionsBoundary() const{ return m_permissionsBoundary; }
@@ -392,7 +394,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the user.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline void SetPermissionsBoundary(const AttachedPermissionsBoundary& value) { m_permissionsBoundaryHasBeenSet = true; m_permissionsBoundary = value; }
@@ -400,7 +402,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the user.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline void SetPermissionsBoundary(AttachedPermissionsBoundary&& value) { m_permissionsBoundaryHasBeenSet = true; m_permissionsBoundary = std::move(value); }
@@ -408,7 +410,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the user.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline User& WithPermissionsBoundary(const AttachedPermissionsBoundary& value) { SetPermissionsBoundary(value); return *this;}
@@ -416,10 +418,67 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the user.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline User& WithPermissionsBoundary(AttachedPermissionsBoundary&& value) { SetPermissionsBoundary(std::move(value)); return *this;}
+
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline User& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline User& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline User& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
+
+    /**
+     * <p>A list of tags that are associated with the specified user. For more
+     * information about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline User& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
 
   private:
 
@@ -443,6 +502,9 @@ namespace Model
 
     AttachedPermissionsBoundary m_permissionsBoundary;
     bool m_permissionsBoundaryHasBeenSet;
+
+    Aws::Vector<Tag> m_tags;
+    bool m_tagsHasBeenSet;
   };
 
 } // namespace Model

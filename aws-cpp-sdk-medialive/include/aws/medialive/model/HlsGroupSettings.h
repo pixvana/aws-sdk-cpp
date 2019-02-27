@@ -24,6 +24,7 @@
 #include <aws/medialive/model/HlsDirectoryStructure.h>
 #include <aws/medialive/model/HlsEncryptionType.h>
 #include <aws/medialive/model/HlsCdnSettings.h>
+#include <aws/medialive/model/IFrameOnlyPlaylistType.h>
 #include <aws/medialive/model/InputLossActionForHlsOut.h>
 #include <aws/medialive/model/HlsIvInManifest.h>
 #include <aws/medialive/model/HlsIvSource.h>
@@ -33,6 +34,7 @@
 #include <aws/medialive/model/HlsMode.h>
 #include <aws/medialive/model/HlsOutputSelection.h>
 #include <aws/medialive/model/HlsProgramDateTime.h>
+#include <aws/medialive/model/HlsRedundantManifest.h>
 #include <aws/medialive/model/HlsSegmentationMode.h>
 #include <aws/medialive/model/HlsStreamInfResolution.h>
 #include <aws/medialive/model/HlsTimedMetadataId3Frame.h>
@@ -564,6 +566,32 @@ omit: Omit any CLOSED-CAPTIONS line
 
 
     /**
+     * If enabled, writes out I-Frame only playlists in addition to media playlists.
+     */
+    inline const IFrameOnlyPlaylistType& GetIFrameOnlyPlaylists() const{ return m_iFrameOnlyPlaylists; }
+
+    /**
+     * If enabled, writes out I-Frame only playlists in addition to media playlists.
+     */
+    inline void SetIFrameOnlyPlaylists(const IFrameOnlyPlaylistType& value) { m_iFrameOnlyPlaylistsHasBeenSet = true; m_iFrameOnlyPlaylists = value; }
+
+    /**
+     * If enabled, writes out I-Frame only playlists in addition to media playlists.
+     */
+    inline void SetIFrameOnlyPlaylists(IFrameOnlyPlaylistType&& value) { m_iFrameOnlyPlaylistsHasBeenSet = true; m_iFrameOnlyPlaylists = std::move(value); }
+
+    /**
+     * If enabled, writes out I-Frame only playlists in addition to media playlists.
+     */
+    inline HlsGroupSettings& WithIFrameOnlyPlaylists(const IFrameOnlyPlaylistType& value) { SetIFrameOnlyPlaylists(value); return *this;}
+
+    /**
+     * If enabled, writes out I-Frame only playlists in addition to media playlists.
+     */
+    inline HlsGroupSettings& WithIFrameOnlyPlaylists(IFrameOnlyPlaylistType&& value) { SetIFrameOnlyPlaylists(std::move(value)); return *this;}
+
+
+    /**
      * If mode is "live", the number of segments to retain in the manifest (.m3u8)
      * file. This number must be less than or equal to keepSegments. If mode is "vod",
      * this parameter has no effect.
@@ -1057,6 +1085,37 @@ VOD
 
 
     /**
+     * When set to "enabled", includes the media playlists from both pipelines in the
+     * master manifest (.m3u8) file.
+     */
+    inline const HlsRedundantManifest& GetRedundantManifest() const{ return m_redundantManifest; }
+
+    /**
+     * When set to "enabled", includes the media playlists from both pipelines in the
+     * master manifest (.m3u8) file.
+     */
+    inline void SetRedundantManifest(const HlsRedundantManifest& value) { m_redundantManifestHasBeenSet = true; m_redundantManifest = value; }
+
+    /**
+     * When set to "enabled", includes the media playlists from both pipelines in the
+     * master manifest (.m3u8) file.
+     */
+    inline void SetRedundantManifest(HlsRedundantManifest&& value) { m_redundantManifestHasBeenSet = true; m_redundantManifest = std::move(value); }
+
+    /**
+     * When set to "enabled", includes the media playlists from both pipelines in the
+     * master manifest (.m3u8) file.
+     */
+    inline HlsGroupSettings& WithRedundantManifest(const HlsRedundantManifest& value) { SetRedundantManifest(value); return *this;}
+
+    /**
+     * When set to "enabled", includes the media playlists from both pipelines in the
+     * master manifest (.m3u8) file.
+     */
+    inline HlsGroupSettings& WithRedundantManifest(HlsRedundantManifest&& value) { SetRedundantManifest(std::move(value)); return *this;}
+
+
+    /**
      * Length of MPEG-2 Transport Stream segments to create (in seconds). Note that
      * segments will end on the next keyframe after this number of seconds, so actual
      * segment length may be longer.
@@ -1079,32 +1138,32 @@ VOD
 
 
     /**
-     * When set to useInputSegmentation, the output segment or fragment points are set
-     * by the RAI markers from the input streams.
+     * useInputSegmentation has been deprecated. The configured segment size is always
+     * used.
      */
     inline const HlsSegmentationMode& GetSegmentationMode() const{ return m_segmentationMode; }
 
     /**
-     * When set to useInputSegmentation, the output segment or fragment points are set
-     * by the RAI markers from the input streams.
+     * useInputSegmentation has been deprecated. The configured segment size is always
+     * used.
      */
     inline void SetSegmentationMode(const HlsSegmentationMode& value) { m_segmentationModeHasBeenSet = true; m_segmentationMode = value; }
 
     /**
-     * When set to useInputSegmentation, the output segment or fragment points are set
-     * by the RAI markers from the input streams.
+     * useInputSegmentation has been deprecated. The configured segment size is always
+     * used.
      */
     inline void SetSegmentationMode(HlsSegmentationMode&& value) { m_segmentationModeHasBeenSet = true; m_segmentationMode = std::move(value); }
 
     /**
-     * When set to useInputSegmentation, the output segment or fragment points are set
-     * by the RAI markers from the input streams.
+     * useInputSegmentation has been deprecated. The configured segment size is always
+     * used.
      */
     inline HlsGroupSettings& WithSegmentationMode(const HlsSegmentationMode& value) { SetSegmentationMode(value); return *this;}
 
     /**
-     * When set to useInputSegmentation, the output segment or fragment points are set
-     * by the RAI markers from the input streams.
+     * useInputSegmentation has been deprecated. The configured segment size is always
+     * used.
      */
     inline HlsGroupSettings& WithSegmentationMode(HlsSegmentationMode&& value) { SetSegmentationMode(std::move(value)); return *this;}
 
@@ -1293,6 +1352,9 @@ VOD
     HlsCdnSettings m_hlsCdnSettings;
     bool m_hlsCdnSettingsHasBeenSet;
 
+    IFrameOnlyPlaylistType m_iFrameOnlyPlaylists;
+    bool m_iFrameOnlyPlaylistsHasBeenSet;
+
     int m_indexNSegments;
     bool m_indexNSegmentsHasBeenSet;
 
@@ -1337,6 +1399,9 @@ VOD
 
     int m_programDateTimePeriod;
     bool m_programDateTimePeriodHasBeenSet;
+
+    HlsRedundantManifest m_redundantManifest;
+    bool m_redundantManifestHasBeenSet;
 
     int m_segmentLength;
     bool m_segmentLengthHasBeenSet;

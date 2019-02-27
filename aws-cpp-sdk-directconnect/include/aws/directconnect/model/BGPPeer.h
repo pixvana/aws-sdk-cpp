@@ -51,6 +51,42 @@ namespace Model
 
 
     /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline const Aws::String& GetBgpPeerId() const{ return m_bgpPeerId; }
+
+    /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline void SetBgpPeerId(const Aws::String& value) { m_bgpPeerIdHasBeenSet = true; m_bgpPeerId = value; }
+
+    /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline void SetBgpPeerId(Aws::String&& value) { m_bgpPeerIdHasBeenSet = true; m_bgpPeerId = std::move(value); }
+
+    /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline void SetBgpPeerId(const char* value) { m_bgpPeerIdHasBeenSet = true; m_bgpPeerId.assign(value); }
+
+    /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline BGPPeer& WithBgpPeerId(const Aws::String& value) { SetBgpPeerId(value); return *this;}
+
+    /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline BGPPeer& WithBgpPeerId(Aws::String&& value) { SetBgpPeerId(std::move(value)); return *this;}
+
+    /**
+     * <p>The ID of the BGP peer.</p>
+     */
+    inline BGPPeer& WithBgpPeerId(const char* value) { SetBgpPeerId(value); return *this;}
+
+
+    /**
      * <p>The autonomous system (AS) number for Border Gateway Protocol (BGP)
      * configuration.</p>
      */
@@ -274,8 +310,8 @@ namespace Model
      * <li> <p> <code>up</code>: The BGP peer is established. This state does not
      * indicate the state of the routing function. Ensure that you are receiving routes
      * over the BGP session.</p> </li> <li> <p> <code>down</code>: The BGP peer is
-     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is
-     * unknown.</p> </li> </ul>
+     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is not
+     * available.</p> </li> </ul>
      */
     inline const BGPStatus& GetBgpStatus() const{ return m_bgpStatus; }
 
@@ -284,8 +320,8 @@ namespace Model
      * <li> <p> <code>up</code>: The BGP peer is established. This state does not
      * indicate the state of the routing function. Ensure that you are receiving routes
      * over the BGP session.</p> </li> <li> <p> <code>down</code>: The BGP peer is
-     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is
-     * unknown.</p> </li> </ul>
+     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is not
+     * available.</p> </li> </ul>
      */
     inline void SetBgpStatus(const BGPStatus& value) { m_bgpStatusHasBeenSet = true; m_bgpStatus = value; }
 
@@ -294,8 +330,8 @@ namespace Model
      * <li> <p> <code>up</code>: The BGP peer is established. This state does not
      * indicate the state of the routing function. Ensure that you are receiving routes
      * over the BGP session.</p> </li> <li> <p> <code>down</code>: The BGP peer is
-     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is
-     * unknown.</p> </li> </ul>
+     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is not
+     * available.</p> </li> </ul>
      */
     inline void SetBgpStatus(BGPStatus&& value) { m_bgpStatusHasBeenSet = true; m_bgpStatus = std::move(value); }
 
@@ -304,8 +340,8 @@ namespace Model
      * <li> <p> <code>up</code>: The BGP peer is established. This state does not
      * indicate the state of the routing function. Ensure that you are receiving routes
      * over the BGP session.</p> </li> <li> <p> <code>down</code>: The BGP peer is
-     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is
-     * unknown.</p> </li> </ul>
+     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is not
+     * available.</p> </li> </ul>
      */
     inline BGPPeer& WithBgpStatus(const BGPStatus& value) { SetBgpStatus(value); return *this;}
 
@@ -314,8 +350,8 @@ namespace Model
      * <li> <p> <code>up</code>: The BGP peer is established. This state does not
      * indicate the state of the routing function. Ensure that you are receiving routes
      * over the BGP session.</p> </li> <li> <p> <code>down</code>: The BGP peer is
-     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is
-     * unknown.</p> </li> </ul>
+     * down.</p> </li> <li> <p> <code>unknown</code>: The BGP peer status is not
+     * available.</p> </li> </ul>
      */
     inline BGPPeer& WithBgpStatus(BGPStatus&& value) { SetBgpStatus(std::move(value)); return *this;}
 
@@ -356,6 +392,9 @@ namespace Model
     inline BGPPeer& WithAwsDeviceV2(const char* value) { SetAwsDeviceV2(value); return *this;}
 
   private:
+
+    Aws::String m_bgpPeerId;
+    bool m_bgpPeerIdHasBeenSet;
 
     int m_asn;
     bool m_asnHasBeenSet;

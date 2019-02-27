@@ -24,20 +24,26 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/appsync/AppSyncClient.h>
 #include <aws/appsync/AppSyncEndpoint.h>
 #include <aws/appsync/AppSyncErrorMarshaller.h>
 #include <aws/appsync/model/CreateApiKeyRequest.h>
 #include <aws/appsync/model/CreateDataSourceRequest.h>
+#include <aws/appsync/model/CreateFunctionRequest.h>
 #include <aws/appsync/model/CreateGraphqlApiRequest.h>
 #include <aws/appsync/model/CreateResolverRequest.h>
 #include <aws/appsync/model/CreateTypeRequest.h>
 #include <aws/appsync/model/DeleteApiKeyRequest.h>
 #include <aws/appsync/model/DeleteDataSourceRequest.h>
+#include <aws/appsync/model/DeleteFunctionRequest.h>
 #include <aws/appsync/model/DeleteGraphqlApiRequest.h>
 #include <aws/appsync/model/DeleteResolverRequest.h>
 #include <aws/appsync/model/DeleteTypeRequest.h>
 #include <aws/appsync/model/GetDataSourceRequest.h>
+#include <aws/appsync/model/GetFunctionRequest.h>
 #include <aws/appsync/model/GetGraphqlApiRequest.h>
 #include <aws/appsync/model/GetIntrospectionSchemaRequest.h>
 #include <aws/appsync/model/GetResolverRequest.h>
@@ -45,12 +51,15 @@
 #include <aws/appsync/model/GetTypeRequest.h>
 #include <aws/appsync/model/ListApiKeysRequest.h>
 #include <aws/appsync/model/ListDataSourcesRequest.h>
+#include <aws/appsync/model/ListFunctionsRequest.h>
 #include <aws/appsync/model/ListGraphqlApisRequest.h>
 #include <aws/appsync/model/ListResolversRequest.h>
+#include <aws/appsync/model/ListResolversByFunctionRequest.h>
 #include <aws/appsync/model/ListTypesRequest.h>
 #include <aws/appsync/model/StartSchemaCreationRequest.h>
 #include <aws/appsync/model/UpdateApiKeyRequest.h>
 #include <aws/appsync/model/UpdateDataSourceRequest.h>
+#include <aws/appsync/model/UpdateFunctionRequest.h>
 #include <aws/appsync/model/UpdateGraphqlApiRequest.h>
 #include <aws/appsync/model/UpdateResolverRequest.h>
 #include <aws/appsync/model/UpdateTypeRequest.h>
@@ -104,25 +113,32 @@ AppSyncClient::~AppSyncClient()
 
 void AppSyncClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << AppSyncEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + AppSyncEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void AppSyncClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateApiKeyOutcome AppSyncClient::CreateApiKey(const CreateApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/apikeys";
@@ -158,8 +174,8 @@ void AppSyncClient::CreateApiKeyAsyncHelper(const CreateApiKeyRequest& request, 
 
 CreateDataSourceOutcome AppSyncClient::CreateDataSource(const CreateDataSourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/datasources";
@@ -193,10 +209,47 @@ void AppSyncClient::CreateDataSourceAsyncHelper(const CreateDataSourceRequest& r
   handler(this, request, CreateDataSource(request), context);
 }
 
+CreateFunctionOutcome AppSyncClient::CreateFunction(const CreateFunctionRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apis/";
+  ss << request.GetApiId();
+  ss << "/functions";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return CreateFunctionOutcome(CreateFunctionResult(outcome.GetResult()));
+  }
+  else
+  {
+    return CreateFunctionOutcome(outcome.GetError());
+  }
+}
+
+CreateFunctionOutcomeCallable AppSyncClient::CreateFunctionCallable(const CreateFunctionRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< CreateFunctionOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->CreateFunction(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void AppSyncClient::CreateFunctionAsync(const CreateFunctionRequest& request, const CreateFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->CreateFunctionAsyncHelper( request, handler, context ); } );
+}
+
+void AppSyncClient::CreateFunctionAsyncHelper(const CreateFunctionRequest& request, const CreateFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, CreateFunction(request), context);
+}
+
 CreateGraphqlApiOutcome AppSyncClient::CreateGraphqlApi(const CreateGraphqlApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -230,8 +283,8 @@ void AppSyncClient::CreateGraphqlApiAsyncHelper(const CreateGraphqlApiRequest& r
 
 CreateResolverOutcome AppSyncClient::CreateResolver(const CreateResolverRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -269,8 +322,8 @@ void AppSyncClient::CreateResolverAsyncHelper(const CreateResolverRequest& reque
 
 CreateTypeOutcome AppSyncClient::CreateType(const CreateTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types";
@@ -306,8 +359,8 @@ void AppSyncClient::CreateTypeAsyncHelper(const CreateTypeRequest& request, cons
 
 DeleteApiKeyOutcome AppSyncClient::DeleteApiKey(const DeleteApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/apikeys/";
@@ -344,8 +397,8 @@ void AppSyncClient::DeleteApiKeyAsyncHelper(const DeleteApiKeyRequest& request, 
 
 DeleteDataSourceOutcome AppSyncClient::DeleteDataSource(const DeleteDataSourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/datasources/";
@@ -380,10 +433,48 @@ void AppSyncClient::DeleteDataSourceAsyncHelper(const DeleteDataSourceRequest& r
   handler(this, request, DeleteDataSource(request), context);
 }
 
+DeleteFunctionOutcome AppSyncClient::DeleteFunction(const DeleteFunctionRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apis/";
+  ss << request.GetApiId();
+  ss << "/functions/";
+  ss << request.GetFunctionId();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return DeleteFunctionOutcome(DeleteFunctionResult(outcome.GetResult()));
+  }
+  else
+  {
+    return DeleteFunctionOutcome(outcome.GetError());
+  }
+}
+
+DeleteFunctionOutcomeCallable AppSyncClient::DeleteFunctionCallable(const DeleteFunctionRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DeleteFunctionOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DeleteFunction(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void AppSyncClient::DeleteFunctionAsync(const DeleteFunctionRequest& request, const DeleteFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DeleteFunctionAsyncHelper( request, handler, context ); } );
+}
+
+void AppSyncClient::DeleteFunctionAsyncHelper(const DeleteFunctionRequest& request, const DeleteFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DeleteFunction(request), context);
+}
+
 DeleteGraphqlApiOutcome AppSyncClient::DeleteGraphqlApi(const DeleteGraphqlApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -418,8 +509,8 @@ void AppSyncClient::DeleteGraphqlApiAsyncHelper(const DeleteGraphqlApiRequest& r
 
 DeleteResolverOutcome AppSyncClient::DeleteResolver(const DeleteResolverRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -458,8 +549,8 @@ void AppSyncClient::DeleteResolverAsyncHelper(const DeleteResolverRequest& reque
 
 DeleteTypeOutcome AppSyncClient::DeleteType(const DeleteTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -496,8 +587,8 @@ void AppSyncClient::DeleteTypeAsyncHelper(const DeleteTypeRequest& request, cons
 
 GetDataSourceOutcome AppSyncClient::GetDataSource(const GetDataSourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/datasources/";
@@ -532,10 +623,48 @@ void AppSyncClient::GetDataSourceAsyncHelper(const GetDataSourceRequest& request
   handler(this, request, GetDataSource(request), context);
 }
 
+GetFunctionOutcome AppSyncClient::GetFunction(const GetFunctionRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apis/";
+  ss << request.GetApiId();
+  ss << "/functions/";
+  ss << request.GetFunctionId();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return GetFunctionOutcome(GetFunctionResult(outcome.GetResult()));
+  }
+  else
+  {
+    return GetFunctionOutcome(outcome.GetError());
+  }
+}
+
+GetFunctionOutcomeCallable AppSyncClient::GetFunctionCallable(const GetFunctionRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< GetFunctionOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->GetFunction(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void AppSyncClient::GetFunctionAsync(const GetFunctionRequest& request, const GetFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->GetFunctionAsyncHelper( request, handler, context ); } );
+}
+
+void AppSyncClient::GetFunctionAsyncHelper(const GetFunctionRequest& request, const GetFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, GetFunction(request), context);
+}
+
 GetGraphqlApiOutcome AppSyncClient::GetGraphqlApi(const GetGraphqlApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -570,8 +699,8 @@ void AppSyncClient::GetGraphqlApiAsyncHelper(const GetGraphqlApiRequest& request
 
 GetIntrospectionSchemaOutcome AppSyncClient::GetIntrospectionSchema(const GetIntrospectionSchemaRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/schema";
@@ -607,8 +736,8 @@ void AppSyncClient::GetIntrospectionSchemaAsyncHelper(const GetIntrospectionSche
 
 GetResolverOutcome AppSyncClient::GetResolver(const GetResolverRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -647,8 +776,8 @@ void AppSyncClient::GetResolverAsyncHelper(const GetResolverRequest& request, co
 
 GetSchemaCreationStatusOutcome AppSyncClient::GetSchemaCreationStatus(const GetSchemaCreationStatusRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/schemacreation";
@@ -684,8 +813,8 @@ void AppSyncClient::GetSchemaCreationStatusAsyncHelper(const GetSchemaCreationSt
 
 GetTypeOutcome AppSyncClient::GetType(const GetTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -722,8 +851,8 @@ void AppSyncClient::GetTypeAsyncHelper(const GetTypeRequest& request, const GetT
 
 ListApiKeysOutcome AppSyncClient::ListApiKeys(const ListApiKeysRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/apikeys";
@@ -759,8 +888,8 @@ void AppSyncClient::ListApiKeysAsyncHelper(const ListApiKeysRequest& request, co
 
 ListDataSourcesOutcome AppSyncClient::ListDataSources(const ListDataSourcesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/datasources";
@@ -794,10 +923,47 @@ void AppSyncClient::ListDataSourcesAsyncHelper(const ListDataSourcesRequest& req
   handler(this, request, ListDataSources(request), context);
 }
 
+ListFunctionsOutcome AppSyncClient::ListFunctions(const ListFunctionsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apis/";
+  ss << request.GetApiId();
+  ss << "/functions";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListFunctionsOutcome(ListFunctionsResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListFunctionsOutcome(outcome.GetError());
+  }
+}
+
+ListFunctionsOutcomeCallable AppSyncClient::ListFunctionsCallable(const ListFunctionsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListFunctionsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListFunctions(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void AppSyncClient::ListFunctionsAsync(const ListFunctionsRequest& request, const ListFunctionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListFunctionsAsyncHelper( request, handler, context ); } );
+}
+
+void AppSyncClient::ListFunctionsAsyncHelper(const ListFunctionsRequest& request, const ListFunctionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListFunctions(request), context);
+}
+
 ListGraphqlApisOutcome AppSyncClient::ListGraphqlApis(const ListGraphqlApisRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -831,8 +997,8 @@ void AppSyncClient::ListGraphqlApisAsyncHelper(const ListGraphqlApisRequest& req
 
 ListResolversOutcome AppSyncClient::ListResolvers(const ListResolversRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -868,10 +1034,49 @@ void AppSyncClient::ListResolversAsyncHelper(const ListResolversRequest& request
   handler(this, request, ListResolvers(request), context);
 }
 
+ListResolversByFunctionOutcome AppSyncClient::ListResolversByFunction(const ListResolversByFunctionRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apis/";
+  ss << request.GetApiId();
+  ss << "/functions/";
+  ss << request.GetFunctionId();
+  ss << "/resolvers";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListResolversByFunctionOutcome(ListResolversByFunctionResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListResolversByFunctionOutcome(outcome.GetError());
+  }
+}
+
+ListResolversByFunctionOutcomeCallable AppSyncClient::ListResolversByFunctionCallable(const ListResolversByFunctionRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListResolversByFunctionOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListResolversByFunction(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void AppSyncClient::ListResolversByFunctionAsync(const ListResolversByFunctionRequest& request, const ListResolversByFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListResolversByFunctionAsyncHelper( request, handler, context ); } );
+}
+
+void AppSyncClient::ListResolversByFunctionAsyncHelper(const ListResolversByFunctionRequest& request, const ListResolversByFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListResolversByFunction(request), context);
+}
+
 ListTypesOutcome AppSyncClient::ListTypes(const ListTypesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types";
@@ -907,8 +1112,8 @@ void AppSyncClient::ListTypesAsyncHelper(const ListTypesRequest& request, const 
 
 StartSchemaCreationOutcome AppSyncClient::StartSchemaCreation(const StartSchemaCreationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/schemacreation";
@@ -944,8 +1149,8 @@ void AppSyncClient::StartSchemaCreationAsyncHelper(const StartSchemaCreationRequ
 
 UpdateApiKeyOutcome AppSyncClient::UpdateApiKey(const UpdateApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/apikeys/";
@@ -982,8 +1187,8 @@ void AppSyncClient::UpdateApiKeyAsyncHelper(const UpdateApiKeyRequest& request, 
 
 UpdateDataSourceOutcome AppSyncClient::UpdateDataSource(const UpdateDataSourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/datasources/";
@@ -1018,10 +1223,48 @@ void AppSyncClient::UpdateDataSourceAsyncHelper(const UpdateDataSourceRequest& r
   handler(this, request, UpdateDataSource(request), context);
 }
 
+UpdateFunctionOutcome AppSyncClient::UpdateFunction(const UpdateFunctionRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apis/";
+  ss << request.GetApiId();
+  ss << "/functions/";
+  ss << request.GetFunctionId();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return UpdateFunctionOutcome(UpdateFunctionResult(outcome.GetResult()));
+  }
+  else
+  {
+    return UpdateFunctionOutcome(outcome.GetError());
+  }
+}
+
+UpdateFunctionOutcomeCallable AppSyncClient::UpdateFunctionCallable(const UpdateFunctionRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< UpdateFunctionOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->UpdateFunction(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void AppSyncClient::UpdateFunctionAsync(const UpdateFunctionRequest& request, const UpdateFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->UpdateFunctionAsyncHelper( request, handler, context ); } );
+}
+
+void AppSyncClient::UpdateFunctionAsyncHelper(const UpdateFunctionRequest& request, const UpdateFunctionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, UpdateFunction(request), context);
+}
+
 UpdateGraphqlApiOutcome AppSyncClient::UpdateGraphqlApi(const UpdateGraphqlApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1056,8 +1299,8 @@ void AppSyncClient::UpdateGraphqlApiAsyncHelper(const UpdateGraphqlApiRequest& r
 
 UpdateResolverOutcome AppSyncClient::UpdateResolver(const UpdateResolverRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";
@@ -1096,8 +1339,8 @@ void AppSyncClient::UpdateResolverAsyncHelper(const UpdateResolverRequest& reque
 
 UpdateTypeOutcome AppSyncClient::UpdateType(const UpdateTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apis/";
   ss << request.GetApiId();
   ss << "/types/";

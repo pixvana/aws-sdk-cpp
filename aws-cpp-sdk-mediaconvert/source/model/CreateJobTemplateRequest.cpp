@@ -23,11 +23,14 @@ using namespace Aws::Utils::Json;
 using namespace Aws::Utils;
 
 CreateJobTemplateRequest::CreateJobTemplateRequest() : 
+    m_accelerationSettingsHasBeenSet(false),
     m_categoryHasBeenSet(false),
     m_descriptionHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_queueHasBeenSet(false),
     m_settingsHasBeenSet(false),
+    m_statusUpdateIntervalInSecs(0),
+    m_statusUpdateIntervalInSecsHasBeenSet(false),
     m_tagsHasBeenSet(false)
 {
 }
@@ -35,6 +38,12 @@ CreateJobTemplateRequest::CreateJobTemplateRequest() :
 Aws::String CreateJobTemplateRequest::SerializePayload() const
 {
   JsonValue payload;
+
+  if(m_accelerationSettingsHasBeenSet)
+  {
+   payload.WithObject("accelerationSettings", m_accelerationSettings.Jsonize());
+
+  }
 
   if(m_categoryHasBeenSet)
   {
@@ -63,6 +72,12 @@ Aws::String CreateJobTemplateRequest::SerializePayload() const
   if(m_settingsHasBeenSet)
   {
    payload.WithObject("settings", m_settings.Jsonize());
+
+  }
+
+  if(m_statusUpdateIntervalInSecsHasBeenSet)
+  {
+   payload.WithInt64("statusUpdateIntervalInSecs", m_statusUpdateIntervalInSecs);
 
   }
 

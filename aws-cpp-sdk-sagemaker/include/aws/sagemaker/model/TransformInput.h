@@ -52,31 +52,31 @@ namespace Model
 
 
     /**
-     * <p>Describes the location of the channel data, meaning the S3 location of the
+     * <p>Describes the location of the channel data, which is, the S3 location of the
      * input data that the model can consume.</p>
      */
     inline const TransformDataSource& GetDataSource() const{ return m_dataSource; }
 
     /**
-     * <p>Describes the location of the channel data, meaning the S3 location of the
+     * <p>Describes the location of the channel data, which is, the S3 location of the
      * input data that the model can consume.</p>
      */
     inline void SetDataSource(const TransformDataSource& value) { m_dataSourceHasBeenSet = true; m_dataSource = value; }
 
     /**
-     * <p>Describes the location of the channel data, meaning the S3 location of the
+     * <p>Describes the location of the channel data, which is, the S3 location of the
      * input data that the model can consume.</p>
      */
     inline void SetDataSource(TransformDataSource&& value) { m_dataSourceHasBeenSet = true; m_dataSource = std::move(value); }
 
     /**
-     * <p>Describes the location of the channel data, meaning the S3 location of the
+     * <p>Describes the location of the channel data, which is, the S3 location of the
      * input data that the model can consume.</p>
      */
     inline TransformInput& WithDataSource(const TransformDataSource& value) { SetDataSource(value); return *this;}
 
     /**
-     * <p>Describes the location of the channel data, meaning the S3 location of the
+     * <p>Describes the location of the channel data, which is, the S3 location of the
      * input data that the model can consume.</p>
      */
     inline TransformInput& WithDataSource(TransformDataSource&& value) { SetDataSource(std::move(value)); return *this;}
@@ -133,54 +133,49 @@ namespace Model
 
 
     /**
-     * <p>Compressing data helps save on storage space. If your transform data is
-     * compressed, specify the compression type. Amazon SageMaker automatically
-     * decompresses the data for the transform job accordingly. The default value is
-     * <code>None</code>.</p>
+     * <p>If your transform data is compressed, specify the compression type. Amazon
+     * SageMaker automatically decompresses the data for the transform job accordingly.
+     * The default value is <code>None</code>.</p>
      */
     inline const CompressionType& GetCompressionType() const{ return m_compressionType; }
 
     /**
-     * <p>Compressing data helps save on storage space. If your transform data is
-     * compressed, specify the compression type. Amazon SageMaker automatically
-     * decompresses the data for the transform job accordingly. The default value is
-     * <code>None</code>.</p>
+     * <p>If your transform data is compressed, specify the compression type. Amazon
+     * SageMaker automatically decompresses the data for the transform job accordingly.
+     * The default value is <code>None</code>.</p>
      */
     inline void SetCompressionType(const CompressionType& value) { m_compressionTypeHasBeenSet = true; m_compressionType = value; }
 
     /**
-     * <p>Compressing data helps save on storage space. If your transform data is
-     * compressed, specify the compression type. Amazon SageMaker automatically
-     * decompresses the data for the transform job accordingly. The default value is
-     * <code>None</code>.</p>
+     * <p>If your transform data is compressed, specify the compression type. Amazon
+     * SageMaker automatically decompresses the data for the transform job accordingly.
+     * The default value is <code>None</code>.</p>
      */
     inline void SetCompressionType(CompressionType&& value) { m_compressionTypeHasBeenSet = true; m_compressionType = std::move(value); }
 
     /**
-     * <p>Compressing data helps save on storage space. If your transform data is
-     * compressed, specify the compression type. Amazon SageMaker automatically
-     * decompresses the data for the transform job accordingly. The default value is
-     * <code>None</code>.</p>
+     * <p>If your transform data is compressed, specify the compression type. Amazon
+     * SageMaker automatically decompresses the data for the transform job accordingly.
+     * The default value is <code>None</code>.</p>
      */
     inline TransformInput& WithCompressionType(const CompressionType& value) { SetCompressionType(value); return *this;}
 
     /**
-     * <p>Compressing data helps save on storage space. If your transform data is
-     * compressed, specify the compression type. Amazon SageMaker automatically
-     * decompresses the data for the transform job accordingly. The default value is
-     * <code>None</code>.</p>
+     * <p>If your transform data is compressed, specify the compression type. Amazon
+     * SageMaker automatically decompresses the data for the transform job accordingly.
+     * The default value is <code>None</code>.</p>
      */
     inline TransformInput& WithCompressionType(CompressionType&& value) { SetCompressionType(std::move(value)); return *this;}
 
 
     /**
-     * <p>The method to use to split the transform job's data into smaller batches. The
-     * default value is <code>None</code>. If you don't want to split the data, specify
-     * <code>None</code>. If you want to split records on a newline character boundary,
-     * specify <code>Line</code>. To split records according to the RecordIO format,
-     * specify <code>RecordIO</code>.</p> <p>Amazon SageMaker will send maximum number
-     * of records per batch in each request up to the MaxPayloadInMB limit. For more
-     * information, see <a
+     * <p>The method to use to split the transform job's data into smaller batches. If
+     * you don't want to split the data, specify <code>None</code>. If you want to
+     * split records on a newline character boundary, specify <code>Line</code>. To
+     * split records according to the RecordIO format, specify <code>RecordIO</code>.
+     * The default value is <code>None</code>. </p> <p>Amazon SageMaker sends the
+     * maximum number of records per batch in each request up to the MaxPayloadInMB
+     * limit. For more information, see <a
      * href="http://mxnet.io/architecture/note_data_loading.html#data-format">RecordIO
      * data format</a>.</p> <note> <p>For information about the <code>RecordIO</code>
      * format, see <a
@@ -190,13 +185,13 @@ namespace Model
     inline const SplitType& GetSplitType() const{ return m_splitType; }
 
     /**
-     * <p>The method to use to split the transform job's data into smaller batches. The
-     * default value is <code>None</code>. If you don't want to split the data, specify
-     * <code>None</code>. If you want to split records on a newline character boundary,
-     * specify <code>Line</code>. To split records according to the RecordIO format,
-     * specify <code>RecordIO</code>.</p> <p>Amazon SageMaker will send maximum number
-     * of records per batch in each request up to the MaxPayloadInMB limit. For more
-     * information, see <a
+     * <p>The method to use to split the transform job's data into smaller batches. If
+     * you don't want to split the data, specify <code>None</code>. If you want to
+     * split records on a newline character boundary, specify <code>Line</code>. To
+     * split records according to the RecordIO format, specify <code>RecordIO</code>.
+     * The default value is <code>None</code>. </p> <p>Amazon SageMaker sends the
+     * maximum number of records per batch in each request up to the MaxPayloadInMB
+     * limit. For more information, see <a
      * href="http://mxnet.io/architecture/note_data_loading.html#data-format">RecordIO
      * data format</a>.</p> <note> <p>For information about the <code>RecordIO</code>
      * format, see <a
@@ -206,13 +201,13 @@ namespace Model
     inline void SetSplitType(const SplitType& value) { m_splitTypeHasBeenSet = true; m_splitType = value; }
 
     /**
-     * <p>The method to use to split the transform job's data into smaller batches. The
-     * default value is <code>None</code>. If you don't want to split the data, specify
-     * <code>None</code>. If you want to split records on a newline character boundary,
-     * specify <code>Line</code>. To split records according to the RecordIO format,
-     * specify <code>RecordIO</code>.</p> <p>Amazon SageMaker will send maximum number
-     * of records per batch in each request up to the MaxPayloadInMB limit. For more
-     * information, see <a
+     * <p>The method to use to split the transform job's data into smaller batches. If
+     * you don't want to split the data, specify <code>None</code>. If you want to
+     * split records on a newline character boundary, specify <code>Line</code>. To
+     * split records according to the RecordIO format, specify <code>RecordIO</code>.
+     * The default value is <code>None</code>. </p> <p>Amazon SageMaker sends the
+     * maximum number of records per batch in each request up to the MaxPayloadInMB
+     * limit. For more information, see <a
      * href="http://mxnet.io/architecture/note_data_loading.html#data-format">RecordIO
      * data format</a>.</p> <note> <p>For information about the <code>RecordIO</code>
      * format, see <a
@@ -222,13 +217,13 @@ namespace Model
     inline void SetSplitType(SplitType&& value) { m_splitTypeHasBeenSet = true; m_splitType = std::move(value); }
 
     /**
-     * <p>The method to use to split the transform job's data into smaller batches. The
-     * default value is <code>None</code>. If you don't want to split the data, specify
-     * <code>None</code>. If you want to split records on a newline character boundary,
-     * specify <code>Line</code>. To split records according to the RecordIO format,
-     * specify <code>RecordIO</code>.</p> <p>Amazon SageMaker will send maximum number
-     * of records per batch in each request up to the MaxPayloadInMB limit. For more
-     * information, see <a
+     * <p>The method to use to split the transform job's data into smaller batches. If
+     * you don't want to split the data, specify <code>None</code>. If you want to
+     * split records on a newline character boundary, specify <code>Line</code>. To
+     * split records according to the RecordIO format, specify <code>RecordIO</code>.
+     * The default value is <code>None</code>. </p> <p>Amazon SageMaker sends the
+     * maximum number of records per batch in each request up to the MaxPayloadInMB
+     * limit. For more information, see <a
      * href="http://mxnet.io/architecture/note_data_loading.html#data-format">RecordIO
      * data format</a>.</p> <note> <p>For information about the <code>RecordIO</code>
      * format, see <a
@@ -238,13 +233,13 @@ namespace Model
     inline TransformInput& WithSplitType(const SplitType& value) { SetSplitType(value); return *this;}
 
     /**
-     * <p>The method to use to split the transform job's data into smaller batches. The
-     * default value is <code>None</code>. If you don't want to split the data, specify
-     * <code>None</code>. If you want to split records on a newline character boundary,
-     * specify <code>Line</code>. To split records according to the RecordIO format,
-     * specify <code>RecordIO</code>.</p> <p>Amazon SageMaker will send maximum number
-     * of records per batch in each request up to the MaxPayloadInMB limit. For more
-     * information, see <a
+     * <p>The method to use to split the transform job's data into smaller batches. If
+     * you don't want to split the data, specify <code>None</code>. If you want to
+     * split records on a newline character boundary, specify <code>Line</code>. To
+     * split records according to the RecordIO format, specify <code>RecordIO</code>.
+     * The default value is <code>None</code>. </p> <p>Amazon SageMaker sends the
+     * maximum number of records per batch in each request up to the MaxPayloadInMB
+     * limit. For more information, see <a
      * href="http://mxnet.io/architecture/note_data_loading.html#data-format">RecordIO
      * data format</a>.</p> <note> <p>For information about the <code>RecordIO</code>
      * format, see <a

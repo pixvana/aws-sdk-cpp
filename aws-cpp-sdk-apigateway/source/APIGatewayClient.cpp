@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/apigateway/APIGatewayClient.h>
 #include <aws/apigateway/APIGatewayEndpoint.h>
 #include <aws/apigateway/APIGatewayErrorMarshaller.h>
@@ -197,25 +200,32 @@ APIGatewayClient::~APIGatewayClient()
 
 void APIGatewayClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << APIGatewayEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + APIGatewayEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void APIGatewayClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateApiKeyOutcome APIGatewayClient::CreateApiKey(const CreateApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/apikeys";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -249,8 +259,8 @@ void APIGatewayClient::CreateApiKeyAsyncHelper(const CreateApiKeyRequest& reques
 
 CreateAuthorizerOutcome APIGatewayClient::CreateAuthorizer(const CreateAuthorizerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/authorizers";
@@ -286,8 +296,8 @@ void APIGatewayClient::CreateAuthorizerAsyncHelper(const CreateAuthorizerRequest
 
 CreateBasePathMappingOutcome APIGatewayClient::CreateBasePathMapping(const CreateBasePathMappingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   ss << "/basepathmappings";
@@ -323,8 +333,8 @@ void APIGatewayClient::CreateBasePathMappingAsyncHelper(const CreateBasePathMapp
 
 CreateDeploymentOutcome APIGatewayClient::CreateDeployment(const CreateDeploymentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/deployments";
@@ -360,8 +370,8 @@ void APIGatewayClient::CreateDeploymentAsyncHelper(const CreateDeploymentRequest
 
 CreateDocumentationPartOutcome APIGatewayClient::CreateDocumentationPart(const CreateDocumentationPartRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/parts";
@@ -397,8 +407,8 @@ void APIGatewayClient::CreateDocumentationPartAsyncHelper(const CreateDocumentat
 
 CreateDocumentationVersionOutcome APIGatewayClient::CreateDocumentationVersion(const CreateDocumentationVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/versions";
@@ -434,8 +444,8 @@ void APIGatewayClient::CreateDocumentationVersionAsyncHelper(const CreateDocumen
 
 CreateDomainNameOutcome APIGatewayClient::CreateDomainName(const CreateDomainNameRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -469,8 +479,8 @@ void APIGatewayClient::CreateDomainNameAsyncHelper(const CreateDomainNameRequest
 
 CreateModelOutcome APIGatewayClient::CreateModel(const CreateModelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/models";
@@ -506,8 +516,8 @@ void APIGatewayClient::CreateModelAsyncHelper(const CreateModelRequest& request,
 
 CreateRequestValidatorOutcome APIGatewayClient::CreateRequestValidator(const CreateRequestValidatorRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/requestvalidators";
@@ -543,8 +553,8 @@ void APIGatewayClient::CreateRequestValidatorAsyncHelper(const CreateRequestVali
 
 CreateResourceOutcome APIGatewayClient::CreateResource(const CreateResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -581,8 +591,8 @@ void APIGatewayClient::CreateResourceAsyncHelper(const CreateResourceRequest& re
 
 CreateRestApiOutcome APIGatewayClient::CreateRestApi(const CreateRestApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -616,8 +626,8 @@ void APIGatewayClient::CreateRestApiAsyncHelper(const CreateRestApiRequest& requ
 
 CreateStageOutcome APIGatewayClient::CreateStage(const CreateStageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages";
@@ -653,8 +663,8 @@ void APIGatewayClient::CreateStageAsyncHelper(const CreateStageRequest& request,
 
 CreateUsagePlanOutcome APIGatewayClient::CreateUsagePlan(const CreateUsagePlanRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -688,8 +698,8 @@ void APIGatewayClient::CreateUsagePlanAsyncHelper(const CreateUsagePlanRequest& 
 
 CreateUsagePlanKeyOutcome APIGatewayClient::CreateUsagePlanKey(const CreateUsagePlanKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   ss << "/keys";
@@ -725,8 +735,8 @@ void APIGatewayClient::CreateUsagePlanKeyAsyncHelper(const CreateUsagePlanKeyReq
 
 CreateVpcLinkOutcome APIGatewayClient::CreateVpcLink(const CreateVpcLinkRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/vpclinks";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -760,8 +770,8 @@ void APIGatewayClient::CreateVpcLinkAsyncHelper(const CreateVpcLinkRequest& requ
 
 DeleteApiKeyOutcome APIGatewayClient::DeleteApiKey(const DeleteApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/apikeys/";
   ss << request.GetApiKey();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -796,8 +806,8 @@ void APIGatewayClient::DeleteApiKeyAsyncHelper(const DeleteApiKeyRequest& reques
 
 DeleteAuthorizerOutcome APIGatewayClient::DeleteAuthorizer(const DeleteAuthorizerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/authorizers/";
@@ -834,8 +844,8 @@ void APIGatewayClient::DeleteAuthorizerAsyncHelper(const DeleteAuthorizerRequest
 
 DeleteBasePathMappingOutcome APIGatewayClient::DeleteBasePathMapping(const DeleteBasePathMappingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   ss << "/basepathmappings/";
@@ -872,8 +882,8 @@ void APIGatewayClient::DeleteBasePathMappingAsyncHelper(const DeleteBasePathMapp
 
 DeleteClientCertificateOutcome APIGatewayClient::DeleteClientCertificate(const DeleteClientCertificateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clientcertificates/";
   ss << request.GetClientCertificateId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -908,8 +918,8 @@ void APIGatewayClient::DeleteClientCertificateAsyncHelper(const DeleteClientCert
 
 DeleteDeploymentOutcome APIGatewayClient::DeleteDeployment(const DeleteDeploymentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/deployments/";
@@ -946,8 +956,8 @@ void APIGatewayClient::DeleteDeploymentAsyncHelper(const DeleteDeploymentRequest
 
 DeleteDocumentationPartOutcome APIGatewayClient::DeleteDocumentationPart(const DeleteDocumentationPartRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/parts/";
@@ -984,8 +994,8 @@ void APIGatewayClient::DeleteDocumentationPartAsyncHelper(const DeleteDocumentat
 
 DeleteDocumentationVersionOutcome APIGatewayClient::DeleteDocumentationVersion(const DeleteDocumentationVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/versions/";
@@ -1022,8 +1032,8 @@ void APIGatewayClient::DeleteDocumentationVersionAsyncHelper(const DeleteDocumen
 
 DeleteDomainNameOutcome APIGatewayClient::DeleteDomainName(const DeleteDomainNameRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1058,8 +1068,8 @@ void APIGatewayClient::DeleteDomainNameAsyncHelper(const DeleteDomainNameRequest
 
 DeleteGatewayResponseOutcome APIGatewayClient::DeleteGatewayResponse(const DeleteGatewayResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/gatewayresponses/";
@@ -1096,8 +1106,8 @@ void APIGatewayClient::DeleteGatewayResponseAsyncHelper(const DeleteGatewayRespo
 
 DeleteIntegrationOutcome APIGatewayClient::DeleteIntegration(const DeleteIntegrationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -1137,8 +1147,8 @@ void APIGatewayClient::DeleteIntegrationAsyncHelper(const DeleteIntegrationReque
 
 DeleteIntegrationResponseOutcome APIGatewayClient::DeleteIntegrationResponse(const DeleteIntegrationResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -1179,8 +1189,8 @@ void APIGatewayClient::DeleteIntegrationResponseAsyncHelper(const DeleteIntegrat
 
 DeleteMethodOutcome APIGatewayClient::DeleteMethod(const DeleteMethodRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -1219,8 +1229,8 @@ void APIGatewayClient::DeleteMethodAsyncHelper(const DeleteMethodRequest& reques
 
 DeleteMethodResponseOutcome APIGatewayClient::DeleteMethodResponse(const DeleteMethodResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -1261,8 +1271,8 @@ void APIGatewayClient::DeleteMethodResponseAsyncHelper(const DeleteMethodRespons
 
 DeleteModelOutcome APIGatewayClient::DeleteModel(const DeleteModelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/models/";
@@ -1299,8 +1309,8 @@ void APIGatewayClient::DeleteModelAsyncHelper(const DeleteModelRequest& request,
 
 DeleteRequestValidatorOutcome APIGatewayClient::DeleteRequestValidator(const DeleteRequestValidatorRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/requestvalidators/";
@@ -1337,8 +1347,8 @@ void APIGatewayClient::DeleteRequestValidatorAsyncHelper(const DeleteRequestVali
 
 DeleteResourceOutcome APIGatewayClient::DeleteResource(const DeleteResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -1375,8 +1385,8 @@ void APIGatewayClient::DeleteResourceAsyncHelper(const DeleteResourceRequest& re
 
 DeleteRestApiOutcome APIGatewayClient::DeleteRestApi(const DeleteRestApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1411,8 +1421,8 @@ void APIGatewayClient::DeleteRestApiAsyncHelper(const DeleteRestApiRequest& requ
 
 DeleteStageOutcome APIGatewayClient::DeleteStage(const DeleteStageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -1449,8 +1459,8 @@ void APIGatewayClient::DeleteStageAsyncHelper(const DeleteStageRequest& request,
 
 DeleteUsagePlanOutcome APIGatewayClient::DeleteUsagePlan(const DeleteUsagePlanRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1485,8 +1495,8 @@ void APIGatewayClient::DeleteUsagePlanAsyncHelper(const DeleteUsagePlanRequest& 
 
 DeleteUsagePlanKeyOutcome APIGatewayClient::DeleteUsagePlanKey(const DeleteUsagePlanKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   ss << "/keys/";
@@ -1523,8 +1533,8 @@ void APIGatewayClient::DeleteUsagePlanKeyAsyncHelper(const DeleteUsagePlanKeyReq
 
 DeleteVpcLinkOutcome APIGatewayClient::DeleteVpcLink(const DeleteVpcLinkRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/vpclinks/";
   ss << request.GetVpcLinkId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1559,8 +1569,8 @@ void APIGatewayClient::DeleteVpcLinkAsyncHelper(const DeleteVpcLinkRequest& requ
 
 FlushStageAuthorizersCacheOutcome APIGatewayClient::FlushStageAuthorizersCache(const FlushStageAuthorizersCacheRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -1598,8 +1608,8 @@ void APIGatewayClient::FlushStageAuthorizersCacheAsyncHelper(const FlushStageAut
 
 FlushStageCacheOutcome APIGatewayClient::FlushStageCache(const FlushStageCacheRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -1637,8 +1647,8 @@ void APIGatewayClient::FlushStageCacheAsyncHelper(const FlushStageCacheRequest& 
 
 GenerateClientCertificateOutcome APIGatewayClient::GenerateClientCertificate(const GenerateClientCertificateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clientcertificates";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1672,8 +1682,8 @@ void APIGatewayClient::GenerateClientCertificateAsyncHelper(const GenerateClient
 
 GetAccountOutcome APIGatewayClient::GetAccount(const GetAccountRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/account";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1707,8 +1717,8 @@ void APIGatewayClient::GetAccountAsyncHelper(const GetAccountRequest& request, c
 
 GetApiKeyOutcome APIGatewayClient::GetApiKey(const GetApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/apikeys/";
   ss << request.GetApiKey();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1743,8 +1753,8 @@ void APIGatewayClient::GetApiKeyAsyncHelper(const GetApiKeyRequest& request, con
 
 GetApiKeysOutcome APIGatewayClient::GetApiKeys(const GetApiKeysRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/apikeys";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1778,8 +1788,8 @@ void APIGatewayClient::GetApiKeysAsyncHelper(const GetApiKeysRequest& request, c
 
 GetAuthorizerOutcome APIGatewayClient::GetAuthorizer(const GetAuthorizerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/authorizers/";
@@ -1816,8 +1826,8 @@ void APIGatewayClient::GetAuthorizerAsyncHelper(const GetAuthorizerRequest& requ
 
 GetAuthorizersOutcome APIGatewayClient::GetAuthorizers(const GetAuthorizersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/authorizers";
@@ -1853,8 +1863,8 @@ void APIGatewayClient::GetAuthorizersAsyncHelper(const GetAuthorizersRequest& re
 
 GetBasePathMappingOutcome APIGatewayClient::GetBasePathMapping(const GetBasePathMappingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   ss << "/basepathmappings/";
@@ -1891,8 +1901,8 @@ void APIGatewayClient::GetBasePathMappingAsyncHelper(const GetBasePathMappingReq
 
 GetBasePathMappingsOutcome APIGatewayClient::GetBasePathMappings(const GetBasePathMappingsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   ss << "/basepathmappings";
@@ -1928,8 +1938,8 @@ void APIGatewayClient::GetBasePathMappingsAsyncHelper(const GetBasePathMappingsR
 
 GetClientCertificateOutcome APIGatewayClient::GetClientCertificate(const GetClientCertificateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clientcertificates/";
   ss << request.GetClientCertificateId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1964,8 +1974,8 @@ void APIGatewayClient::GetClientCertificateAsyncHelper(const GetClientCertificat
 
 GetClientCertificatesOutcome APIGatewayClient::GetClientCertificates(const GetClientCertificatesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clientcertificates";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1999,8 +2009,8 @@ void APIGatewayClient::GetClientCertificatesAsyncHelper(const GetClientCertifica
 
 GetDeploymentOutcome APIGatewayClient::GetDeployment(const GetDeploymentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/deployments/";
@@ -2037,8 +2047,8 @@ void APIGatewayClient::GetDeploymentAsyncHelper(const GetDeploymentRequest& requ
 
 GetDeploymentsOutcome APIGatewayClient::GetDeployments(const GetDeploymentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/deployments";
@@ -2074,8 +2084,8 @@ void APIGatewayClient::GetDeploymentsAsyncHelper(const GetDeploymentsRequest& re
 
 GetDocumentationPartOutcome APIGatewayClient::GetDocumentationPart(const GetDocumentationPartRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/parts/";
@@ -2112,8 +2122,8 @@ void APIGatewayClient::GetDocumentationPartAsyncHelper(const GetDocumentationPar
 
 GetDocumentationPartsOutcome APIGatewayClient::GetDocumentationParts(const GetDocumentationPartsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/parts";
@@ -2149,8 +2159,8 @@ void APIGatewayClient::GetDocumentationPartsAsyncHelper(const GetDocumentationPa
 
 GetDocumentationVersionOutcome APIGatewayClient::GetDocumentationVersion(const GetDocumentationVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/versions/";
@@ -2187,8 +2197,8 @@ void APIGatewayClient::GetDocumentationVersionAsyncHelper(const GetDocumentation
 
 GetDocumentationVersionsOutcome APIGatewayClient::GetDocumentationVersions(const GetDocumentationVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/versions";
@@ -2224,8 +2234,8 @@ void APIGatewayClient::GetDocumentationVersionsAsyncHelper(const GetDocumentatio
 
 GetDomainNameOutcome APIGatewayClient::GetDomainName(const GetDomainNameRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -2260,8 +2270,8 @@ void APIGatewayClient::GetDomainNameAsyncHelper(const GetDomainNameRequest& requ
 
 GetDomainNamesOutcome APIGatewayClient::GetDomainNames(const GetDomainNamesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -2295,8 +2305,8 @@ void APIGatewayClient::GetDomainNamesAsyncHelper(const GetDomainNamesRequest& re
 
 GetExportOutcome APIGatewayClient::GetExport(const GetExportRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -2335,8 +2345,8 @@ void APIGatewayClient::GetExportAsyncHelper(const GetExportRequest& request, con
 
 GetGatewayResponseOutcome APIGatewayClient::GetGatewayResponse(const GetGatewayResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/gatewayresponses/";
@@ -2373,8 +2383,8 @@ void APIGatewayClient::GetGatewayResponseAsyncHelper(const GetGatewayResponseReq
 
 GetGatewayResponsesOutcome APIGatewayClient::GetGatewayResponses(const GetGatewayResponsesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/gatewayresponses";
@@ -2410,8 +2420,8 @@ void APIGatewayClient::GetGatewayResponsesAsyncHelper(const GetGatewayResponsesR
 
 GetIntegrationOutcome APIGatewayClient::GetIntegration(const GetIntegrationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -2451,8 +2461,8 @@ void APIGatewayClient::GetIntegrationAsyncHelper(const GetIntegrationRequest& re
 
 GetIntegrationResponseOutcome APIGatewayClient::GetIntegrationResponse(const GetIntegrationResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -2493,8 +2503,8 @@ void APIGatewayClient::GetIntegrationResponseAsyncHelper(const GetIntegrationRes
 
 GetMethodOutcome APIGatewayClient::GetMethod(const GetMethodRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -2533,8 +2543,8 @@ void APIGatewayClient::GetMethodAsyncHelper(const GetMethodRequest& request, con
 
 GetMethodResponseOutcome APIGatewayClient::GetMethodResponse(const GetMethodResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -2575,8 +2585,8 @@ void APIGatewayClient::GetMethodResponseAsyncHelper(const GetMethodResponseReque
 
 GetModelOutcome APIGatewayClient::GetModel(const GetModelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/models/";
@@ -2613,8 +2623,8 @@ void APIGatewayClient::GetModelAsyncHelper(const GetModelRequest& request, const
 
 GetModelTemplateOutcome APIGatewayClient::GetModelTemplate(const GetModelTemplateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/models/";
@@ -2652,8 +2662,8 @@ void APIGatewayClient::GetModelTemplateAsyncHelper(const GetModelTemplateRequest
 
 GetModelsOutcome APIGatewayClient::GetModels(const GetModelsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/models";
@@ -2689,8 +2699,8 @@ void APIGatewayClient::GetModelsAsyncHelper(const GetModelsRequest& request, con
 
 GetRequestValidatorOutcome APIGatewayClient::GetRequestValidator(const GetRequestValidatorRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/requestvalidators/";
@@ -2727,8 +2737,8 @@ void APIGatewayClient::GetRequestValidatorAsyncHelper(const GetRequestValidatorR
 
 GetRequestValidatorsOutcome APIGatewayClient::GetRequestValidators(const GetRequestValidatorsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/requestvalidators";
@@ -2764,8 +2774,8 @@ void APIGatewayClient::GetRequestValidatorsAsyncHelper(const GetRequestValidator
 
 GetResourceOutcome APIGatewayClient::GetResource(const GetResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -2802,8 +2812,8 @@ void APIGatewayClient::GetResourceAsyncHelper(const GetResourceRequest& request,
 
 GetResourcesOutcome APIGatewayClient::GetResources(const GetResourcesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources";
@@ -2839,8 +2849,8 @@ void APIGatewayClient::GetResourcesAsyncHelper(const GetResourcesRequest& reques
 
 GetRestApiOutcome APIGatewayClient::GetRestApi(const GetRestApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -2875,8 +2885,8 @@ void APIGatewayClient::GetRestApiAsyncHelper(const GetRestApiRequest& request, c
 
 GetRestApisOutcome APIGatewayClient::GetRestApis(const GetRestApisRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -2910,8 +2920,8 @@ void APIGatewayClient::GetRestApisAsyncHelper(const GetRestApisRequest& request,
 
 GetSdkOutcome APIGatewayClient::GetSdk(const GetSdkRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -2950,8 +2960,8 @@ void APIGatewayClient::GetSdkAsyncHelper(const GetSdkRequest& request, const Get
 
 GetSdkTypeOutcome APIGatewayClient::GetSdkType(const GetSdkTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/sdktypes/";
   ss << request.GetId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -2986,8 +2996,8 @@ void APIGatewayClient::GetSdkTypeAsyncHelper(const GetSdkTypeRequest& request, c
 
 GetSdkTypesOutcome APIGatewayClient::GetSdkTypes(const GetSdkTypesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/sdktypes";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -3021,8 +3031,8 @@ void APIGatewayClient::GetSdkTypesAsyncHelper(const GetSdkTypesRequest& request,
 
 GetStageOutcome APIGatewayClient::GetStage(const GetStageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -3059,8 +3069,8 @@ void APIGatewayClient::GetStageAsyncHelper(const GetStageRequest& request, const
 
 GetStagesOutcome APIGatewayClient::GetStages(const GetStagesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages";
@@ -3096,8 +3106,8 @@ void APIGatewayClient::GetStagesAsyncHelper(const GetStagesRequest& request, con
 
 GetTagsOutcome APIGatewayClient::GetTags(const GetTagsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/tags/";
   ss << request.GetResourceArn();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3132,8 +3142,8 @@ void APIGatewayClient::GetTagsAsyncHelper(const GetTagsRequest& request, const G
 
 GetUsageOutcome APIGatewayClient::GetUsage(const GetUsageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   ss << "/usage";
@@ -3169,8 +3179,8 @@ void APIGatewayClient::GetUsageAsyncHelper(const GetUsageRequest& request, const
 
 GetUsagePlanOutcome APIGatewayClient::GetUsagePlan(const GetUsagePlanRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3205,8 +3215,8 @@ void APIGatewayClient::GetUsagePlanAsyncHelper(const GetUsagePlanRequest& reques
 
 GetUsagePlanKeyOutcome APIGatewayClient::GetUsagePlanKey(const GetUsagePlanKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   ss << "/keys/";
@@ -3243,8 +3253,8 @@ void APIGatewayClient::GetUsagePlanKeyAsyncHelper(const GetUsagePlanKeyRequest& 
 
 GetUsagePlanKeysOutcome APIGatewayClient::GetUsagePlanKeys(const GetUsagePlanKeysRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   ss << "/keys";
@@ -3280,8 +3290,8 @@ void APIGatewayClient::GetUsagePlanKeysAsyncHelper(const GetUsagePlanKeysRequest
 
 GetUsagePlansOutcome APIGatewayClient::GetUsagePlans(const GetUsagePlansRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -3315,8 +3325,8 @@ void APIGatewayClient::GetUsagePlansAsyncHelper(const GetUsagePlansRequest& requ
 
 GetVpcLinkOutcome APIGatewayClient::GetVpcLink(const GetVpcLinkRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/vpclinks/";
   ss << request.GetVpcLinkId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3351,8 +3361,8 @@ void APIGatewayClient::GetVpcLinkAsyncHelper(const GetVpcLinkRequest& request, c
 
 GetVpcLinksOutcome APIGatewayClient::GetVpcLinks(const GetVpcLinksRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/vpclinks";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -3386,8 +3396,8 @@ void APIGatewayClient::GetVpcLinksAsyncHelper(const GetVpcLinksRequest& request,
 
 ImportApiKeysOutcome APIGatewayClient::ImportApiKeys(const ImportApiKeysRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/apikeys";
   uri.SetPath(uri.GetPath() + ss.str());
   ss.str("?mode=import");
@@ -3423,8 +3433,8 @@ void APIGatewayClient::ImportApiKeysAsyncHelper(const ImportApiKeysRequest& requ
 
 ImportDocumentationPartsOutcome APIGatewayClient::ImportDocumentationParts(const ImportDocumentationPartsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/parts";
@@ -3460,8 +3470,8 @@ void APIGatewayClient::ImportDocumentationPartsAsyncHelper(const ImportDocumenta
 
 ImportRestApiOutcome APIGatewayClient::ImportRestApi(const ImportRestApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis";
   uri.SetPath(uri.GetPath() + ss.str());
   ss.str("?mode=import");
@@ -3497,8 +3507,8 @@ void APIGatewayClient::ImportRestApiAsyncHelper(const ImportRestApiRequest& requ
 
 PutGatewayResponseOutcome APIGatewayClient::PutGatewayResponse(const PutGatewayResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/gatewayresponses/";
@@ -3535,8 +3545,8 @@ void APIGatewayClient::PutGatewayResponseAsyncHelper(const PutGatewayResponseReq
 
 PutIntegrationOutcome APIGatewayClient::PutIntegration(const PutIntegrationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -3576,8 +3586,8 @@ void APIGatewayClient::PutIntegrationAsyncHelper(const PutIntegrationRequest& re
 
 PutIntegrationResponseOutcome APIGatewayClient::PutIntegrationResponse(const PutIntegrationResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -3618,8 +3628,8 @@ void APIGatewayClient::PutIntegrationResponseAsyncHelper(const PutIntegrationRes
 
 PutMethodOutcome APIGatewayClient::PutMethod(const PutMethodRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -3658,8 +3668,8 @@ void APIGatewayClient::PutMethodAsyncHelper(const PutMethodRequest& request, con
 
 PutMethodResponseOutcome APIGatewayClient::PutMethodResponse(const PutMethodResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -3700,8 +3710,8 @@ void APIGatewayClient::PutMethodResponseAsyncHelper(const PutMethodResponseReque
 
 PutRestApiOutcome APIGatewayClient::PutRestApi(const PutRestApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3736,8 +3746,8 @@ void APIGatewayClient::PutRestApiAsyncHelper(const PutRestApiRequest& request, c
 
 TagResourceOutcome APIGatewayClient::TagResource(const TagResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/tags/";
   ss << request.GetResourceArn();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3772,8 +3782,8 @@ void APIGatewayClient::TagResourceAsyncHelper(const TagResourceRequest& request,
 
 TestInvokeAuthorizerOutcome APIGatewayClient::TestInvokeAuthorizer(const TestInvokeAuthorizerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/authorizers/";
@@ -3810,8 +3820,8 @@ void APIGatewayClient::TestInvokeAuthorizerAsyncHelper(const TestInvokeAuthorize
 
 TestInvokeMethodOutcome APIGatewayClient::TestInvokeMethod(const TestInvokeMethodRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -3850,8 +3860,8 @@ void APIGatewayClient::TestInvokeMethodAsyncHelper(const TestInvokeMethodRequest
 
 UntagResourceOutcome APIGatewayClient::UntagResource(const UntagResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/tags/";
   ss << request.GetResourceArn();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3886,8 +3896,8 @@ void APIGatewayClient::UntagResourceAsyncHelper(const UntagResourceRequest& requ
 
 UpdateAccountOutcome APIGatewayClient::UpdateAccount(const UpdateAccountRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/account";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PATCH, Aws::Auth::SIGV4_SIGNER);
@@ -3921,8 +3931,8 @@ void APIGatewayClient::UpdateAccountAsyncHelper(const UpdateAccountRequest& requ
 
 UpdateApiKeyOutcome APIGatewayClient::UpdateApiKey(const UpdateApiKeyRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/apikeys/";
   ss << request.GetApiKey();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -3957,8 +3967,8 @@ void APIGatewayClient::UpdateApiKeyAsyncHelper(const UpdateApiKeyRequest& reques
 
 UpdateAuthorizerOutcome APIGatewayClient::UpdateAuthorizer(const UpdateAuthorizerRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/authorizers/";
@@ -3995,8 +4005,8 @@ void APIGatewayClient::UpdateAuthorizerAsyncHelper(const UpdateAuthorizerRequest
 
 UpdateBasePathMappingOutcome APIGatewayClient::UpdateBasePathMapping(const UpdateBasePathMappingRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   ss << "/basepathmappings/";
@@ -4033,8 +4043,8 @@ void APIGatewayClient::UpdateBasePathMappingAsyncHelper(const UpdateBasePathMapp
 
 UpdateClientCertificateOutcome APIGatewayClient::UpdateClientCertificate(const UpdateClientCertificateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clientcertificates/";
   ss << request.GetClientCertificateId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -4069,8 +4079,8 @@ void APIGatewayClient::UpdateClientCertificateAsyncHelper(const UpdateClientCert
 
 UpdateDeploymentOutcome APIGatewayClient::UpdateDeployment(const UpdateDeploymentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/deployments/";
@@ -4107,8 +4117,8 @@ void APIGatewayClient::UpdateDeploymentAsyncHelper(const UpdateDeploymentRequest
 
 UpdateDocumentationPartOutcome APIGatewayClient::UpdateDocumentationPart(const UpdateDocumentationPartRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/parts/";
@@ -4145,8 +4155,8 @@ void APIGatewayClient::UpdateDocumentationPartAsyncHelper(const UpdateDocumentat
 
 UpdateDocumentationVersionOutcome APIGatewayClient::UpdateDocumentationVersion(const UpdateDocumentationVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/documentation/versions/";
@@ -4183,8 +4193,8 @@ void APIGatewayClient::UpdateDocumentationVersionAsyncHelper(const UpdateDocumen
 
 UpdateDomainNameOutcome APIGatewayClient::UpdateDomainName(const UpdateDomainNameRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/domainnames/";
   ss << request.GetDomainName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -4219,8 +4229,8 @@ void APIGatewayClient::UpdateDomainNameAsyncHelper(const UpdateDomainNameRequest
 
 UpdateGatewayResponseOutcome APIGatewayClient::UpdateGatewayResponse(const UpdateGatewayResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/gatewayresponses/";
@@ -4257,8 +4267,8 @@ void APIGatewayClient::UpdateGatewayResponseAsyncHelper(const UpdateGatewayRespo
 
 UpdateIntegrationOutcome APIGatewayClient::UpdateIntegration(const UpdateIntegrationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -4298,8 +4308,8 @@ void APIGatewayClient::UpdateIntegrationAsyncHelper(const UpdateIntegrationReque
 
 UpdateIntegrationResponseOutcome APIGatewayClient::UpdateIntegrationResponse(const UpdateIntegrationResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -4340,8 +4350,8 @@ void APIGatewayClient::UpdateIntegrationResponseAsyncHelper(const UpdateIntegrat
 
 UpdateMethodOutcome APIGatewayClient::UpdateMethod(const UpdateMethodRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -4380,8 +4390,8 @@ void APIGatewayClient::UpdateMethodAsyncHelper(const UpdateMethodRequest& reques
 
 UpdateMethodResponseOutcome APIGatewayClient::UpdateMethodResponse(const UpdateMethodResponseRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -4422,8 +4432,8 @@ void APIGatewayClient::UpdateMethodResponseAsyncHelper(const UpdateMethodRespons
 
 UpdateModelOutcome APIGatewayClient::UpdateModel(const UpdateModelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/models/";
@@ -4460,8 +4470,8 @@ void APIGatewayClient::UpdateModelAsyncHelper(const UpdateModelRequest& request,
 
 UpdateRequestValidatorOutcome APIGatewayClient::UpdateRequestValidator(const UpdateRequestValidatorRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/requestvalidators/";
@@ -4498,8 +4508,8 @@ void APIGatewayClient::UpdateRequestValidatorAsyncHelper(const UpdateRequestVali
 
 UpdateResourceOutcome APIGatewayClient::UpdateResource(const UpdateResourceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/resources/";
@@ -4536,8 +4546,8 @@ void APIGatewayClient::UpdateResourceAsyncHelper(const UpdateResourceRequest& re
 
 UpdateRestApiOutcome APIGatewayClient::UpdateRestApi(const UpdateRestApiRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -4572,8 +4582,8 @@ void APIGatewayClient::UpdateRestApiAsyncHelper(const UpdateRestApiRequest& requ
 
 UpdateStageOutcome APIGatewayClient::UpdateStage(const UpdateStageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/restapis/";
   ss << request.GetRestApiId();
   ss << "/stages/";
@@ -4610,8 +4620,8 @@ void APIGatewayClient::UpdateStageAsyncHelper(const UpdateStageRequest& request,
 
 UpdateUsageOutcome APIGatewayClient::UpdateUsage(const UpdateUsageRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   ss << "/keys/";
@@ -4649,8 +4659,8 @@ void APIGatewayClient::UpdateUsageAsyncHelper(const UpdateUsageRequest& request,
 
 UpdateUsagePlanOutcome APIGatewayClient::UpdateUsagePlan(const UpdateUsagePlanRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/usageplans/";
   ss << request.GetUsagePlanId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -4685,8 +4695,8 @@ void APIGatewayClient::UpdateUsagePlanAsyncHelper(const UpdateUsagePlanRequest& 
 
 UpdateVpcLinkOutcome APIGatewayClient::UpdateVpcLink(const UpdateVpcLinkRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/vpclinks/";
   ss << request.GetVpcLinkId();
   uri.SetPath(uri.GetPath() + ss.str());

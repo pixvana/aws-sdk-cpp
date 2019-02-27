@@ -22,6 +22,7 @@
 #include <aws/iot/model/Behavior.h>
 #include <aws/iot/model/AlertTargetType.h>
 #include <aws/iot/model/AlertTarget.h>
+#include <aws/iot/model/Tag.h>
 #include <utility>
 
 namespace Aws
@@ -225,6 +226,99 @@ namespace Model
      */
     inline CreateSecurityProfileRequest& AddAlertTargets(AlertTargetType&& key, AlertTarget&& value) { m_alertTargetsHasBeenSet = true; m_alertTargets.emplace(std::move(key), std::move(value)); return *this; }
 
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline const Aws::Vector<Aws::String>& GetAdditionalMetricsToRetain() const{ return m_additionalMetricsToRetain; }
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline void SetAdditionalMetricsToRetain(const Aws::Vector<Aws::String>& value) { m_additionalMetricsToRetainHasBeenSet = true; m_additionalMetricsToRetain = value; }
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline void SetAdditionalMetricsToRetain(Aws::Vector<Aws::String>&& value) { m_additionalMetricsToRetainHasBeenSet = true; m_additionalMetricsToRetain = std::move(value); }
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline CreateSecurityProfileRequest& WithAdditionalMetricsToRetain(const Aws::Vector<Aws::String>& value) { SetAdditionalMetricsToRetain(value); return *this;}
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline CreateSecurityProfileRequest& WithAdditionalMetricsToRetain(Aws::Vector<Aws::String>&& value) { SetAdditionalMetricsToRetain(std::move(value)); return *this;}
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline CreateSecurityProfileRequest& AddAdditionalMetricsToRetain(const Aws::String& value) { m_additionalMetricsToRetainHasBeenSet = true; m_additionalMetricsToRetain.push_back(value); return *this; }
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline CreateSecurityProfileRequest& AddAdditionalMetricsToRetain(Aws::String&& value) { m_additionalMetricsToRetainHasBeenSet = true; m_additionalMetricsToRetain.push_back(std::move(value)); return *this; }
+
+    /**
+     * <p>A list of metrics whose data is retained (stored). By default, data is
+     * retained for any metric used in the profile's <code>behaviors</code> but it is
+     * also retained for any metric specified here.</p>
+     */
+    inline CreateSecurityProfileRequest& AddAdditionalMetricsToRetain(const char* value) { m_additionalMetricsToRetainHasBeenSet = true; m_additionalMetricsToRetain.push_back(value); return *this; }
+
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline CreateSecurityProfileRequest& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline CreateSecurityProfileRequest& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline CreateSecurityProfileRequest& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
+
+    /**
+     * <p>Metadata which can be used to manage the security profile.</p>
+     */
+    inline CreateSecurityProfileRequest& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
+
   private:
 
     Aws::String m_securityProfileName;
@@ -238,6 +332,12 @@ namespace Model
 
     Aws::Map<AlertTargetType, AlertTarget> m_alertTargets;
     bool m_alertTargetsHasBeenSet;
+
+    Aws::Vector<Aws::String> m_additionalMetricsToRetain;
+    bool m_additionalMetricsToRetainHasBeenSet;
+
+    Aws::Vector<Tag> m_tags;
+    bool m_tagsHasBeenSet;
   };
 
 } // namespace Model

@@ -168,10 +168,13 @@ namespace Model
    * call the <a>CreateCertificateAuthority</a> operation. ACM PCA writes the CRL to
    * an S3 bucket that you specify. You must specify a bucket policy that grants ACM
    * PCA write permission. </p> <p>You can also call the
-   * <a>CreateCertificateAuthorityAuditReport</a> to create an optional audit report
-   * that lists every time the CA private key is used. The private key is used for
-   * signing when the <b>IssueCertificate</b> or <b>RevokeCertificate</b> operation
-   * is called. </p>
+   * <a>CreateCertificateAuthorityAuditReport</a> to create an optional audit report,
+   * which enumerates all of the issued, valid, expired, and revoked certificates
+   * from the CA.</p> <note> <p>Each ACM PCA API operation has a throttling limit
+   * which determines the number of times the operation can be called per second. For
+   * more information, see <a
+   * href="acm-pca/latest/userguide/PcaLimits.html#PcaLimits-api">API Rate Limits in
+   * ACM PCA</a> in the ACM PCA user guide.</p> </note>
    */
   class AWS_ACMPCA_API ACMPCAClient : public Aws::Client::AWSJsonClient
   {
@@ -388,9 +391,9 @@ namespace Model
          * of problems such a network outage or backend AWS failure or other errors. A
          * failed CA can never return to the pending state. You must create a new CA. </p>
          * </li> <li> <p> <code>DELETED</code> - Your private CA is within the restoration
-         * period, after which it will be permanently deleted. The length of time remaining
-         * in the CA's restoration period will also be included in this operation's
-         * output.</p> </li> </ul><p><h3>See Also:</h3>   <a
+         * period, after which it is permanently deleted. The length of time remaining in
+         * the CA's restoration period is also included in this operation's output.</p>
+         * </li> </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/acm-pca-2017-08-22/DescribeCertificateAuthority">AWS
          * API Reference</a></p>
          */
@@ -411,9 +414,9 @@ namespace Model
          * of problems such a network outage or backend AWS failure or other errors. A
          * failed CA can never return to the pending state. You must create a new CA. </p>
          * </li> <li> <p> <code>DELETED</code> - Your private CA is within the restoration
-         * period, after which it will be permanently deleted. The length of time remaining
-         * in the CA's restoration period will also be included in this operation's
-         * output.</p> </li> </ul><p><h3>See Also:</h3>   <a
+         * period, after which it is permanently deleted. The length of time remaining in
+         * the CA's restoration period is also included in this operation's output.</p>
+         * </li> </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/acm-pca-2017-08-22/DescribeCertificateAuthority">AWS
          * API Reference</a></p>
          *
@@ -436,9 +439,9 @@ namespace Model
          * of problems such a network outage or backend AWS failure or other errors. A
          * failed CA can never return to the pending state. You must create a new CA. </p>
          * </li> <li> <p> <code>DELETED</code> - Your private CA is within the restoration
-         * period, after which it will be permanently deleted. The length of time remaining
-         * in the CA's restoration period will also be included in this operation's
-         * output.</p> </li> </ul><p><h3>See Also:</h3>   <a
+         * period, after which it is permanently deleted. The length of time remaining in
+         * the CA's restoration period is also included in this operation's output.</p>
+         * </li> </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/acm-pca-2017-08-22/DescribeCertificateAuthority">AWS
          * API Reference</a></p>
          *
@@ -1023,10 +1026,10 @@ namespace Model
          */
         virtual void UpdateCertificateAuthorityAsync(const Model::UpdateCertificateAuthorityRequest& request, const UpdateCertificateAuthorityResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+      void OverrideEndpoint(const Aws::String& endpoint);
     private:
       void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
         /**Async helpers**/
         void CreateCertificateAuthorityAsyncHelper(const Model::CreateCertificateAuthorityRequest& request, const CreateCertificateAuthorityResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void CreateCertificateAuthorityAuditReportAsyncHelper(const Model::CreateCertificateAuthorityAuditReportRequest& request, const CreateCertificateAuthorityAuditReportResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -1047,6 +1050,7 @@ namespace Model
         void UpdateCertificateAuthorityAsyncHelper(const Model::UpdateCertificateAuthorityRequest& request, const UpdateCertificateAuthorityResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
       Aws::String m_uri;
+      Aws::String m_configScheme;
       std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 

@@ -18,6 +18,7 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/directconnect/model/ConnectionState.h>
 #include <aws/core/utils/DateTime.h>
+#include <aws/directconnect/model/HasLogicalRedundancy.h>
 #include <utility>
 
 namespace Aws
@@ -173,7 +174,8 @@ namespace Model
      * is being deleted.</p> </li> <li> <p> <code>deleted</code>: The connection has
      * been deleted.</p> </li> <li> <p> <code>rejected</code>: A hosted connection in
      * the <code>ordering</code> state enters the <code>rejected</code> state if it is
-     * deleted by the customer.</p> </li> </ul>
+     * deleted by the customer.</p> </li> <li> <p> <code>unknown</code>: The state of
+     * the connection is not available.</p> </li> </ul>
      */
     inline const ConnectionState& GetConnectionState() const{ return m_connectionState; }
 
@@ -192,7 +194,8 @@ namespace Model
      * is being deleted.</p> </li> <li> <p> <code>deleted</code>: The connection has
      * been deleted.</p> </li> <li> <p> <code>rejected</code>: A hosted connection in
      * the <code>ordering</code> state enters the <code>rejected</code> state if it is
-     * deleted by the customer.</p> </li> </ul>
+     * deleted by the customer.</p> </li> <li> <p> <code>unknown</code>: The state of
+     * the connection is not available.</p> </li> </ul>
      */
     inline void SetConnectionState(const ConnectionState& value) { m_connectionStateHasBeenSet = true; m_connectionState = value; }
 
@@ -211,7 +214,8 @@ namespace Model
      * is being deleted.</p> </li> <li> <p> <code>deleted</code>: The connection has
      * been deleted.</p> </li> <li> <p> <code>rejected</code>: A hosted connection in
      * the <code>ordering</code> state enters the <code>rejected</code> state if it is
-     * deleted by the customer.</p> </li> </ul>
+     * deleted by the customer.</p> </li> <li> <p> <code>unknown</code>: The state of
+     * the connection is not available.</p> </li> </ul>
      */
     inline void SetConnectionState(ConnectionState&& value) { m_connectionStateHasBeenSet = true; m_connectionState = std::move(value); }
 
@@ -230,7 +234,8 @@ namespace Model
      * is being deleted.</p> </li> <li> <p> <code>deleted</code>: The connection has
      * been deleted.</p> </li> <li> <p> <code>rejected</code>: A hosted connection in
      * the <code>ordering</code> state enters the <code>rejected</code> state if it is
-     * deleted by the customer.</p> </li> </ul>
+     * deleted by the customer.</p> </li> <li> <p> <code>unknown</code>: The state of
+     * the connection is not available.</p> </li> </ul>
      */
     inline Connection& WithConnectionState(const ConnectionState& value) { SetConnectionState(value); return *this;}
 
@@ -249,7 +254,8 @@ namespace Model
      * is being deleted.</p> </li> <li> <p> <code>deleted</code>: The connection has
      * been deleted.</p> </li> <li> <p> <code>rejected</code>: A hosted connection in
      * the <code>ordering</code> state enters the <code>rejected</code> state if it is
-     * deleted by the customer.</p> </li> </ul>
+     * deleted by the customer.</p> </li> <li> <p> <code>unknown</code>: The state of
+     * the connection is not available.</p> </li> </ul>
      */
     inline Connection& WithConnectionState(ConnectionState&& value) { SetConnectionState(std::move(value)); return *this;}
 
@@ -575,6 +581,37 @@ namespace Model
      */
     inline Connection& WithAwsDeviceV2(const char* value) { SetAwsDeviceV2(value); return *this;}
 
+
+    /**
+     * <p>Indicates whether the connection supports a secondary BGP peer in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline const HasLogicalRedundancy& GetHasLogicalRedundancy() const{ return m_hasLogicalRedundancy; }
+
+    /**
+     * <p>Indicates whether the connection supports a secondary BGP peer in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline void SetHasLogicalRedundancy(const HasLogicalRedundancy& value) { m_hasLogicalRedundancyHasBeenSet = true; m_hasLogicalRedundancy = value; }
+
+    /**
+     * <p>Indicates whether the connection supports a secondary BGP peer in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline void SetHasLogicalRedundancy(HasLogicalRedundancy&& value) { m_hasLogicalRedundancyHasBeenSet = true; m_hasLogicalRedundancy = std::move(value); }
+
+    /**
+     * <p>Indicates whether the connection supports a secondary BGP peer in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline Connection& WithHasLogicalRedundancy(const HasLogicalRedundancy& value) { SetHasLogicalRedundancy(value); return *this;}
+
+    /**
+     * <p>Indicates whether the connection supports a secondary BGP peer in the same
+     * address family (IPv4/IPv6).</p>
+     */
+    inline Connection& WithHasLogicalRedundancy(HasLogicalRedundancy&& value) { SetHasLogicalRedundancy(std::move(value)); return *this;}
+
   private:
 
     Aws::String m_ownerAccount;
@@ -618,6 +655,9 @@ namespace Model
 
     Aws::String m_awsDeviceV2;
     bool m_awsDeviceV2HasBeenSet;
+
+    HasLogicalRedundancy m_hasLogicalRedundancy;
+    bool m_hasLogicalRedundancyHasBeenSet;
   };
 
 } // namespace Model

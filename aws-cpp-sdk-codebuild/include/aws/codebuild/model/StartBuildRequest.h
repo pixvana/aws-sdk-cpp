@@ -25,6 +25,8 @@
 #include <aws/codebuild/model/ComputeType.h>
 #include <aws/codebuild/model/ProjectCache.h>
 #include <aws/codebuild/model/LogsConfig.h>
+#include <aws/codebuild/model/RegistryCredential.h>
+#include <aws/codebuild/model/ImagePullCredentialsType.h>
 #include <aws/codebuild/model/ProjectSource.h>
 #include <aws/codebuild/model/ProjectSourceVersion.h>
 #include <aws/codebuild/model/EnvironmentVariable.h>
@@ -179,127 +181,127 @@ namespace Model
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline const Aws::String& GetSourceVersion() const{ return m_sourceVersion; }
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline void SetSourceVersion(const Aws::String& value) { m_sourceVersionHasBeenSet = true; m_sourceVersion = value; }
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline void SetSourceVersion(Aws::String&& value) { m_sourceVersionHasBeenSet = true; m_sourceVersion = std::move(value); }
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline void SetSourceVersion(const char* value) { m_sourceVersionHasBeenSet = true; m_sourceVersion.assign(value); }
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline StartBuildRequest& WithSourceVersion(const Aws::String& value) { SetSourceVersion(value); return *this;}
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline StartBuildRequest& WithSourceVersion(Aws::String&& value) { SetSourceVersion(std::move(value)); return *this;}
 
     /**
      * <p>A version of the build input to be built, for this build only. If not
-     * specified, the latest version will be used. If specified, must be one of:</p>
-     * <ul> <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For
-     * GitHub: the commit ID, pull request ID, branch name, or tag name that
-     * corresponds to the version of the source code you want to build. If a pull
-     * request ID is specified, it must use the format <code>pr/pull-request-ID</code>
-     * (for example <code>pr/25</code>). If a branch name is specified, the branch's
-     * HEAD commit ID will be used. If not specified, the default branch's HEAD commit
-     * ID will be used.</p> </li> <li> <p>For Bitbucket: the commit ID, branch name, or
-     * tag name that corresponds to the version of the source code you want to build.
-     * If a branch name is specified, the branch's HEAD commit ID will be used. If not
-     * specified, the default branch's HEAD commit ID will be used.</p> </li> <li>
-     * <p>For Amazon Simple Storage Service (Amazon S3): the version ID of the object
-     * representing the build input ZIP file to use.</p> </li> </ul>
+     * specified, the latest version is used. If specified, must be one of:</p> <ul>
+     * <li> <p>For AWS CodeCommit: the commit ID to use.</p> </li> <li> <p>For GitHub:
+     * the commit ID, pull request ID, branch name, or tag name that corresponds to the
+     * version of the source code you want to build. If a pull request ID is specified,
+     * it must use the format <code>pr/pull-request-ID</code> (for example
+     * <code>pr/25</code>). If a branch name is specified, the branch's HEAD commit ID
+     * is used. If not specified, the default branch's HEAD commit ID is used.</p>
+     * </li> <li> <p>For Bitbucket: the commit ID, branch name, or tag name that
+     * corresponds to the version of the source code you want to build. If a branch
+     * name is specified, the branch's HEAD commit ID is used. If not specified, the
+     * default branch's HEAD commit ID is used.</p> </li> <li> <p>For Amazon Simple
+     * Storage Service (Amazon S3): the version ID of the object that represents the
+     * build input ZIP file to use.</p> </li> </ul>
      */
     inline StartBuildRequest& WithSourceVersion(const char* value) { SetSourceVersion(value); return *this;}
 
@@ -415,74 +417,74 @@ namespace Model
 
 
     /**
-     * <p>A source input type for this build that overrides the source input defined in
-     * the build project.</p>
+     * <p>A source input type, for this build, that overrides the source input defined
+     * in the build project.</p>
      */
     inline const SourceType& GetSourceTypeOverride() const{ return m_sourceTypeOverride; }
 
     /**
-     * <p>A source input type for this build that overrides the source input defined in
-     * the build project.</p>
+     * <p>A source input type, for this build, that overrides the source input defined
+     * in the build project.</p>
      */
     inline void SetSourceTypeOverride(const SourceType& value) { m_sourceTypeOverrideHasBeenSet = true; m_sourceTypeOverride = value; }
 
     /**
-     * <p>A source input type for this build that overrides the source input defined in
-     * the build project.</p>
+     * <p>A source input type, for this build, that overrides the source input defined
+     * in the build project.</p>
      */
     inline void SetSourceTypeOverride(SourceType&& value) { m_sourceTypeOverrideHasBeenSet = true; m_sourceTypeOverride = std::move(value); }
 
     /**
-     * <p>A source input type for this build that overrides the source input defined in
-     * the build project.</p>
+     * <p>A source input type, for this build, that overrides the source input defined
+     * in the build project.</p>
      */
     inline StartBuildRequest& WithSourceTypeOverride(const SourceType& value) { SetSourceTypeOverride(value); return *this;}
 
     /**
-     * <p>A source input type for this build that overrides the source input defined in
-     * the build project.</p>
+     * <p>A source input type, for this build, that overrides the source input defined
+     * in the build project.</p>
      */
     inline StartBuildRequest& WithSourceTypeOverride(SourceType&& value) { SetSourceTypeOverride(std::move(value)); return *this;}
 
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline const Aws::String& GetSourceLocationOverride() const{ return m_sourceLocationOverride; }
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline void SetSourceLocationOverride(const Aws::String& value) { m_sourceLocationOverrideHasBeenSet = true; m_sourceLocationOverride = value; }
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline void SetSourceLocationOverride(Aws::String&& value) { m_sourceLocationOverrideHasBeenSet = true; m_sourceLocationOverride = std::move(value); }
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline void SetSourceLocationOverride(const char* value) { m_sourceLocationOverrideHasBeenSet = true; m_sourceLocationOverride.assign(value); }
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline StartBuildRequest& WithSourceLocationOverride(const Aws::String& value) { SetSourceLocationOverride(value); return *this;}
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline StartBuildRequest& WithSourceLocationOverride(Aws::String&& value) { SetSourceLocationOverride(std::move(value)); return *this;}
 
     /**
-     * <p>A location that overrides for this build the source location for the one
+     * <p>A location that overrides, for this build, the source location for the one
      * defined in the build project.</p>
      */
     inline StartBuildRequest& WithSourceLocationOverride(const char* value) { SetSourceLocationOverride(value); return *this;}
@@ -897,6 +899,25 @@ namespace Model
 
 
     /**
+     * <p> The number of minutes a build is allowed to be queued before it times out.
+     * </p>
+     */
+    inline int GetQueuedTimeoutInMinutesOverride() const{ return m_queuedTimeoutInMinutesOverride; }
+
+    /**
+     * <p> The number of minutes a build is allowed to be queued before it times out.
+     * </p>
+     */
+    inline void SetQueuedTimeoutInMinutesOverride(int value) { m_queuedTimeoutInMinutesOverrideHasBeenSet = true; m_queuedTimeoutInMinutesOverride = value; }
+
+    /**
+     * <p> The number of minutes a build is allowed to be queued before it times out.
+     * </p>
+     */
+    inline StartBuildRequest& WithQueuedTimeoutInMinutesOverride(int value) { SetQueuedTimeoutInMinutesOverride(value); return *this;}
+
+
+    /**
      * <p>A unique, case sensitive identifier you provide to ensure the idempotency of
      * the StartBuild request. The token is included in the StartBuild request and is
      * valid for 12 hours. If you repeat the StartBuild request with the same token,
@@ -983,6 +1004,93 @@ namespace Model
      */
     inline StartBuildRequest& WithLogsConfigOverride(LogsConfig&& value) { SetLogsConfigOverride(std::move(value)); return *this;}
 
+
+    /**
+     * <p> The credentials for access to a private registry. </p>
+     */
+    inline const RegistryCredential& GetRegistryCredentialOverride() const{ return m_registryCredentialOverride; }
+
+    /**
+     * <p> The credentials for access to a private registry. </p>
+     */
+    inline void SetRegistryCredentialOverride(const RegistryCredential& value) { m_registryCredentialOverrideHasBeenSet = true; m_registryCredentialOverride = value; }
+
+    /**
+     * <p> The credentials for access to a private registry. </p>
+     */
+    inline void SetRegistryCredentialOverride(RegistryCredential&& value) { m_registryCredentialOverrideHasBeenSet = true; m_registryCredentialOverride = std::move(value); }
+
+    /**
+     * <p> The credentials for access to a private registry. </p>
+     */
+    inline StartBuildRequest& WithRegistryCredentialOverride(const RegistryCredential& value) { SetRegistryCredentialOverride(value); return *this;}
+
+    /**
+     * <p> The credentials for access to a private registry. </p>
+     */
+    inline StartBuildRequest& WithRegistryCredentialOverride(RegistryCredential&& value) { SetRegistryCredentialOverride(std::move(value)); return *this;}
+
+
+    /**
+     * <p> The type of credentials AWS CodeBuild uses to pull images in your build.
+     * There are two valid values: </p> <ul> <li> <p> <code>CODEBUILD</code> specifies
+     * that AWS CodeBuild uses its own credentials. This requires that you modify your
+     * ECR repository policy to trust AWS CodeBuild's service principal.</p> </li> <li>
+     * <p> <code>SERVICE_ROLE</code> specifies that AWS CodeBuild uses your build
+     * project's service role. </p> </li> </ul> <p> When using a cross-account or
+     * private registry image, you must use SERVICE_ROLE credentials. When using an AWS
+     * CodeBuild curated image, you must use CODEBUILD credentials. </p>
+     */
+    inline const ImagePullCredentialsType& GetImagePullCredentialsTypeOverride() const{ return m_imagePullCredentialsTypeOverride; }
+
+    /**
+     * <p> The type of credentials AWS CodeBuild uses to pull images in your build.
+     * There are two valid values: </p> <ul> <li> <p> <code>CODEBUILD</code> specifies
+     * that AWS CodeBuild uses its own credentials. This requires that you modify your
+     * ECR repository policy to trust AWS CodeBuild's service principal.</p> </li> <li>
+     * <p> <code>SERVICE_ROLE</code> specifies that AWS CodeBuild uses your build
+     * project's service role. </p> </li> </ul> <p> When using a cross-account or
+     * private registry image, you must use SERVICE_ROLE credentials. When using an AWS
+     * CodeBuild curated image, you must use CODEBUILD credentials. </p>
+     */
+    inline void SetImagePullCredentialsTypeOverride(const ImagePullCredentialsType& value) { m_imagePullCredentialsTypeOverrideHasBeenSet = true; m_imagePullCredentialsTypeOverride = value; }
+
+    /**
+     * <p> The type of credentials AWS CodeBuild uses to pull images in your build.
+     * There are two valid values: </p> <ul> <li> <p> <code>CODEBUILD</code> specifies
+     * that AWS CodeBuild uses its own credentials. This requires that you modify your
+     * ECR repository policy to trust AWS CodeBuild's service principal.</p> </li> <li>
+     * <p> <code>SERVICE_ROLE</code> specifies that AWS CodeBuild uses your build
+     * project's service role. </p> </li> </ul> <p> When using a cross-account or
+     * private registry image, you must use SERVICE_ROLE credentials. When using an AWS
+     * CodeBuild curated image, you must use CODEBUILD credentials. </p>
+     */
+    inline void SetImagePullCredentialsTypeOverride(ImagePullCredentialsType&& value) { m_imagePullCredentialsTypeOverrideHasBeenSet = true; m_imagePullCredentialsTypeOverride = std::move(value); }
+
+    /**
+     * <p> The type of credentials AWS CodeBuild uses to pull images in your build.
+     * There are two valid values: </p> <ul> <li> <p> <code>CODEBUILD</code> specifies
+     * that AWS CodeBuild uses its own credentials. This requires that you modify your
+     * ECR repository policy to trust AWS CodeBuild's service principal.</p> </li> <li>
+     * <p> <code>SERVICE_ROLE</code> specifies that AWS CodeBuild uses your build
+     * project's service role. </p> </li> </ul> <p> When using a cross-account or
+     * private registry image, you must use SERVICE_ROLE credentials. When using an AWS
+     * CodeBuild curated image, you must use CODEBUILD credentials. </p>
+     */
+    inline StartBuildRequest& WithImagePullCredentialsTypeOverride(const ImagePullCredentialsType& value) { SetImagePullCredentialsTypeOverride(value); return *this;}
+
+    /**
+     * <p> The type of credentials AWS CodeBuild uses to pull images in your build.
+     * There are two valid values: </p> <ul> <li> <p> <code>CODEBUILD</code> specifies
+     * that AWS CodeBuild uses its own credentials. This requires that you modify your
+     * ECR repository policy to trust AWS CodeBuild's service principal.</p> </li> <li>
+     * <p> <code>SERVICE_ROLE</code> specifies that AWS CodeBuild uses your build
+     * project's service role. </p> </li> </ul> <p> When using a cross-account or
+     * private registry image, you must use SERVICE_ROLE credentials. When using an AWS
+     * CodeBuild curated image, you must use CODEBUILD credentials. </p>
+     */
+    inline StartBuildRequest& WithImagePullCredentialsTypeOverride(ImagePullCredentialsType&& value) { SetImagePullCredentialsTypeOverride(std::move(value)); return *this;}
+
   private:
 
     Aws::String m_projectName;
@@ -1051,11 +1159,20 @@ namespace Model
     int m_timeoutInMinutesOverride;
     bool m_timeoutInMinutesOverrideHasBeenSet;
 
+    int m_queuedTimeoutInMinutesOverride;
+    bool m_queuedTimeoutInMinutesOverrideHasBeenSet;
+
     Aws::String m_idempotencyToken;
     bool m_idempotencyTokenHasBeenSet;
 
     LogsConfig m_logsConfigOverride;
     bool m_logsConfigOverrideHasBeenSet;
+
+    RegistryCredential m_registryCredentialOverride;
+    bool m_registryCredentialOverrideHasBeenSet;
+
+    ImagePullCredentialsType m_imagePullCredentialsTypeOverride;
+    bool m_imagePullCredentialsTypeOverrideHasBeenSet;
   };
 
 } // namespace Model

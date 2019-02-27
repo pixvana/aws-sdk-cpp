@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/pinpoint/PinpointClient.h>
 #include <aws/pinpoint/PinpointEndpoint.h>
 #include <aws/pinpoint/PinpointErrorMarshaller.h>
@@ -47,6 +50,7 @@
 #include <aws/pinpoint/model/DeleteSegmentRequest.h>
 #include <aws/pinpoint/model/DeleteSmsChannelRequest.h>
 #include <aws/pinpoint/model/DeleteUserEndpointsRequest.h>
+#include <aws/pinpoint/model/DeleteVoiceChannelRequest.h>
 #include <aws/pinpoint/model/GetAdmChannelRequest.h>
 #include <aws/pinpoint/model/GetApnsChannelRequest.h>
 #include <aws/pinpoint/model/GetApnsSandboxChannelRequest.h>
@@ -78,12 +82,16 @@
 #include <aws/pinpoint/model/GetSegmentsRequest.h>
 #include <aws/pinpoint/model/GetSmsChannelRequest.h>
 #include <aws/pinpoint/model/GetUserEndpointsRequest.h>
+#include <aws/pinpoint/model/GetVoiceChannelRequest.h>
+#include <aws/pinpoint/model/ListTagsForResourceRequest.h>
 #include <aws/pinpoint/model/PhoneNumberValidateRequest.h>
 #include <aws/pinpoint/model/PutEventStreamRequest.h>
 #include <aws/pinpoint/model/PutEventsRequest.h>
 #include <aws/pinpoint/model/RemoveAttributesRequest.h>
 #include <aws/pinpoint/model/SendMessagesRequest.h>
 #include <aws/pinpoint/model/SendUsersMessagesRequest.h>
+#include <aws/pinpoint/model/TagResourceRequest.h>
+#include <aws/pinpoint/model/UntagResourceRequest.h>
 #include <aws/pinpoint/model/UpdateAdmChannelRequest.h>
 #include <aws/pinpoint/model/UpdateApnsChannelRequest.h>
 #include <aws/pinpoint/model/UpdateApnsSandboxChannelRequest.h>
@@ -98,6 +106,7 @@
 #include <aws/pinpoint/model/UpdateGcmChannelRequest.h>
 #include <aws/pinpoint/model/UpdateSegmentRequest.h>
 #include <aws/pinpoint/model/UpdateSmsChannelRequest.h>
+#include <aws/pinpoint/model/UpdateVoiceChannelRequest.h>
 
 using namespace Aws;
 using namespace Aws::Auth;
@@ -148,25 +157,32 @@ PinpointClient::~PinpointClient()
 
 void PinpointClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << PinpointEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + PinpointEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void PinpointClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateAppOutcome PinpointClient::CreateApp(const CreateAppRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apps";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -200,9 +216,11 @@ void PinpointClient::CreateAppAsyncHelper(const CreateAppRequest& request, const
 
 CreateCampaignOutcome PinpointClient::CreateCampaign(const CreateCampaignRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -235,9 +253,11 @@ void PinpointClient::CreateCampaignAsyncHelper(const CreateCampaignRequest& requ
 
 CreateExportJobOutcome PinpointClient::CreateExportJob(const CreateExportJobRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/jobs/export";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/jobs/export";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -270,9 +290,11 @@ void PinpointClient::CreateExportJobAsyncHelper(const CreateExportJobRequest& re
 
 CreateImportJobOutcome PinpointClient::CreateImportJob(const CreateImportJobRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/jobs/import";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/jobs/import";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -305,9 +327,11 @@ void PinpointClient::CreateImportJobAsyncHelper(const CreateImportJobRequest& re
 
 CreateSegmentOutcome PinpointClient::CreateSegment(const CreateSegmentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -340,9 +364,11 @@ void PinpointClient::CreateSegmentAsyncHelper(const CreateSegmentRequest& reques
 
 DeleteAdmChannelOutcome PinpointClient::DeleteAdmChannel(const DeleteAdmChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/adm";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/adm";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -375,9 +401,11 @@ void PinpointClient::DeleteAdmChannelAsyncHelper(const DeleteAdmChannelRequest& 
 
 DeleteApnsChannelOutcome PinpointClient::DeleteApnsChannel(const DeleteApnsChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -410,9 +438,11 @@ void PinpointClient::DeleteApnsChannelAsyncHelper(const DeleteApnsChannelRequest
 
 DeleteApnsSandboxChannelOutcome PinpointClient::DeleteApnsSandboxChannel(const DeleteApnsSandboxChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_sandbox";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_sandbox";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -445,9 +475,11 @@ void PinpointClient::DeleteApnsSandboxChannelAsyncHelper(const DeleteApnsSandbox
 
 DeleteApnsVoipChannelOutcome PinpointClient::DeleteApnsVoipChannel(const DeleteApnsVoipChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_voip";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_voip";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -480,9 +512,11 @@ void PinpointClient::DeleteApnsVoipChannelAsyncHelper(const DeleteApnsVoipChanne
 
 DeleteApnsVoipSandboxChannelOutcome PinpointClient::DeleteApnsVoipSandboxChannel(const DeleteApnsVoipSandboxChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_voip_sandbox";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_voip_sandbox";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -515,9 +549,10 @@ void PinpointClient::DeleteApnsVoipSandboxChannelAsyncHelper(const DeleteApnsVoi
 
 DeleteAppOutcome PinpointClient::DeleteApp(const DeleteAppRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -550,9 +585,11 @@ void PinpointClient::DeleteAppAsyncHelper(const DeleteAppRequest& request, const
 
 DeleteBaiduChannelOutcome PinpointClient::DeleteBaiduChannel(const DeleteBaiduChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/baidu";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/baidu";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -585,9 +622,12 @@ void PinpointClient::DeleteBaiduChannelAsyncHelper(const DeleteBaiduChannelReque
 
 DeleteCampaignOutcome PinpointClient::DeleteCampaign(const DeleteCampaignRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns/{campaign-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns/";
+  ss << request.GetCampaignId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -620,9 +660,11 @@ void PinpointClient::DeleteCampaignAsyncHelper(const DeleteCampaignRequest& requ
 
 DeleteEmailChannelOutcome PinpointClient::DeleteEmailChannel(const DeleteEmailChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/email";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/email";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -655,9 +697,12 @@ void PinpointClient::DeleteEmailChannelAsyncHelper(const DeleteEmailChannelReque
 
 DeleteEndpointOutcome PinpointClient::DeleteEndpoint(const DeleteEndpointRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/endpoints/{endpoint-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/endpoints/";
+  ss << request.GetEndpointId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -690,9 +735,11 @@ void PinpointClient::DeleteEndpointAsyncHelper(const DeleteEndpointRequest& requ
 
 DeleteEventStreamOutcome PinpointClient::DeleteEventStream(const DeleteEventStreamRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/eventstream";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/eventstream";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -725,9 +772,11 @@ void PinpointClient::DeleteEventStreamAsyncHelper(const DeleteEventStreamRequest
 
 DeleteGcmChannelOutcome PinpointClient::DeleteGcmChannel(const DeleteGcmChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/gcm";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/gcm";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -760,9 +809,12 @@ void PinpointClient::DeleteGcmChannelAsyncHelper(const DeleteGcmChannelRequest& 
 
 DeleteSegmentOutcome PinpointClient::DeleteSegment(const DeleteSegmentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -795,9 +847,11 @@ void PinpointClient::DeleteSegmentAsyncHelper(const DeleteSegmentRequest& reques
 
 DeleteSmsChannelOutcome PinpointClient::DeleteSmsChannel(const DeleteSmsChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/sms";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/sms";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -830,9 +884,12 @@ void PinpointClient::DeleteSmsChannelAsyncHelper(const DeleteSmsChannelRequest& 
 
 DeleteUserEndpointsOutcome PinpointClient::DeleteUserEndpoints(const DeleteUserEndpointsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/users/{user-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/users/";
+  ss << request.GetUserId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -863,11 +920,50 @@ void PinpointClient::DeleteUserEndpointsAsyncHelper(const DeleteUserEndpointsReq
   handler(this, request, DeleteUserEndpoints(request), context);
 }
 
+DeleteVoiceChannelOutcome PinpointClient::DeleteVoiceChannel(const DeleteVoiceChannelRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/voice";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return DeleteVoiceChannelOutcome(DeleteVoiceChannelResult(outcome.GetResult()));
+  }
+  else
+  {
+    return DeleteVoiceChannelOutcome(outcome.GetError());
+  }
+}
+
+DeleteVoiceChannelOutcomeCallable PinpointClient::DeleteVoiceChannelCallable(const DeleteVoiceChannelRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DeleteVoiceChannelOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DeleteVoiceChannel(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void PinpointClient::DeleteVoiceChannelAsync(const DeleteVoiceChannelRequest& request, const DeleteVoiceChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DeleteVoiceChannelAsyncHelper( request, handler, context ); } );
+}
+
+void PinpointClient::DeleteVoiceChannelAsyncHelper(const DeleteVoiceChannelRequest& request, const DeleteVoiceChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DeleteVoiceChannel(request), context);
+}
+
 GetAdmChannelOutcome PinpointClient::GetAdmChannel(const GetAdmChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/adm";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/adm";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -900,9 +996,11 @@ void PinpointClient::GetAdmChannelAsyncHelper(const GetAdmChannelRequest& reques
 
 GetApnsChannelOutcome PinpointClient::GetApnsChannel(const GetApnsChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -935,9 +1033,11 @@ void PinpointClient::GetApnsChannelAsyncHelper(const GetApnsChannelRequest& requ
 
 GetApnsSandboxChannelOutcome PinpointClient::GetApnsSandboxChannel(const GetApnsSandboxChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_sandbox";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_sandbox";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -970,9 +1070,11 @@ void PinpointClient::GetApnsSandboxChannelAsyncHelper(const GetApnsSandboxChanne
 
 GetApnsVoipChannelOutcome PinpointClient::GetApnsVoipChannel(const GetApnsVoipChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_voip";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_voip";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1005,9 +1107,11 @@ void PinpointClient::GetApnsVoipChannelAsyncHelper(const GetApnsVoipChannelReque
 
 GetApnsVoipSandboxChannelOutcome PinpointClient::GetApnsVoipSandboxChannel(const GetApnsVoipSandboxChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_voip_sandbox";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_voip_sandbox";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1040,9 +1144,10 @@ void PinpointClient::GetApnsVoipSandboxChannelAsyncHelper(const GetApnsVoipSandb
 
 GetAppOutcome PinpointClient::GetApp(const GetAppRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1075,9 +1180,11 @@ void PinpointClient::GetAppAsyncHelper(const GetAppRequest& request, const GetAp
 
 GetApplicationSettingsOutcome PinpointClient::GetApplicationSettings(const GetApplicationSettingsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/settings";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/settings";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1110,8 +1217,8 @@ void PinpointClient::GetApplicationSettingsAsyncHelper(const GetApplicationSetti
 
 GetAppsOutcome PinpointClient::GetApps(const GetAppsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/apps";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1145,9 +1252,11 @@ void PinpointClient::GetAppsAsyncHelper(const GetAppsRequest& request, const Get
 
 GetBaiduChannelOutcome PinpointClient::GetBaiduChannel(const GetBaiduChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/baidu";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/baidu";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1180,9 +1289,12 @@ void PinpointClient::GetBaiduChannelAsyncHelper(const GetBaiduChannelRequest& re
 
 GetCampaignOutcome PinpointClient::GetCampaign(const GetCampaignRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns/{campaign-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns/";
+  ss << request.GetCampaignId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1215,9 +1327,13 @@ void PinpointClient::GetCampaignAsyncHelper(const GetCampaignRequest& request, c
 
 GetCampaignActivitiesOutcome PinpointClient::GetCampaignActivities(const GetCampaignActivitiesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns/{campaign-id}/activities";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns/";
+  ss << request.GetCampaignId();
+  ss << "/activities";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1250,9 +1366,13 @@ void PinpointClient::GetCampaignActivitiesAsyncHelper(const GetCampaignActivitie
 
 GetCampaignVersionOutcome PinpointClient::GetCampaignVersion(const GetCampaignVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns/{campaign-id}/versions/";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns/";
+  ss << request.GetCampaignId();
+  ss << "/versions/";
   ss << request.GetVersion();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1286,9 +1406,13 @@ void PinpointClient::GetCampaignVersionAsyncHelper(const GetCampaignVersionReque
 
 GetCampaignVersionsOutcome PinpointClient::GetCampaignVersions(const GetCampaignVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns/{campaign-id}/versions";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns/";
+  ss << request.GetCampaignId();
+  ss << "/versions";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1321,9 +1445,11 @@ void PinpointClient::GetCampaignVersionsAsyncHelper(const GetCampaignVersionsReq
 
 GetCampaignsOutcome PinpointClient::GetCampaigns(const GetCampaignsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1356,9 +1482,11 @@ void PinpointClient::GetCampaignsAsyncHelper(const GetCampaignsRequest& request,
 
 GetChannelsOutcome PinpointClient::GetChannels(const GetChannelsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1391,9 +1519,11 @@ void PinpointClient::GetChannelsAsyncHelper(const GetChannelsRequest& request, c
 
 GetEmailChannelOutcome PinpointClient::GetEmailChannel(const GetEmailChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/email";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/email";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1426,9 +1556,12 @@ void PinpointClient::GetEmailChannelAsyncHelper(const GetEmailChannelRequest& re
 
 GetEndpointOutcome PinpointClient::GetEndpoint(const GetEndpointRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/endpoints/{endpoint-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/endpoints/";
+  ss << request.GetEndpointId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1461,9 +1594,11 @@ void PinpointClient::GetEndpointAsyncHelper(const GetEndpointRequest& request, c
 
 GetEventStreamOutcome PinpointClient::GetEventStream(const GetEventStreamRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/eventstream";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/eventstream";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1496,9 +1631,12 @@ void PinpointClient::GetEventStreamAsyncHelper(const GetEventStreamRequest& requ
 
 GetExportJobOutcome PinpointClient::GetExportJob(const GetExportJobRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/jobs/export/{job-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/jobs/export/";
+  ss << request.GetJobId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1531,9 +1669,11 @@ void PinpointClient::GetExportJobAsyncHelper(const GetExportJobRequest& request,
 
 GetExportJobsOutcome PinpointClient::GetExportJobs(const GetExportJobsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/jobs/export";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/jobs/export";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1566,9 +1706,11 @@ void PinpointClient::GetExportJobsAsyncHelper(const GetExportJobsRequest& reques
 
 GetGcmChannelOutcome PinpointClient::GetGcmChannel(const GetGcmChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/gcm";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/gcm";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1601,9 +1743,12 @@ void PinpointClient::GetGcmChannelAsyncHelper(const GetGcmChannelRequest& reques
 
 GetImportJobOutcome PinpointClient::GetImportJob(const GetImportJobRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/jobs/import/{job-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/jobs/import/";
+  ss << request.GetJobId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1636,9 +1781,11 @@ void PinpointClient::GetImportJobAsyncHelper(const GetImportJobRequest& request,
 
 GetImportJobsOutcome PinpointClient::GetImportJobs(const GetImportJobsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/jobs/import";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/jobs/import";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1671,9 +1818,12 @@ void PinpointClient::GetImportJobsAsyncHelper(const GetImportJobsRequest& reques
 
 GetSegmentOutcome PinpointClient::GetSegment(const GetSegmentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1706,9 +1856,13 @@ void PinpointClient::GetSegmentAsyncHelper(const GetSegmentRequest& request, con
 
 GetSegmentExportJobsOutcome PinpointClient::GetSegmentExportJobs(const GetSegmentExportJobsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}/jobs/export";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
+  ss << "/jobs/export";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1741,9 +1895,13 @@ void PinpointClient::GetSegmentExportJobsAsyncHelper(const GetSegmentExportJobsR
 
 GetSegmentImportJobsOutcome PinpointClient::GetSegmentImportJobs(const GetSegmentImportJobsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}/jobs/import";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
+  ss << "/jobs/import";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1776,9 +1934,13 @@ void PinpointClient::GetSegmentImportJobsAsyncHelper(const GetSegmentImportJobsR
 
 GetSegmentVersionOutcome PinpointClient::GetSegmentVersion(const GetSegmentVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}/versions/";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
+  ss << "/versions/";
   ss << request.GetVersion();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1812,9 +1974,13 @@ void PinpointClient::GetSegmentVersionAsyncHelper(const GetSegmentVersionRequest
 
 GetSegmentVersionsOutcome PinpointClient::GetSegmentVersions(const GetSegmentVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}/versions";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
+  ss << "/versions";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1847,9 +2013,11 @@ void PinpointClient::GetSegmentVersionsAsyncHelper(const GetSegmentVersionsReque
 
 GetSegmentsOutcome PinpointClient::GetSegments(const GetSegmentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1882,9 +2050,11 @@ void PinpointClient::GetSegmentsAsyncHelper(const GetSegmentsRequest& request, c
 
 GetSmsChannelOutcome PinpointClient::GetSmsChannel(const GetSmsChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/sms";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/sms";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1917,9 +2087,12 @@ void PinpointClient::GetSmsChannelAsyncHelper(const GetSmsChannelRequest& reques
 
 GetUserEndpointsOutcome PinpointClient::GetUserEndpoints(const GetUserEndpointsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/users/{user-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/users/";
+  ss << request.GetUserId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -1950,10 +2123,83 @@ void PinpointClient::GetUserEndpointsAsyncHelper(const GetUserEndpointsRequest& 
   handler(this, request, GetUserEndpoints(request), context);
 }
 
+GetVoiceChannelOutcome PinpointClient::GetVoiceChannel(const GetVoiceChannelRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/voice";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return GetVoiceChannelOutcome(GetVoiceChannelResult(outcome.GetResult()));
+  }
+  else
+  {
+    return GetVoiceChannelOutcome(outcome.GetError());
+  }
+}
+
+GetVoiceChannelOutcomeCallable PinpointClient::GetVoiceChannelCallable(const GetVoiceChannelRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< GetVoiceChannelOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->GetVoiceChannel(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void PinpointClient::GetVoiceChannelAsync(const GetVoiceChannelRequest& request, const GetVoiceChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->GetVoiceChannelAsyncHelper( request, handler, context ); } );
+}
+
+void PinpointClient::GetVoiceChannelAsyncHelper(const GetVoiceChannelRequest& request, const GetVoiceChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, GetVoiceChannel(request), context);
+}
+
+ListTagsForResourceOutcome PinpointClient::ListTagsForResource(const ListTagsForResourceRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/tags/";
+  ss << request.GetResourceArn();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListTagsForResourceOutcome(ListTagsForResourceResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListTagsForResourceOutcome(outcome.GetError());
+  }
+}
+
+ListTagsForResourceOutcomeCallable PinpointClient::ListTagsForResourceCallable(const ListTagsForResourceRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListTagsForResourceOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListTagsForResource(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void PinpointClient::ListTagsForResourceAsync(const ListTagsForResourceRequest& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListTagsForResourceAsyncHelper( request, handler, context ); } );
+}
+
+void PinpointClient::ListTagsForResourceAsyncHelper(const ListTagsForResourceRequest& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListTagsForResource(request), context);
+}
+
 PhoneNumberValidateOutcome PinpointClient::PhoneNumberValidate(const PhoneNumberValidateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/v1/phone/number/validate";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1987,9 +2233,11 @@ void PinpointClient::PhoneNumberValidateAsyncHelper(const PhoneNumberValidateReq
 
 PutEventStreamOutcome PinpointClient::PutEventStream(const PutEventStreamRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/eventstream";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/eventstream";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2022,9 +2270,11 @@ void PinpointClient::PutEventStreamAsyncHelper(const PutEventStreamRequest& requ
 
 PutEventsOutcome PinpointClient::PutEvents(const PutEventsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/events";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/events";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2057,9 +2307,12 @@ void PinpointClient::PutEventsAsyncHelper(const PutEventsRequest& request, const
 
 RemoveAttributesOutcome PinpointClient::RemoveAttributes(const RemoveAttributesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/attributes/{attribute-type}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/attributes/";
+  ss << request.GetAttributeType();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2092,9 +2345,11 @@ void PinpointClient::RemoveAttributesAsyncHelper(const RemoveAttributesRequest& 
 
 SendMessagesOutcome PinpointClient::SendMessages(const SendMessagesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/messages";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/messages";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2127,9 +2382,11 @@ void PinpointClient::SendMessagesAsyncHelper(const SendMessagesRequest& request,
 
 SendUsersMessagesOutcome PinpointClient::SendUsersMessages(const SendUsersMessagesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/users-messages";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/users-messages";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2160,11 +2417,85 @@ void PinpointClient::SendUsersMessagesAsyncHelper(const SendUsersMessagesRequest
   handler(this, request, SendUsersMessages(request), context);
 }
 
+TagResourceOutcome PinpointClient::TagResource(const TagResourceRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/tags/";
+  ss << request.GetResourceArn();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return TagResourceOutcome(NoResult());
+  }
+  else
+  {
+    return TagResourceOutcome(outcome.GetError());
+  }
+}
+
+TagResourceOutcomeCallable PinpointClient::TagResourceCallable(const TagResourceRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< TagResourceOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->TagResource(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void PinpointClient::TagResourceAsync(const TagResourceRequest& request, const TagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->TagResourceAsyncHelper( request, handler, context ); } );
+}
+
+void PinpointClient::TagResourceAsyncHelper(const TagResourceRequest& request, const TagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, TagResource(request), context);
+}
+
+UntagResourceOutcome PinpointClient::UntagResource(const UntagResourceRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/tags/";
+  ss << request.GetResourceArn();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_DELETE, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return UntagResourceOutcome(NoResult());
+  }
+  else
+  {
+    return UntagResourceOutcome(outcome.GetError());
+  }
+}
+
+UntagResourceOutcomeCallable PinpointClient::UntagResourceCallable(const UntagResourceRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< UntagResourceOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->UntagResource(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void PinpointClient::UntagResourceAsync(const UntagResourceRequest& request, const UntagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->UntagResourceAsyncHelper( request, handler, context ); } );
+}
+
+void PinpointClient::UntagResourceAsyncHelper(const UntagResourceRequest& request, const UntagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, UntagResource(request), context);
+}
+
 UpdateAdmChannelOutcome PinpointClient::UpdateAdmChannel(const UpdateAdmChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/adm";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/adm";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2197,9 +2528,11 @@ void PinpointClient::UpdateAdmChannelAsyncHelper(const UpdateAdmChannelRequest& 
 
 UpdateApnsChannelOutcome PinpointClient::UpdateApnsChannel(const UpdateApnsChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2232,9 +2565,11 @@ void PinpointClient::UpdateApnsChannelAsyncHelper(const UpdateApnsChannelRequest
 
 UpdateApnsSandboxChannelOutcome PinpointClient::UpdateApnsSandboxChannel(const UpdateApnsSandboxChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_sandbox";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_sandbox";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2267,9 +2602,11 @@ void PinpointClient::UpdateApnsSandboxChannelAsyncHelper(const UpdateApnsSandbox
 
 UpdateApnsVoipChannelOutcome PinpointClient::UpdateApnsVoipChannel(const UpdateApnsVoipChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_voip";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_voip";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2302,9 +2639,11 @@ void PinpointClient::UpdateApnsVoipChannelAsyncHelper(const UpdateApnsVoipChanne
 
 UpdateApnsVoipSandboxChannelOutcome PinpointClient::UpdateApnsVoipSandboxChannel(const UpdateApnsVoipSandboxChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/apns_voip_sandbox";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/apns_voip_sandbox";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2337,9 +2676,11 @@ void PinpointClient::UpdateApnsVoipSandboxChannelAsyncHelper(const UpdateApnsVoi
 
 UpdateApplicationSettingsOutcome PinpointClient::UpdateApplicationSettings(const UpdateApplicationSettingsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/settings";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/settings";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2372,9 +2713,11 @@ void PinpointClient::UpdateApplicationSettingsAsyncHelper(const UpdateApplicatio
 
 UpdateBaiduChannelOutcome PinpointClient::UpdateBaiduChannel(const UpdateBaiduChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/baidu";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/baidu";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2407,9 +2750,12 @@ void PinpointClient::UpdateBaiduChannelAsyncHelper(const UpdateBaiduChannelReque
 
 UpdateCampaignOutcome PinpointClient::UpdateCampaign(const UpdateCampaignRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/campaigns/{campaign-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/campaigns/";
+  ss << request.GetCampaignId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2442,9 +2788,11 @@ void PinpointClient::UpdateCampaignAsyncHelper(const UpdateCampaignRequest& requ
 
 UpdateEmailChannelOutcome PinpointClient::UpdateEmailChannel(const UpdateEmailChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/email";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/email";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2477,9 +2825,12 @@ void PinpointClient::UpdateEmailChannelAsyncHelper(const UpdateEmailChannelReque
 
 UpdateEndpointOutcome PinpointClient::UpdateEndpoint(const UpdateEndpointRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/endpoints/{endpoint-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/endpoints/";
+  ss << request.GetEndpointId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2512,9 +2863,11 @@ void PinpointClient::UpdateEndpointAsyncHelper(const UpdateEndpointRequest& requ
 
 UpdateEndpointsBatchOutcome PinpointClient::UpdateEndpointsBatch(const UpdateEndpointsBatchRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/endpoints";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/endpoints";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2547,9 +2900,11 @@ void PinpointClient::UpdateEndpointsBatchAsyncHelper(const UpdateEndpointsBatchR
 
 UpdateGcmChannelOutcome PinpointClient::UpdateGcmChannel(const UpdateGcmChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/gcm";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/gcm";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2582,9 +2937,12 @@ void PinpointClient::UpdateGcmChannelAsyncHelper(const UpdateGcmChannelRequest& 
 
 UpdateSegmentOutcome PinpointClient::UpdateSegment(const UpdateSegmentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/segments/{segment-id}";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/segments/";
+  ss << request.GetSegmentId();
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2617,9 +2975,11 @@ void PinpointClient::UpdateSegmentAsyncHelper(const UpdateSegmentRequest& reques
 
 UpdateSmsChannelOutcome PinpointClient::UpdateSmsChannel(const UpdateSmsChannelRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
-  ss << "/v1/apps/{application-id}/channels/sms";
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/sms";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
   if(outcome.IsSuccess())
@@ -2648,5 +3008,42 @@ void PinpointClient::UpdateSmsChannelAsync(const UpdateSmsChannelRequest& reques
 void PinpointClient::UpdateSmsChannelAsyncHelper(const UpdateSmsChannelRequest& request, const UpdateSmsChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
 {
   handler(this, request, UpdateSmsChannel(request), context);
+}
+
+UpdateVoiceChannelOutcome PinpointClient::UpdateVoiceChannel(const UpdateVoiceChannelRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/v1/apps/";
+  ss << request.GetApplicationId();
+  ss << "/channels/voice";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_PUT, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return UpdateVoiceChannelOutcome(UpdateVoiceChannelResult(outcome.GetResult()));
+  }
+  else
+  {
+    return UpdateVoiceChannelOutcome(outcome.GetError());
+  }
+}
+
+UpdateVoiceChannelOutcomeCallable PinpointClient::UpdateVoiceChannelCallable(const UpdateVoiceChannelRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< UpdateVoiceChannelOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->UpdateVoiceChannel(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void PinpointClient::UpdateVoiceChannelAsync(const UpdateVoiceChannelRequest& request, const UpdateVoiceChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->UpdateVoiceChannelAsyncHelper( request, handler, context ); } );
+}
+
+void PinpointClient::UpdateVoiceChannelAsyncHelper(const UpdateVoiceChannelRequest& request, const UpdateVoiceChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, UpdateVoiceChannel(request), context);
 }
 

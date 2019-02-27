@@ -21,6 +21,7 @@
 #include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/iot/model/PresignedUrlConfig.h>
 #include <aws/iot/model/JobExecutionsRolloutConfig.h>
+#include <aws/iot/model/AbortConfig.h>
 #include <aws/core/utils/DateTime.h>
 #include <aws/iot/model/JobProcessDetails.h>
 #include <aws/iot/model/TimeoutConfig.h>
@@ -242,6 +243,42 @@ namespace Model
 
 
     /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline const Aws::String& GetReasonCode() const{ return m_reasonCode; }
+
+    /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline void SetReasonCode(const Aws::String& value) { m_reasonCodeHasBeenSet = true; m_reasonCode = value; }
+
+    /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline void SetReasonCode(Aws::String&& value) { m_reasonCodeHasBeenSet = true; m_reasonCode = std::move(value); }
+
+    /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline void SetReasonCode(const char* value) { m_reasonCodeHasBeenSet = true; m_reasonCode.assign(value); }
+
+    /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline Job& WithReasonCode(const Aws::String& value) { SetReasonCode(value); return *this;}
+
+    /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline Job& WithReasonCode(Aws::String&& value) { SetReasonCode(std::move(value)); return *this;}
+
+    /**
+     * <p>If the job was updated, provides the reason code for the update.</p>
+     */
+    inline Job& WithReasonCode(const char* value) { SetReasonCode(value); return *this;}
+
+
+    /**
      * <p>If the job was updated, describes the reason for the update.</p>
      */
     inline const Aws::String& GetComment() const{ return m_comment; }
@@ -407,79 +444,105 @@ namespace Model
 
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was created.</p>
+     * <p>Configuration for criteria to abort the job.</p>
+     */
+    inline const AbortConfig& GetAbortConfig() const{ return m_abortConfig; }
+
+    /**
+     * <p>Configuration for criteria to abort the job.</p>
+     */
+    inline void SetAbortConfig(const AbortConfig& value) { m_abortConfigHasBeenSet = true; m_abortConfig = value; }
+
+    /**
+     * <p>Configuration for criteria to abort the job.</p>
+     */
+    inline void SetAbortConfig(AbortConfig&& value) { m_abortConfigHasBeenSet = true; m_abortConfig = std::move(value); }
+
+    /**
+     * <p>Configuration for criteria to abort the job.</p>
+     */
+    inline Job& WithAbortConfig(const AbortConfig& value) { SetAbortConfig(value); return *this;}
+
+    /**
+     * <p>Configuration for criteria to abort the job.</p>
+     */
+    inline Job& WithAbortConfig(AbortConfig&& value) { SetAbortConfig(std::move(value)); return *this;}
+
+
+    /**
+     * <p>The time, in seconds since the epoch, when the job was created.</p>
      */
     inline const Aws::Utils::DateTime& GetCreatedAt() const{ return m_createdAt; }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was created.</p>
+     * <p>The time, in seconds since the epoch, when the job was created.</p>
      */
     inline void SetCreatedAt(const Aws::Utils::DateTime& value) { m_createdAtHasBeenSet = true; m_createdAt = value; }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was created.</p>
+     * <p>The time, in seconds since the epoch, when the job was created.</p>
      */
     inline void SetCreatedAt(Aws::Utils::DateTime&& value) { m_createdAtHasBeenSet = true; m_createdAt = std::move(value); }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was created.</p>
+     * <p>The time, in seconds since the epoch, when the job was created.</p>
      */
     inline Job& WithCreatedAt(const Aws::Utils::DateTime& value) { SetCreatedAt(value); return *this;}
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was created.</p>
+     * <p>The time, in seconds since the epoch, when the job was created.</p>
      */
     inline Job& WithCreatedAt(Aws::Utils::DateTime&& value) { SetCreatedAt(std::move(value)); return *this;}
 
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was last updated.</p>
+     * <p>The time, in seconds since the epoch, when the job was last updated.</p>
      */
     inline const Aws::Utils::DateTime& GetLastUpdatedAt() const{ return m_lastUpdatedAt; }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was last updated.</p>
+     * <p>The time, in seconds since the epoch, when the job was last updated.</p>
      */
     inline void SetLastUpdatedAt(const Aws::Utils::DateTime& value) { m_lastUpdatedAtHasBeenSet = true; m_lastUpdatedAt = value; }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was last updated.</p>
+     * <p>The time, in seconds since the epoch, when the job was last updated.</p>
      */
     inline void SetLastUpdatedAt(Aws::Utils::DateTime&& value) { m_lastUpdatedAtHasBeenSet = true; m_lastUpdatedAt = std::move(value); }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was last updated.</p>
+     * <p>The time, in seconds since the epoch, when the job was last updated.</p>
      */
     inline Job& WithLastUpdatedAt(const Aws::Utils::DateTime& value) { SetLastUpdatedAt(value); return *this;}
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was last updated.</p>
+     * <p>The time, in seconds since the epoch, when the job was last updated.</p>
      */
     inline Job& WithLastUpdatedAt(Aws::Utils::DateTime&& value) { SetLastUpdatedAt(std::move(value)); return *this;}
 
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was completed.</p>
+     * <p>The time, in seconds since the epoch, when the job was completed.</p>
      */
     inline const Aws::Utils::DateTime& GetCompletedAt() const{ return m_completedAt; }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was completed.</p>
+     * <p>The time, in seconds since the epoch, when the job was completed.</p>
      */
     inline void SetCompletedAt(const Aws::Utils::DateTime& value) { m_completedAtHasBeenSet = true; m_completedAt = value; }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was completed.</p>
+     * <p>The time, in seconds since the epoch, when the job was completed.</p>
      */
     inline void SetCompletedAt(Aws::Utils::DateTime&& value) { m_completedAtHasBeenSet = true; m_completedAt = std::move(value); }
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was completed.</p>
+     * <p>The time, in seconds since the epoch, when the job was completed.</p>
      */
     inline Job& WithCompletedAt(const Aws::Utils::DateTime& value) { SetCompletedAt(value); return *this;}
 
     /**
-     * <p>The time, in milliseconds since the epoch, when the job was completed.</p>
+     * <p>The time, in seconds since the epoch, when the job was completed.</p>
      */
     inline Job& WithCompletedAt(Aws::Utils::DateTime&& value) { SetCompletedAt(std::move(value)); return *this;}
 
@@ -572,6 +635,9 @@ namespace Model
     bool m_forceCanceled;
     bool m_forceCanceledHasBeenSet;
 
+    Aws::String m_reasonCode;
+    bool m_reasonCodeHasBeenSet;
+
     Aws::String m_comment;
     bool m_commentHasBeenSet;
 
@@ -586,6 +652,9 @@ namespace Model
 
     JobExecutionsRolloutConfig m_jobExecutionsRolloutConfig;
     bool m_jobExecutionsRolloutConfigHasBeenSet;
+
+    AbortConfig m_abortConfig;
+    bool m_abortConfigHasBeenSet;
 
     Aws::Utils::DateTime m_createdAt;
     bool m_createdAtHasBeenSet;

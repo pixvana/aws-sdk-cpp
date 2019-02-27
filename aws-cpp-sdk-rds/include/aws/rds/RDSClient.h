@@ -42,13 +42,16 @@
 #include <aws/rds/model/CreateDBSnapshotResult.h>
 #include <aws/rds/model/CreateDBSubnetGroupResult.h>
 #include <aws/rds/model/CreateEventSubscriptionResult.h>
+#include <aws/rds/model/CreateGlobalClusterResult.h>
 #include <aws/rds/model/CreateOptionGroupResult.h>
 #include <aws/rds/model/DeleteDBClusterResult.h>
 #include <aws/rds/model/DeleteDBClusterEndpointResult.h>
 #include <aws/rds/model/DeleteDBClusterSnapshotResult.h>
 #include <aws/rds/model/DeleteDBInstanceResult.h>
+#include <aws/rds/model/DeleteDBInstanceAutomatedBackupResult.h>
 #include <aws/rds/model/DeleteDBSnapshotResult.h>
 #include <aws/rds/model/DeleteEventSubscriptionResult.h>
+#include <aws/rds/model/DeleteGlobalClusterResult.h>
 #include <aws/rds/model/DescribeAccountAttributesResult.h>
 #include <aws/rds/model/DescribeCertificatesResult.h>
 #include <aws/rds/model/DescribeDBClusterBacktracksResult.h>
@@ -59,6 +62,7 @@
 #include <aws/rds/model/DescribeDBClusterSnapshotsResult.h>
 #include <aws/rds/model/DescribeDBClustersResult.h>
 #include <aws/rds/model/DescribeDBEngineVersionsResult.h>
+#include <aws/rds/model/DescribeDBInstanceAutomatedBackupsResult.h>
 #include <aws/rds/model/DescribeDBInstancesResult.h>
 #include <aws/rds/model/DescribeDBLogFilesResult.h>
 #include <aws/rds/model/DescribeDBParameterGroupsResult.h>
@@ -72,6 +76,7 @@
 #include <aws/rds/model/DescribeEventCategoriesResult.h>
 #include <aws/rds/model/DescribeEventSubscriptionsResult.h>
 #include <aws/rds/model/DescribeEventsResult.h>
+#include <aws/rds/model/DescribeGlobalClustersResult.h>
 #include <aws/rds/model/DescribeOptionGroupOptionsResult.h>
 #include <aws/rds/model/DescribeOptionGroupsResult.h>
 #include <aws/rds/model/DescribeOrderableDBInstanceOptionsResult.h>
@@ -94,11 +99,13 @@
 #include <aws/rds/model/ModifyDBSnapshotAttributeResult.h>
 #include <aws/rds/model/ModifyDBSubnetGroupResult.h>
 #include <aws/rds/model/ModifyEventSubscriptionResult.h>
+#include <aws/rds/model/ModifyGlobalClusterResult.h>
 #include <aws/rds/model/ModifyOptionGroupResult.h>
 #include <aws/rds/model/PromoteReadReplicaResult.h>
 #include <aws/rds/model/PromoteReadReplicaDBClusterResult.h>
 #include <aws/rds/model/PurchaseReservedDBInstancesOfferingResult.h>
 #include <aws/rds/model/RebootDBInstanceResult.h>
+#include <aws/rds/model/RemoveFromGlobalClusterResult.h>
 #include <aws/rds/model/RemoveSourceIdentifierFromSubscriptionResult.h>
 #include <aws/rds/model/ResetDBClusterParameterGroupResult.h>
 #include <aws/rds/model/ResetDBParameterGroupResult.h>
@@ -158,6 +165,7 @@ namespace Aws
     namespace Model
     {
             class AddRoleToDBClusterRequest;
+        class AddRoleToDBInstanceRequest;
         class AddSourceIdentifierToSubscriptionRequest;
         class AddTagsToResourceRequest;
         class ApplyPendingMaintenanceActionRequest;
@@ -179,17 +187,20 @@ namespace Aws
         class CreateDBSnapshotRequest;
         class CreateDBSubnetGroupRequest;
         class CreateEventSubscriptionRequest;
+        class CreateGlobalClusterRequest;
         class CreateOptionGroupRequest;
         class DeleteDBClusterRequest;
         class DeleteDBClusterEndpointRequest;
         class DeleteDBClusterParameterGroupRequest;
         class DeleteDBClusterSnapshotRequest;
         class DeleteDBInstanceRequest;
+        class DeleteDBInstanceAutomatedBackupRequest;
         class DeleteDBParameterGroupRequest;
         class DeleteDBSecurityGroupRequest;
         class DeleteDBSnapshotRequest;
         class DeleteDBSubnetGroupRequest;
         class DeleteEventSubscriptionRequest;
+        class DeleteGlobalClusterRequest;
         class DeleteOptionGroupRequest;
         class DescribeAccountAttributesRequest;
         class DescribeCertificatesRequest;
@@ -201,6 +212,7 @@ namespace Aws
         class DescribeDBClusterSnapshotsRequest;
         class DescribeDBClustersRequest;
         class DescribeDBEngineVersionsRequest;
+        class DescribeDBInstanceAutomatedBackupsRequest;
         class DescribeDBInstancesRequest;
         class DescribeDBLogFilesRequest;
         class DescribeDBParameterGroupsRequest;
@@ -214,6 +226,7 @@ namespace Aws
         class DescribeEventCategoriesRequest;
         class DescribeEventSubscriptionsRequest;
         class DescribeEventsRequest;
+        class DescribeGlobalClustersRequest;
         class DescribeOptionGroupOptionsRequest;
         class DescribeOptionGroupsRequest;
         class DescribeOrderableDBInstanceOptionsRequest;
@@ -236,12 +249,15 @@ namespace Aws
         class ModifyDBSnapshotAttributeRequest;
         class ModifyDBSubnetGroupRequest;
         class ModifyEventSubscriptionRequest;
+        class ModifyGlobalClusterRequest;
         class ModifyOptionGroupRequest;
         class PromoteReadReplicaRequest;
         class PromoteReadReplicaDBClusterRequest;
         class PurchaseReservedDBInstancesOfferingRequest;
         class RebootDBInstanceRequest;
+        class RemoveFromGlobalClusterRequest;
         class RemoveRoleFromDBClusterRequest;
+        class RemoveRoleFromDBInstanceRequest;
         class RemoveSourceIdentifierFromSubscriptionRequest;
         class RemoveTagsFromResourceRequest;
         class ResetDBClusterParameterGroupRequest;
@@ -259,6 +275,7 @@ namespace Aws
         class StopDBInstanceRequest;
 
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> AddRoleToDBClusterOutcome;
+        typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> AddRoleToDBInstanceOutcome;
         typedef Aws::Utils::Outcome<AddSourceIdentifierToSubscriptionResult, Aws::Client::AWSError<RDSErrors>> AddSourceIdentifierToSubscriptionOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> AddTagsToResourceOutcome;
         typedef Aws::Utils::Outcome<ApplyPendingMaintenanceActionResult, Aws::Client::AWSError<RDSErrors>> ApplyPendingMaintenanceActionOutcome;
@@ -280,17 +297,20 @@ namespace Aws
         typedef Aws::Utils::Outcome<CreateDBSnapshotResult, Aws::Client::AWSError<RDSErrors>> CreateDBSnapshotOutcome;
         typedef Aws::Utils::Outcome<CreateDBSubnetGroupResult, Aws::Client::AWSError<RDSErrors>> CreateDBSubnetGroupOutcome;
         typedef Aws::Utils::Outcome<CreateEventSubscriptionResult, Aws::Client::AWSError<RDSErrors>> CreateEventSubscriptionOutcome;
+        typedef Aws::Utils::Outcome<CreateGlobalClusterResult, Aws::Client::AWSError<RDSErrors>> CreateGlobalClusterOutcome;
         typedef Aws::Utils::Outcome<CreateOptionGroupResult, Aws::Client::AWSError<RDSErrors>> CreateOptionGroupOutcome;
         typedef Aws::Utils::Outcome<DeleteDBClusterResult, Aws::Client::AWSError<RDSErrors>> DeleteDBClusterOutcome;
         typedef Aws::Utils::Outcome<DeleteDBClusterEndpointResult, Aws::Client::AWSError<RDSErrors>> DeleteDBClusterEndpointOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> DeleteDBClusterParameterGroupOutcome;
         typedef Aws::Utils::Outcome<DeleteDBClusterSnapshotResult, Aws::Client::AWSError<RDSErrors>> DeleteDBClusterSnapshotOutcome;
         typedef Aws::Utils::Outcome<DeleteDBInstanceResult, Aws::Client::AWSError<RDSErrors>> DeleteDBInstanceOutcome;
+        typedef Aws::Utils::Outcome<DeleteDBInstanceAutomatedBackupResult, Aws::Client::AWSError<RDSErrors>> DeleteDBInstanceAutomatedBackupOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> DeleteDBParameterGroupOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> DeleteDBSecurityGroupOutcome;
         typedef Aws::Utils::Outcome<DeleteDBSnapshotResult, Aws::Client::AWSError<RDSErrors>> DeleteDBSnapshotOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> DeleteDBSubnetGroupOutcome;
         typedef Aws::Utils::Outcome<DeleteEventSubscriptionResult, Aws::Client::AWSError<RDSErrors>> DeleteEventSubscriptionOutcome;
+        typedef Aws::Utils::Outcome<DeleteGlobalClusterResult, Aws::Client::AWSError<RDSErrors>> DeleteGlobalClusterOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> DeleteOptionGroupOutcome;
         typedef Aws::Utils::Outcome<DescribeAccountAttributesResult, Aws::Client::AWSError<RDSErrors>> DescribeAccountAttributesOutcome;
         typedef Aws::Utils::Outcome<DescribeCertificatesResult, Aws::Client::AWSError<RDSErrors>> DescribeCertificatesOutcome;
@@ -302,6 +322,7 @@ namespace Aws
         typedef Aws::Utils::Outcome<DescribeDBClusterSnapshotsResult, Aws::Client::AWSError<RDSErrors>> DescribeDBClusterSnapshotsOutcome;
         typedef Aws::Utils::Outcome<DescribeDBClustersResult, Aws::Client::AWSError<RDSErrors>> DescribeDBClustersOutcome;
         typedef Aws::Utils::Outcome<DescribeDBEngineVersionsResult, Aws::Client::AWSError<RDSErrors>> DescribeDBEngineVersionsOutcome;
+        typedef Aws::Utils::Outcome<DescribeDBInstanceAutomatedBackupsResult, Aws::Client::AWSError<RDSErrors>> DescribeDBInstanceAutomatedBackupsOutcome;
         typedef Aws::Utils::Outcome<DescribeDBInstancesResult, Aws::Client::AWSError<RDSErrors>> DescribeDBInstancesOutcome;
         typedef Aws::Utils::Outcome<DescribeDBLogFilesResult, Aws::Client::AWSError<RDSErrors>> DescribeDBLogFilesOutcome;
         typedef Aws::Utils::Outcome<DescribeDBParameterGroupsResult, Aws::Client::AWSError<RDSErrors>> DescribeDBParameterGroupsOutcome;
@@ -315,6 +336,7 @@ namespace Aws
         typedef Aws::Utils::Outcome<DescribeEventCategoriesResult, Aws::Client::AWSError<RDSErrors>> DescribeEventCategoriesOutcome;
         typedef Aws::Utils::Outcome<DescribeEventSubscriptionsResult, Aws::Client::AWSError<RDSErrors>> DescribeEventSubscriptionsOutcome;
         typedef Aws::Utils::Outcome<DescribeEventsResult, Aws::Client::AWSError<RDSErrors>> DescribeEventsOutcome;
+        typedef Aws::Utils::Outcome<DescribeGlobalClustersResult, Aws::Client::AWSError<RDSErrors>> DescribeGlobalClustersOutcome;
         typedef Aws::Utils::Outcome<DescribeOptionGroupOptionsResult, Aws::Client::AWSError<RDSErrors>> DescribeOptionGroupOptionsOutcome;
         typedef Aws::Utils::Outcome<DescribeOptionGroupsResult, Aws::Client::AWSError<RDSErrors>> DescribeOptionGroupsOutcome;
         typedef Aws::Utils::Outcome<DescribeOrderableDBInstanceOptionsResult, Aws::Client::AWSError<RDSErrors>> DescribeOrderableDBInstanceOptionsOutcome;
@@ -337,12 +359,15 @@ namespace Aws
         typedef Aws::Utils::Outcome<ModifyDBSnapshotAttributeResult, Aws::Client::AWSError<RDSErrors>> ModifyDBSnapshotAttributeOutcome;
         typedef Aws::Utils::Outcome<ModifyDBSubnetGroupResult, Aws::Client::AWSError<RDSErrors>> ModifyDBSubnetGroupOutcome;
         typedef Aws::Utils::Outcome<ModifyEventSubscriptionResult, Aws::Client::AWSError<RDSErrors>> ModifyEventSubscriptionOutcome;
+        typedef Aws::Utils::Outcome<ModifyGlobalClusterResult, Aws::Client::AWSError<RDSErrors>> ModifyGlobalClusterOutcome;
         typedef Aws::Utils::Outcome<ModifyOptionGroupResult, Aws::Client::AWSError<RDSErrors>> ModifyOptionGroupOutcome;
         typedef Aws::Utils::Outcome<PromoteReadReplicaResult, Aws::Client::AWSError<RDSErrors>> PromoteReadReplicaOutcome;
         typedef Aws::Utils::Outcome<PromoteReadReplicaDBClusterResult, Aws::Client::AWSError<RDSErrors>> PromoteReadReplicaDBClusterOutcome;
         typedef Aws::Utils::Outcome<PurchaseReservedDBInstancesOfferingResult, Aws::Client::AWSError<RDSErrors>> PurchaseReservedDBInstancesOfferingOutcome;
         typedef Aws::Utils::Outcome<RebootDBInstanceResult, Aws::Client::AWSError<RDSErrors>> RebootDBInstanceOutcome;
+        typedef Aws::Utils::Outcome<RemoveFromGlobalClusterResult, Aws::Client::AWSError<RDSErrors>> RemoveFromGlobalClusterOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> RemoveRoleFromDBClusterOutcome;
+        typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> RemoveRoleFromDBInstanceOutcome;
         typedef Aws::Utils::Outcome<RemoveSourceIdentifierFromSubscriptionResult, Aws::Client::AWSError<RDSErrors>> RemoveSourceIdentifierFromSubscriptionOutcome;
         typedef Aws::Utils::Outcome<Aws::NoResult, Aws::Client::AWSError<RDSErrors>> RemoveTagsFromResourceOutcome;
         typedef Aws::Utils::Outcome<ResetDBClusterParameterGroupResult, Aws::Client::AWSError<RDSErrors>> ResetDBClusterParameterGroupOutcome;
@@ -360,6 +385,7 @@ namespace Aws
         typedef Aws::Utils::Outcome<StopDBInstanceResult, Aws::Client::AWSError<RDSErrors>> StopDBInstanceOutcome;
 
         typedef std::future<AddRoleToDBClusterOutcome> AddRoleToDBClusterOutcomeCallable;
+        typedef std::future<AddRoleToDBInstanceOutcome> AddRoleToDBInstanceOutcomeCallable;
         typedef std::future<AddSourceIdentifierToSubscriptionOutcome> AddSourceIdentifierToSubscriptionOutcomeCallable;
         typedef std::future<AddTagsToResourceOutcome> AddTagsToResourceOutcomeCallable;
         typedef std::future<ApplyPendingMaintenanceActionOutcome> ApplyPendingMaintenanceActionOutcomeCallable;
@@ -381,17 +407,20 @@ namespace Aws
         typedef std::future<CreateDBSnapshotOutcome> CreateDBSnapshotOutcomeCallable;
         typedef std::future<CreateDBSubnetGroupOutcome> CreateDBSubnetGroupOutcomeCallable;
         typedef std::future<CreateEventSubscriptionOutcome> CreateEventSubscriptionOutcomeCallable;
+        typedef std::future<CreateGlobalClusterOutcome> CreateGlobalClusterOutcomeCallable;
         typedef std::future<CreateOptionGroupOutcome> CreateOptionGroupOutcomeCallable;
         typedef std::future<DeleteDBClusterOutcome> DeleteDBClusterOutcomeCallable;
         typedef std::future<DeleteDBClusterEndpointOutcome> DeleteDBClusterEndpointOutcomeCallable;
         typedef std::future<DeleteDBClusterParameterGroupOutcome> DeleteDBClusterParameterGroupOutcomeCallable;
         typedef std::future<DeleteDBClusterSnapshotOutcome> DeleteDBClusterSnapshotOutcomeCallable;
         typedef std::future<DeleteDBInstanceOutcome> DeleteDBInstanceOutcomeCallable;
+        typedef std::future<DeleteDBInstanceAutomatedBackupOutcome> DeleteDBInstanceAutomatedBackupOutcomeCallable;
         typedef std::future<DeleteDBParameterGroupOutcome> DeleteDBParameterGroupOutcomeCallable;
         typedef std::future<DeleteDBSecurityGroupOutcome> DeleteDBSecurityGroupOutcomeCallable;
         typedef std::future<DeleteDBSnapshotOutcome> DeleteDBSnapshotOutcomeCallable;
         typedef std::future<DeleteDBSubnetGroupOutcome> DeleteDBSubnetGroupOutcomeCallable;
         typedef std::future<DeleteEventSubscriptionOutcome> DeleteEventSubscriptionOutcomeCallable;
+        typedef std::future<DeleteGlobalClusterOutcome> DeleteGlobalClusterOutcomeCallable;
         typedef std::future<DeleteOptionGroupOutcome> DeleteOptionGroupOutcomeCallable;
         typedef std::future<DescribeAccountAttributesOutcome> DescribeAccountAttributesOutcomeCallable;
         typedef std::future<DescribeCertificatesOutcome> DescribeCertificatesOutcomeCallable;
@@ -403,6 +432,7 @@ namespace Aws
         typedef std::future<DescribeDBClusterSnapshotsOutcome> DescribeDBClusterSnapshotsOutcomeCallable;
         typedef std::future<DescribeDBClustersOutcome> DescribeDBClustersOutcomeCallable;
         typedef std::future<DescribeDBEngineVersionsOutcome> DescribeDBEngineVersionsOutcomeCallable;
+        typedef std::future<DescribeDBInstanceAutomatedBackupsOutcome> DescribeDBInstanceAutomatedBackupsOutcomeCallable;
         typedef std::future<DescribeDBInstancesOutcome> DescribeDBInstancesOutcomeCallable;
         typedef std::future<DescribeDBLogFilesOutcome> DescribeDBLogFilesOutcomeCallable;
         typedef std::future<DescribeDBParameterGroupsOutcome> DescribeDBParameterGroupsOutcomeCallable;
@@ -416,6 +446,7 @@ namespace Aws
         typedef std::future<DescribeEventCategoriesOutcome> DescribeEventCategoriesOutcomeCallable;
         typedef std::future<DescribeEventSubscriptionsOutcome> DescribeEventSubscriptionsOutcomeCallable;
         typedef std::future<DescribeEventsOutcome> DescribeEventsOutcomeCallable;
+        typedef std::future<DescribeGlobalClustersOutcome> DescribeGlobalClustersOutcomeCallable;
         typedef std::future<DescribeOptionGroupOptionsOutcome> DescribeOptionGroupOptionsOutcomeCallable;
         typedef std::future<DescribeOptionGroupsOutcome> DescribeOptionGroupsOutcomeCallable;
         typedef std::future<DescribeOrderableDBInstanceOptionsOutcome> DescribeOrderableDBInstanceOptionsOutcomeCallable;
@@ -438,12 +469,15 @@ namespace Aws
         typedef std::future<ModifyDBSnapshotAttributeOutcome> ModifyDBSnapshotAttributeOutcomeCallable;
         typedef std::future<ModifyDBSubnetGroupOutcome> ModifyDBSubnetGroupOutcomeCallable;
         typedef std::future<ModifyEventSubscriptionOutcome> ModifyEventSubscriptionOutcomeCallable;
+        typedef std::future<ModifyGlobalClusterOutcome> ModifyGlobalClusterOutcomeCallable;
         typedef std::future<ModifyOptionGroupOutcome> ModifyOptionGroupOutcomeCallable;
         typedef std::future<PromoteReadReplicaOutcome> PromoteReadReplicaOutcomeCallable;
         typedef std::future<PromoteReadReplicaDBClusterOutcome> PromoteReadReplicaDBClusterOutcomeCallable;
         typedef std::future<PurchaseReservedDBInstancesOfferingOutcome> PurchaseReservedDBInstancesOfferingOutcomeCallable;
         typedef std::future<RebootDBInstanceOutcome> RebootDBInstanceOutcomeCallable;
+        typedef std::future<RemoveFromGlobalClusterOutcome> RemoveFromGlobalClusterOutcomeCallable;
         typedef std::future<RemoveRoleFromDBClusterOutcome> RemoveRoleFromDBClusterOutcomeCallable;
+        typedef std::future<RemoveRoleFromDBInstanceOutcome> RemoveRoleFromDBInstanceOutcomeCallable;
         typedef std::future<RemoveSourceIdentifierFromSubscriptionOutcome> RemoveSourceIdentifierFromSubscriptionOutcomeCallable;
         typedef std::future<RemoveTagsFromResourceOutcome> RemoveTagsFromResourceOutcomeCallable;
         typedef std::future<ResetDBClusterParameterGroupOutcome> ResetDBClusterParameterGroupOutcomeCallable;
@@ -464,6 +498,7 @@ namespace Aws
         class RDSClient;
 
         typedef std::function<void(const RDSClient*, const Model::AddRoleToDBClusterRequest&, const Model::AddRoleToDBClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AddRoleToDBClusterResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::AddRoleToDBInstanceRequest&, const Model::AddRoleToDBInstanceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AddRoleToDBInstanceResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::AddSourceIdentifierToSubscriptionRequest&, const Model::AddSourceIdentifierToSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AddSourceIdentifierToSubscriptionResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::AddTagsToResourceRequest&, const Model::AddTagsToResourceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AddTagsToResourceResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::ApplyPendingMaintenanceActionRequest&, const Model::ApplyPendingMaintenanceActionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ApplyPendingMaintenanceActionResponseReceivedHandler;
@@ -485,17 +520,20 @@ namespace Aws
     typedef std::function<void(const RDSClient*, const Model::CreateDBSnapshotRequest&, const Model::CreateDBSnapshotOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateDBSnapshotResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::CreateDBSubnetGroupRequest&, const Model::CreateDBSubnetGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateDBSubnetGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::CreateEventSubscriptionRequest&, const Model::CreateEventSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateEventSubscriptionResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::CreateGlobalClusterRequest&, const Model::CreateGlobalClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateGlobalClusterResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::CreateOptionGroupRequest&, const Model::CreateOptionGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateOptionGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBClusterRequest&, const Model::DeleteDBClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBClusterResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBClusterEndpointRequest&, const Model::DeleteDBClusterEndpointOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBClusterEndpointResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBClusterParameterGroupRequest&, const Model::DeleteDBClusterParameterGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBClusterParameterGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBClusterSnapshotRequest&, const Model::DeleteDBClusterSnapshotOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBClusterSnapshotResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBInstanceRequest&, const Model::DeleteDBInstanceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBInstanceResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::DeleteDBInstanceAutomatedBackupRequest&, const Model::DeleteDBInstanceAutomatedBackupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBInstanceAutomatedBackupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBParameterGroupRequest&, const Model::DeleteDBParameterGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBParameterGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBSecurityGroupRequest&, const Model::DeleteDBSecurityGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBSecurityGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBSnapshotRequest&, const Model::DeleteDBSnapshotOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBSnapshotResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteDBSubnetGroupRequest&, const Model::DeleteDBSubnetGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDBSubnetGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteEventSubscriptionRequest&, const Model::DeleteEventSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteEventSubscriptionResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::DeleteGlobalClusterRequest&, const Model::DeleteGlobalClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteGlobalClusterResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DeleteOptionGroupRequest&, const Model::DeleteOptionGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteOptionGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeAccountAttributesRequest&, const Model::DescribeAccountAttributesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeAccountAttributesResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeCertificatesRequest&, const Model::DescribeCertificatesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeCertificatesResponseReceivedHandler;
@@ -507,6 +545,7 @@ namespace Aws
     typedef std::function<void(const RDSClient*, const Model::DescribeDBClusterSnapshotsRequest&, const Model::DescribeDBClusterSnapshotsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBClusterSnapshotsResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeDBClustersRequest&, const Model::DescribeDBClustersOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBClustersResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeDBEngineVersionsRequest&, const Model::DescribeDBEngineVersionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBEngineVersionsResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::DescribeDBInstanceAutomatedBackupsRequest&, const Model::DescribeDBInstanceAutomatedBackupsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBInstanceAutomatedBackupsResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeDBInstancesRequest&, const Model::DescribeDBInstancesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBInstancesResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeDBLogFilesRequest&, const Model::DescribeDBLogFilesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBLogFilesResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeDBParameterGroupsRequest&, const Model::DescribeDBParameterGroupsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeDBParameterGroupsResponseReceivedHandler;
@@ -520,6 +559,7 @@ namespace Aws
     typedef std::function<void(const RDSClient*, const Model::DescribeEventCategoriesRequest&, const Model::DescribeEventCategoriesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeEventCategoriesResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeEventSubscriptionsRequest&, const Model::DescribeEventSubscriptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeEventSubscriptionsResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeEventsRequest&, const Model::DescribeEventsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeEventsResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::DescribeGlobalClustersRequest&, const Model::DescribeGlobalClustersOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeGlobalClustersResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeOptionGroupOptionsRequest&, const Model::DescribeOptionGroupOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeOptionGroupOptionsResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeOptionGroupsRequest&, const Model::DescribeOptionGroupsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeOptionGroupsResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::DescribeOrderableDBInstanceOptionsRequest&, const Model::DescribeOrderableDBInstanceOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeOrderableDBInstanceOptionsResponseReceivedHandler;
@@ -542,12 +582,15 @@ namespace Aws
     typedef std::function<void(const RDSClient*, const Model::ModifyDBSnapshotAttributeRequest&, const Model::ModifyDBSnapshotAttributeOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyDBSnapshotAttributeResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::ModifyDBSubnetGroupRequest&, const Model::ModifyDBSubnetGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyDBSubnetGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::ModifyEventSubscriptionRequest&, const Model::ModifyEventSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyEventSubscriptionResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::ModifyGlobalClusterRequest&, const Model::ModifyGlobalClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyGlobalClusterResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::ModifyOptionGroupRequest&, const Model::ModifyOptionGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyOptionGroupResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::PromoteReadReplicaRequest&, const Model::PromoteReadReplicaOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PromoteReadReplicaResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::PromoteReadReplicaDBClusterRequest&, const Model::PromoteReadReplicaDBClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PromoteReadReplicaDBClusterResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::PurchaseReservedDBInstancesOfferingRequest&, const Model::PurchaseReservedDBInstancesOfferingOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PurchaseReservedDBInstancesOfferingResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::RebootDBInstanceRequest&, const Model::RebootDBInstanceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RebootDBInstanceResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::RemoveFromGlobalClusterRequest&, const Model::RemoveFromGlobalClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RemoveFromGlobalClusterResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::RemoveRoleFromDBClusterRequest&, const Model::RemoveRoleFromDBClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RemoveRoleFromDBClusterResponseReceivedHandler;
+    typedef std::function<void(const RDSClient*, const Model::RemoveRoleFromDBInstanceRequest&, const Model::RemoveRoleFromDBInstanceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RemoveRoleFromDBInstanceResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::RemoveSourceIdentifierFromSubscriptionRequest&, const Model::RemoveSourceIdentifierFromSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RemoveSourceIdentifierFromSubscriptionResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::RemoveTagsFromResourceRequest&, const Model::RemoveTagsFromResourceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RemoveTagsFromResourceResponseReceivedHandler;
     typedef std::function<void(const RDSClient*, const Model::ResetDBClusterParameterGroupRequest&, const Model::ResetDBClusterParameterGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ResetDBClusterParameterGroupResponseReceivedHandler;
@@ -645,8 +688,8 @@ namespace Aws
 
         
         /**
-         * <p>Associates an Identity and Access Management (IAM) role from an Aurora DB
-         * cluster. For more information, see <a
+         * <p>Associates an Identity and Access Management (IAM) role from an Amazon Aurora
+         * DB cluster. For more information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Integrating.Authorizing.html">Authorizing
          * Amazon Aurora MySQL to Access Other AWS Services on Your Behalf</a> in the
          * <i>Amazon Aurora User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -656,8 +699,8 @@ namespace Aws
         virtual Model::AddRoleToDBClusterOutcome AddRoleToDBCluster(const Model::AddRoleToDBClusterRequest& request) const;
 
         /**
-         * <p>Associates an Identity and Access Management (IAM) role from an Aurora DB
-         * cluster. For more information, see <a
+         * <p>Associates an Identity and Access Management (IAM) role from an Amazon Aurora
+         * DB cluster. For more information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Integrating.Authorizing.html">Authorizing
          * Amazon Aurora MySQL to Access Other AWS Services on Your Behalf</a> in the
          * <i>Amazon Aurora User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -669,8 +712,8 @@ namespace Aws
         virtual Model::AddRoleToDBClusterOutcomeCallable AddRoleToDBClusterCallable(const Model::AddRoleToDBClusterRequest& request) const;
 
         /**
-         * <p>Associates an Identity and Access Management (IAM) role from an Aurora DB
-         * cluster. For more information, see <a
+         * <p>Associates an Identity and Access Management (IAM) role from an Amazon Aurora
+         * DB cluster. For more information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Integrating.Authorizing.html">Authorizing
          * Amazon Aurora MySQL to Access Other AWS Services on Your Behalf</a> in the
          * <i>Amazon Aurora User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -680,6 +723,34 @@ namespace Aws
          * Queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         virtual void AddRoleToDBClusterAsync(const Model::AddRoleToDBClusterRequest& request, const AddRoleToDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p>Associates an AWS Identity and Access Management (IAM) role with a DB
+         * instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/AddRoleToDBInstance">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AddRoleToDBInstanceOutcome AddRoleToDBInstance(const Model::AddRoleToDBInstanceRequest& request) const;
+
+        /**
+         * <p>Associates an AWS Identity and Access Management (IAM) role with a DB
+         * instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/AddRoleToDBInstance">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::AddRoleToDBInstanceOutcomeCallable AddRoleToDBInstanceCallable(const Model::AddRoleToDBInstanceRequest& request) const;
+
+        /**
+         * <p>Associates an AWS Identity and Access Management (IAM) role with a DB
+         * instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/AddRoleToDBInstance">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void AddRoleToDBInstanceAsync(const Model::AddRoleToDBInstanceRequest& request, const AddRoleToDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
          * <p>Adds a source identifier to an existing RDS event notification
@@ -1720,6 +1791,52 @@ namespace Aws
         virtual void CreateEventSubscriptionAsync(const Model::CreateEventSubscriptionRequest& request, const CreateEventSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
+         * <p> </p> <p> Creates an Aurora global database spread across multiple regions.
+         * The global database contains a single primary cluster with read-write
+         * capability, and a read-only secondary cluster that receives data from the
+         * primary cluster through high-speed replication performed by the Aurora storage
+         * subsystem. </p> <p> You can create a global database that is initially empty,
+         * and then add a primary cluster and a secondary cluster to it. Or you can specify
+         * an existing Aurora cluster during the create operation, and this cluster becomes
+         * the primary cluster of the global database. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/CreateGlobalCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateGlobalClusterOutcome CreateGlobalCluster(const Model::CreateGlobalClusterRequest& request) const;
+
+        /**
+         * <p> </p> <p> Creates an Aurora global database spread across multiple regions.
+         * The global database contains a single primary cluster with read-write
+         * capability, and a read-only secondary cluster that receives data from the
+         * primary cluster through high-speed replication performed by the Aurora storage
+         * subsystem. </p> <p> You can create a global database that is initially empty,
+         * and then add a primary cluster and a secondary cluster to it. Or you can specify
+         * an existing Aurora cluster during the create operation, and this cluster becomes
+         * the primary cluster of the global database. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/CreateGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::CreateGlobalClusterOutcomeCallable CreateGlobalClusterCallable(const Model::CreateGlobalClusterRequest& request) const;
+
+        /**
+         * <p> </p> <p> Creates an Aurora global database spread across multiple regions.
+         * The global database contains a single primary cluster with read-write
+         * capability, and a read-only secondary cluster that receives data from the
+         * primary cluster through high-speed replication performed by the Aurora storage
+         * subsystem. </p> <p> You can create a global database that is initially empty,
+         * and then add a primary cluster and a secondary cluster to it. Or you can specify
+         * an existing Aurora cluster during the create operation, and this cluster becomes
+         * the primary cluster of the global database. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/CreateGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void CreateGlobalClusterAsync(const Model::CreateGlobalClusterRequest& request, const CreateGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
          * <p>Creates a new option group. You can create up to 20 option
          * groups.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/CreateOptionGroup">AWS
@@ -1984,7 +2101,38 @@ namespace Aws
         virtual void DeleteDBInstanceAsync(const Model::DeleteDBInstanceRequest& request, const DeleteDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Deletes a specified DBParameterGroup. The DBParameterGroup to be deleted
+         * <p>Deletes automated backups based on the source instance's
+         * <code>DbiResourceId</code> value or the restorable instance's resource
+         * ID.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBInstanceAutomatedBackup">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDBInstanceAutomatedBackupOutcome DeleteDBInstanceAutomatedBackup(const Model::DeleteDBInstanceAutomatedBackupRequest& request) const;
+
+        /**
+         * <p>Deletes automated backups based on the source instance's
+         * <code>DbiResourceId</code> value or the restorable instance's resource
+         * ID.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBInstanceAutomatedBackup">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::DeleteDBInstanceAutomatedBackupOutcomeCallable DeleteDBInstanceAutomatedBackupCallable(const Model::DeleteDBInstanceAutomatedBackupRequest& request) const;
+
+        /**
+         * <p>Deletes automated backups based on the source instance's
+         * <code>DbiResourceId</code> value or the restorable instance's resource
+         * ID.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBInstanceAutomatedBackup">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void DeleteDBInstanceAutomatedBackupAsync(const Model::DeleteDBInstanceAutomatedBackupRequest& request, const DeleteDBInstanceAutomatedBackupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p>Deletes a specified DB parameter group. The DB parameter group to be deleted
          * can't be associated with any DB instances.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBParameterGroup">AWS
          * API Reference</a></p>
@@ -1992,7 +2140,7 @@ namespace Aws
         virtual Model::DeleteDBParameterGroupOutcome DeleteDBParameterGroup(const Model::DeleteDBParameterGroupRequest& request) const;
 
         /**
-         * <p>Deletes a specified DBParameterGroup. The DBParameterGroup to be deleted
+         * <p>Deletes a specified DB parameter group. The DB parameter group to be deleted
          * can't be associated with any DB instances.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBParameterGroup">AWS
          * API Reference</a></p>
@@ -2002,7 +2150,7 @@ namespace Aws
         virtual Model::DeleteDBParameterGroupOutcomeCallable DeleteDBParameterGroupCallable(const Model::DeleteDBParameterGroupRequest& request) const;
 
         /**
-         * <p>Deletes a specified DBParameterGroup. The DBParameterGroup to be deleted
+         * <p>Deletes a specified DB parameter group. The DB parameter group to be deleted
          * can't be associated with any DB instances.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBParameterGroup">AWS
          * API Reference</a></p>
@@ -2043,8 +2191,8 @@ namespace Aws
         virtual void DeleteDBSecurityGroupAsync(const Model::DeleteDBSecurityGroupRequest& request, const DeleteDBSecurityGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Deletes a DBSnapshot. If the snapshot is being copied, the copy operation is
-         * terminated.</p> <note> <p>The DBSnapshot must be in the <code>available</code>
+         * <p>Deletes a DB snapshot. If the snapshot is being copied, the copy operation is
+         * terminated.</p> <note> <p>The DB snapshot must be in the <code>available</code>
          * state to be deleted.</p> </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBSnapshot">AWS
          * API Reference</a></p>
@@ -2052,8 +2200,8 @@ namespace Aws
         virtual Model::DeleteDBSnapshotOutcome DeleteDBSnapshot(const Model::DeleteDBSnapshotRequest& request) const;
 
         /**
-         * <p>Deletes a DBSnapshot. If the snapshot is being copied, the copy operation is
-         * terminated.</p> <note> <p>The DBSnapshot must be in the <code>available</code>
+         * <p>Deletes a DB snapshot. If the snapshot is being copied, the copy operation is
+         * terminated.</p> <note> <p>The DB snapshot must be in the <code>available</code>
          * state to be deleted.</p> </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBSnapshot">AWS
          * API Reference</a></p>
@@ -2063,8 +2211,8 @@ namespace Aws
         virtual Model::DeleteDBSnapshotOutcomeCallable DeleteDBSnapshotCallable(const Model::DeleteDBSnapshotRequest& request) const;
 
         /**
-         * <p>Deletes a DBSnapshot. If the snapshot is being copied, the copy operation is
-         * terminated.</p> <note> <p>The DBSnapshot must be in the <code>available</code>
+         * <p>Deletes a DB snapshot. If the snapshot is being copied, the copy operation is
+         * terminated.</p> <note> <p>The DB snapshot must be in the <code>available</code>
          * state to be deleted.</p> </note><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteDBSnapshot">AWS
          * API Reference</a></p>
@@ -2128,6 +2276,34 @@ namespace Aws
          * Queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         virtual void DeleteEventSubscriptionAsync(const Model::DeleteEventSubscriptionRequest& request, const DeleteEventSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p> Deletes a global database cluster. The primary and secondary clusters must
+         * already be detached or destroyed first. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteGlobalCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteGlobalClusterOutcome DeleteGlobalCluster(const Model::DeleteGlobalClusterRequest& request) const;
+
+        /**
+         * <p> Deletes a global database cluster. The primary and secondary clusters must
+         * already be detached or destroyed first. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::DeleteGlobalClusterOutcomeCallable DeleteGlobalClusterCallable(const Model::DeleteGlobalClusterRequest& request) const;
+
+        /**
+         * <p> Deletes a global database cluster. The primary and secondary clusters must
+         * already be detached or destroyed first. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DeleteGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void DeleteGlobalClusterAsync(const Model::DeleteGlobalClusterRequest& request, const DeleteGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
          * <p>Deletes an existing option group.</p><p><h3>See Also:</h3>   <a
@@ -2520,6 +2696,46 @@ namespace Aws
          * Queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         virtual void DescribeDBEngineVersionsAsync(const Model::DescribeDBEngineVersionsRequest& request, const DescribeDBEngineVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p>Displays backups for both current and deleted instances. For example, use
+         * this operation to find details about automated backups for previously deleted
+         * instances. Current instances with retention periods greater than zero (0) are
+         * returned for both the <code>DescribeDBInstanceAutomatedBackups</code> and
+         * <code>DescribeDBInstances</code> operations.</p> <p>All parameters are
+         * optional.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DescribeDBInstanceAutomatedBackups">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeDBInstanceAutomatedBackupsOutcome DescribeDBInstanceAutomatedBackups(const Model::DescribeDBInstanceAutomatedBackupsRequest& request) const;
+
+        /**
+         * <p>Displays backups for both current and deleted instances. For example, use
+         * this operation to find details about automated backups for previously deleted
+         * instances. Current instances with retention periods greater than zero (0) are
+         * returned for both the <code>DescribeDBInstanceAutomatedBackups</code> and
+         * <code>DescribeDBInstances</code> operations.</p> <p>All parameters are
+         * optional.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DescribeDBInstanceAutomatedBackups">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::DescribeDBInstanceAutomatedBackupsOutcomeCallable DescribeDBInstanceAutomatedBackupsCallable(const Model::DescribeDBInstanceAutomatedBackupsRequest& request) const;
+
+        /**
+         * <p>Displays backups for both current and deleted instances. For example, use
+         * this operation to find details about automated backups for previously deleted
+         * instances. Current instances with retention periods greater than zero (0) are
+         * returned for both the <code>DescribeDBInstanceAutomatedBackups</code> and
+         * <code>DescribeDBInstances</code> operations.</p> <p>All parameters are
+         * optional.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DescribeDBInstanceAutomatedBackups">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void DescribeDBInstanceAutomatedBackupsAsync(const Model::DescribeDBInstanceAutomatedBackupsRequest& request, const DescribeDBInstanceAutomatedBackupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
          * <p>Returns information about provisioned RDS instances. This API supports
@@ -2962,6 +3178,43 @@ namespace Aws
          * Queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         virtual void DescribeEventsAsync(const Model::DescribeEventsRequest& request, const DescribeEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p> Returns information about Aurora global database clusters. This API supports
+         * pagination. </p> <p> For more information on Amazon Aurora, see <a
+         * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+         * What Is Amazon Aurora?</a> in the <i>Amazon Aurora User Guide.</i>
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DescribeGlobalClusters">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeGlobalClustersOutcome DescribeGlobalClusters(const Model::DescribeGlobalClustersRequest& request) const;
+
+        /**
+         * <p> Returns information about Aurora global database clusters. This API supports
+         * pagination. </p> <p> For more information on Amazon Aurora, see <a
+         * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+         * What Is Amazon Aurora?</a> in the <i>Amazon Aurora User Guide.</i>
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DescribeGlobalClusters">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::DescribeGlobalClustersOutcomeCallable DescribeGlobalClustersCallable(const Model::DescribeGlobalClustersRequest& request) const;
+
+        /**
+         * <p> Returns information about Aurora global database clusters. This API supports
+         * pagination. </p> <p> For more information on Amazon Aurora, see <a
+         * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+         * What Is Amazon Aurora?</a> in the <i>Amazon Aurora User Guide.</i>
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/DescribeGlobalClusters">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void DescribeGlobalClustersAsync(const Model::DescribeGlobalClustersRequest& request, const DescribeGlobalClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
          * <p>Describes all available options.</p><p><h3>See Also:</h3>   <a
@@ -3895,6 +4148,46 @@ namespace Aws
         virtual void ModifyEventSubscriptionAsync(const Model::ModifyEventSubscriptionRequest& request, const ModifyEventSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
+         * <p> Modify a setting for an Amazon Aurora global cluster. You can change one or
+         * more database configuration parameters by specifying these parameters and the
+         * new values in the request. For more information on Amazon Aurora, see <a
+         * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+         * What Is Amazon Aurora?</a> in the <i>Amazon Aurora User Guide.</i>
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/ModifyGlobalCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ModifyGlobalClusterOutcome ModifyGlobalCluster(const Model::ModifyGlobalClusterRequest& request) const;
+
+        /**
+         * <p> Modify a setting for an Amazon Aurora global cluster. You can change one or
+         * more database configuration parameters by specifying these parameters and the
+         * new values in the request. For more information on Amazon Aurora, see <a
+         * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+         * What Is Amazon Aurora?</a> in the <i>Amazon Aurora User Guide.</i>
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/ModifyGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::ModifyGlobalClusterOutcomeCallable ModifyGlobalClusterCallable(const Model::ModifyGlobalClusterRequest& request) const;
+
+        /**
+         * <p> Modify a setting for an Amazon Aurora global cluster. You can change one or
+         * more database configuration parameters by specifying these parameters and the
+         * new values in the request. For more information on Amazon Aurora, see <a
+         * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+         * What Is Amazon Aurora?</a> in the <i>Amazon Aurora User Guide.</i>
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/ModifyGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void ModifyGlobalClusterAsync(const Model::ModifyGlobalClusterRequest& request, const ModifyGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
          * <p>Modifies an existing option group.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/ModifyOptionGroup">AWS
          * API Reference</a></p>
@@ -4077,8 +4370,42 @@ namespace Aws
         virtual void RebootDBInstanceAsync(const Model::RebootDBInstanceRequest& request, const RebootDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Disassociates an Identity and Access Management (IAM) role from an Aurora DB
-         * cluster. For more information, see <a
+         * <p> Detaches an Aurora secondary cluster from an Aurora global database cluster.
+         * The cluster becomes a standalone cluster with read-write capability instead of
+         * being read-only and receiving data from a primary cluster in a different region.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/RemoveFromGlobalCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::RemoveFromGlobalClusterOutcome RemoveFromGlobalCluster(const Model::RemoveFromGlobalClusterRequest& request) const;
+
+        /**
+         * <p> Detaches an Aurora secondary cluster from an Aurora global database cluster.
+         * The cluster becomes a standalone cluster with read-write capability instead of
+         * being read-only and receiving data from a primary cluster in a different region.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/RemoveFromGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::RemoveFromGlobalClusterOutcomeCallable RemoveFromGlobalClusterCallable(const Model::RemoveFromGlobalClusterRequest& request) const;
+
+        /**
+         * <p> Detaches an Aurora secondary cluster from an Aurora global database cluster.
+         * The cluster becomes a standalone cluster with read-write capability instead of
+         * being read-only and receiving data from a primary cluster in a different region.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/RemoveFromGlobalCluster">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void RemoveFromGlobalClusterAsync(const Model::RemoveFromGlobalClusterRequest& request, const RemoveFromGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p>Disassociates an AWS Identity and Access Management (IAM) role from an Amazon
+         * Aurora DB cluster. For more information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Integrating.Authorizing.html">Authorizing
          * Amazon Aurora MySQL to Access Other AWS Services on Your Behalf </a> in the
          * <i>Amazon Aurora User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -4088,8 +4415,8 @@ namespace Aws
         virtual Model::RemoveRoleFromDBClusterOutcome RemoveRoleFromDBCluster(const Model::RemoveRoleFromDBClusterRequest& request) const;
 
         /**
-         * <p>Disassociates an Identity and Access Management (IAM) role from an Aurora DB
-         * cluster. For more information, see <a
+         * <p>Disassociates an AWS Identity and Access Management (IAM) role from an Amazon
+         * Aurora DB cluster. For more information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Integrating.Authorizing.html">Authorizing
          * Amazon Aurora MySQL to Access Other AWS Services on Your Behalf </a> in the
          * <i>Amazon Aurora User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -4101,8 +4428,8 @@ namespace Aws
         virtual Model::RemoveRoleFromDBClusterOutcomeCallable RemoveRoleFromDBClusterCallable(const Model::RemoveRoleFromDBClusterRequest& request) const;
 
         /**
-         * <p>Disassociates an Identity and Access Management (IAM) role from an Aurora DB
-         * cluster. For more information, see <a
+         * <p>Disassociates an AWS Identity and Access Management (IAM) role from an Amazon
+         * Aurora DB cluster. For more information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Integrating.Authorizing.html">Authorizing
          * Amazon Aurora MySQL to Access Other AWS Services on Your Behalf </a> in the
          * <i>Amazon Aurora User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -4112,6 +4439,34 @@ namespace Aws
          * Queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         virtual void RemoveRoleFromDBClusterAsync(const Model::RemoveRoleFromDBClusterRequest& request, const RemoveRoleFromDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
+
+        /**
+         * <p>Disassociates an AWS Identity and Access Management (IAM) role from a DB
+         * instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/RemoveRoleFromDBInstance">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::RemoveRoleFromDBInstanceOutcome RemoveRoleFromDBInstance(const Model::RemoveRoleFromDBInstanceRequest& request) const;
+
+        /**
+         * <p>Disassociates an AWS Identity and Access Management (IAM) role from a DB
+         * instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/RemoveRoleFromDBInstance">AWS
+         * API Reference</a></p>
+         *
+         * returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        virtual Model::RemoveRoleFromDBInstanceOutcomeCallable RemoveRoleFromDBInstanceCallable(const Model::RemoveRoleFromDBInstanceRequest& request) const;
+
+        /**
+         * <p>Disassociates an AWS Identity and Access Management (IAM) role from a DB
+         * instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/rds-2014-10-31/RemoveRoleFromDBInstance">AWS
+         * API Reference</a></p>
+         *
+         * Queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        virtual void RemoveRoleFromDBInstanceAsync(const Model::RemoveRoleFromDBInstanceRequest& request, const RemoveRoleFromDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
          * <p>Removes a source identifier from an existing RDS event notification
@@ -4709,7 +5064,7 @@ namespace Aws
          * stop-db-instance AWS CLI command, or the StopDBInstance action. </p> <p>For more
          * information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StartInstance.html">
-         * Starting an Amazon RDS DB Instance That Was Previously Stopped</a> in the
+         * Starting an Amazon RDS DB instance That Was Previously Stopped</a> in the
          * <i>Amazon RDS User Guide.</i> </p> <note> <p> This command doesn't apply to
          * Aurora MySQL and Aurora PostgreSQL. For Aurora DB clusters, use
          * <a>StartDBCluster</a> instead. </p> </note><p><h3>See Also:</h3>   <a
@@ -4723,7 +5078,7 @@ namespace Aws
          * stop-db-instance AWS CLI command, or the StopDBInstance action. </p> <p>For more
          * information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StartInstance.html">
-         * Starting an Amazon RDS DB Instance That Was Previously Stopped</a> in the
+         * Starting an Amazon RDS DB instance That Was Previously Stopped</a> in the
          * <i>Amazon RDS User Guide.</i> </p> <note> <p> This command doesn't apply to
          * Aurora MySQL and Aurora PostgreSQL. For Aurora DB clusters, use
          * <a>StartDBCluster</a> instead. </p> </note><p><h3>See Also:</h3>   <a
@@ -4739,7 +5094,7 @@ namespace Aws
          * stop-db-instance AWS CLI command, or the StopDBInstance action. </p> <p>For more
          * information, see <a
          * href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StartInstance.html">
-         * Starting an Amazon RDS DB Instance That Was Previously Stopped</a> in the
+         * Starting an Amazon RDS DB instance That Was Previously Stopped</a> in the
          * <i>Amazon RDS User Guide.</i> </p> <note> <p> This command doesn't apply to
          * Aurora MySQL and Aurora PostgreSQL. For Aurora DB clusters, use
          * <a>StartDBCluster</a> instead. </p> </note><p><h3>See Also:</h3>   <a
@@ -4846,11 +5201,12 @@ namespace Aws
         virtual void StopDBInstanceAsync(const Model::StopDBInstanceRequest& request, const StopDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
 
+        void OverrideEndpoint(const Aws::String& endpoint);
     private:
-    void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
+        void init(const Aws::Client::ClientConfiguration& clientConfiguration);
             /**Async helpers**/
         void AddRoleToDBClusterAsyncHelper(const Model::AddRoleToDBClusterRequest& request, const AddRoleToDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void AddRoleToDBInstanceAsyncHelper(const Model::AddRoleToDBInstanceRequest& request, const AddRoleToDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void AddSourceIdentifierToSubscriptionAsyncHelper(const Model::AddSourceIdentifierToSubscriptionRequest& request, const AddSourceIdentifierToSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void AddTagsToResourceAsyncHelper(const Model::AddTagsToResourceRequest& request, const AddTagsToResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void ApplyPendingMaintenanceActionAsyncHelper(const Model::ApplyPendingMaintenanceActionRequest& request, const ApplyPendingMaintenanceActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -4872,17 +5228,20 @@ namespace Aws
         void CreateDBSnapshotAsyncHelper(const Model::CreateDBSnapshotRequest& request, const CreateDBSnapshotResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void CreateDBSubnetGroupAsyncHelper(const Model::CreateDBSubnetGroupRequest& request, const CreateDBSubnetGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void CreateEventSubscriptionAsyncHelper(const Model::CreateEventSubscriptionRequest& request, const CreateEventSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void CreateGlobalClusterAsyncHelper(const Model::CreateGlobalClusterRequest& request, const CreateGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void CreateOptionGroupAsyncHelper(const Model::CreateOptionGroupRequest& request, const CreateOptionGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBClusterAsyncHelper(const Model::DeleteDBClusterRequest& request, const DeleteDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBClusterEndpointAsyncHelper(const Model::DeleteDBClusterEndpointRequest& request, const DeleteDBClusterEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBClusterParameterGroupAsyncHelper(const Model::DeleteDBClusterParameterGroupRequest& request, const DeleteDBClusterParameterGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBClusterSnapshotAsyncHelper(const Model::DeleteDBClusterSnapshotRequest& request, const DeleteDBClusterSnapshotResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBInstanceAsyncHelper(const Model::DeleteDBInstanceRequest& request, const DeleteDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void DeleteDBInstanceAutomatedBackupAsyncHelper(const Model::DeleteDBInstanceAutomatedBackupRequest& request, const DeleteDBInstanceAutomatedBackupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBParameterGroupAsyncHelper(const Model::DeleteDBParameterGroupRequest& request, const DeleteDBParameterGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBSecurityGroupAsyncHelper(const Model::DeleteDBSecurityGroupRequest& request, const DeleteDBSecurityGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBSnapshotAsyncHelper(const Model::DeleteDBSnapshotRequest& request, const DeleteDBSnapshotResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDBSubnetGroupAsyncHelper(const Model::DeleteDBSubnetGroupRequest& request, const DeleteDBSubnetGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteEventSubscriptionAsyncHelper(const Model::DeleteEventSubscriptionRequest& request, const DeleteEventSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void DeleteGlobalClusterAsyncHelper(const Model::DeleteGlobalClusterRequest& request, const DeleteGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteOptionGroupAsyncHelper(const Model::DeleteOptionGroupRequest& request, const DeleteOptionGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeAccountAttributesAsyncHelper(const Model::DescribeAccountAttributesRequest& request, const DescribeAccountAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeCertificatesAsyncHelper(const Model::DescribeCertificatesRequest& request, const DescribeCertificatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -4894,6 +5253,7 @@ namespace Aws
         void DescribeDBClusterSnapshotsAsyncHelper(const Model::DescribeDBClusterSnapshotsRequest& request, const DescribeDBClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeDBClustersAsyncHelper(const Model::DescribeDBClustersRequest& request, const DescribeDBClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeDBEngineVersionsAsyncHelper(const Model::DescribeDBEngineVersionsRequest& request, const DescribeDBEngineVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void DescribeDBInstanceAutomatedBackupsAsyncHelper(const Model::DescribeDBInstanceAutomatedBackupsRequest& request, const DescribeDBInstanceAutomatedBackupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeDBInstancesAsyncHelper(const Model::DescribeDBInstancesRequest& request, const DescribeDBInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeDBLogFilesAsyncHelper(const Model::DescribeDBLogFilesRequest& request, const DescribeDBLogFilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeDBParameterGroupsAsyncHelper(const Model::DescribeDBParameterGroupsRequest& request, const DescribeDBParameterGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -4907,6 +5267,7 @@ namespace Aws
         void DescribeEventCategoriesAsyncHelper(const Model::DescribeEventCategoriesRequest& request, const DescribeEventCategoriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeEventSubscriptionsAsyncHelper(const Model::DescribeEventSubscriptionsRequest& request, const DescribeEventSubscriptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeEventsAsyncHelper(const Model::DescribeEventsRequest& request, const DescribeEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void DescribeGlobalClustersAsyncHelper(const Model::DescribeGlobalClustersRequest& request, const DescribeGlobalClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeOptionGroupOptionsAsyncHelper(const Model::DescribeOptionGroupOptionsRequest& request, const DescribeOptionGroupOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeOptionGroupsAsyncHelper(const Model::DescribeOptionGroupsRequest& request, const DescribeOptionGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DescribeOrderableDBInstanceOptionsAsyncHelper(const Model::DescribeOrderableDBInstanceOptionsRequest& request, const DescribeOrderableDBInstanceOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -4929,12 +5290,15 @@ namespace Aws
         void ModifyDBSnapshotAttributeAsyncHelper(const Model::ModifyDBSnapshotAttributeRequest& request, const ModifyDBSnapshotAttributeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void ModifyDBSubnetGroupAsyncHelper(const Model::ModifyDBSubnetGroupRequest& request, const ModifyDBSubnetGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void ModifyEventSubscriptionAsyncHelper(const Model::ModifyEventSubscriptionRequest& request, const ModifyEventSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void ModifyGlobalClusterAsyncHelper(const Model::ModifyGlobalClusterRequest& request, const ModifyGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void ModifyOptionGroupAsyncHelper(const Model::ModifyOptionGroupRequest& request, const ModifyOptionGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void PromoteReadReplicaAsyncHelper(const Model::PromoteReadReplicaRequest& request, const PromoteReadReplicaResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void PromoteReadReplicaDBClusterAsyncHelper(const Model::PromoteReadReplicaDBClusterRequest& request, const PromoteReadReplicaDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void PurchaseReservedDBInstancesOfferingAsyncHelper(const Model::PurchaseReservedDBInstancesOfferingRequest& request, const PurchaseReservedDBInstancesOfferingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void RebootDBInstanceAsyncHelper(const Model::RebootDBInstanceRequest& request, const RebootDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void RemoveFromGlobalClusterAsyncHelper(const Model::RemoveFromGlobalClusterRequest& request, const RemoveFromGlobalClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void RemoveRoleFromDBClusterAsyncHelper(const Model::RemoveRoleFromDBClusterRequest& request, const RemoveRoleFromDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
+        void RemoveRoleFromDBInstanceAsyncHelper(const Model::RemoveRoleFromDBInstanceRequest& request, const RemoveRoleFromDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void RemoveSourceIdentifierFromSubscriptionAsyncHelper(const Model::RemoveSourceIdentifierFromSubscriptionRequest& request, const RemoveSourceIdentifierFromSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void RemoveTagsFromResourceAsyncHelper(const Model::RemoveTagsFromResourceRequest& request, const RemoveTagsFromResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void ResetDBClusterParameterGroupAsyncHelper(const Model::ResetDBClusterParameterGroupRequest& request, const ResetDBClusterParameterGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -4951,8 +5315,9 @@ namespace Aws
         void StopDBClusterAsyncHelper(const Model::StopDBClusterRequest& request, const StopDBClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void StopDBInstanceAsyncHelper(const Model::StopDBInstanceRequest& request, const StopDBInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
-    Aws::String m_uri;
-    std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
+        Aws::String m_uri;
+        Aws::String m_configScheme;
+        std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
     };
 
     } // namespace RDS

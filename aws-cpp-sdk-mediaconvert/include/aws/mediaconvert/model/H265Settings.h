@@ -254,33 +254,33 @@ namespace Model
 
 
     /**
-     * Framerate denominator.
+     * Frame rate denominator.
      */
     inline int GetFramerateDenominator() const{ return m_framerateDenominator; }
 
     /**
-     * Framerate denominator.
+     * Frame rate denominator.
      */
     inline void SetFramerateDenominator(int value) { m_framerateDenominatorHasBeenSet = true; m_framerateDenominator = value; }
 
     /**
-     * Framerate denominator.
+     * Frame rate denominator.
      */
     inline H265Settings& WithFramerateDenominator(int value) { SetFramerateDenominator(value); return *this;}
 
 
     /**
-     * Framerate numerator - framerate is a fraction, e.g. 24000 / 1001 = 23.976 fps.
+     * Frame rate numerator - frame rate is a fraction, e.g. 24000 / 1001 = 23.976 fps.
      */
     inline int GetFramerateNumerator() const{ return m_framerateNumerator; }
 
     /**
-     * Framerate numerator - framerate is a fraction, e.g. 24000 / 1001 = 23.976 fps.
+     * Frame rate numerator - frame rate is a fraction, e.g. 24000 / 1001 = 23.976 fps.
      */
     inline void SetFramerateNumerator(int value) { m_framerateNumeratorHasBeenSet = true; m_framerateNumerator = value; }
 
     /**
-     * Framerate numerator - framerate is a fraction, e.g. 24000 / 1001 = 23.976 fps.
+     * Frame rate numerator - frame rate is a fraction, e.g. 24000 / 1001 = 23.976 fps.
      */
     inline H265Settings& WithFramerateNumerator(int value) { SetFramerateNumerator(value); return *this;}
 
@@ -781,19 +781,79 @@ namespace Model
     inline H265Settings& WithUnregisteredSeiTimecode(H265UnregisteredSeiTimecode&& value) { SetUnregisteredSeiTimecode(std::move(value)); return *this;}
 
 
-    
+    /**
+     * Use this setting only for outputs encoded with H.265 that are in CMAF or DASH
+     * output groups. If you include writeMp4PackagingType in your JSON job
+     * specification for other outputs, your video might not work properly with
+     * downstream systems and video players. If the location of parameter set NAL units
+     * don't matter in your workflow, ignore this setting. The service defaults to
+     * marking your output as HEV1. Choose HVC1 to mark your output as HVC1. This makes
+     * your output compliant with this specification: ISO IECJTC1 SC29 N13798 Text
+     * ISO/IEC FDIS 14496-15 3rd Edition. For these outputs, the service stores
+     * parameter set NAL units in the sample headers but not in the samples directly.
+     * Keep the default HEV1 to mark your output as HEV1. For these outputs, the
+     * service writes parameter set NAL units directly into the samples.
+     */
     inline const H265WriteMp4PackagingType& GetWriteMp4PackagingType() const{ return m_writeMp4PackagingType; }
 
-    
+    /**
+     * Use this setting only for outputs encoded with H.265 that are in CMAF or DASH
+     * output groups. If you include writeMp4PackagingType in your JSON job
+     * specification for other outputs, your video might not work properly with
+     * downstream systems and video players. If the location of parameter set NAL units
+     * don't matter in your workflow, ignore this setting. The service defaults to
+     * marking your output as HEV1. Choose HVC1 to mark your output as HVC1. This makes
+     * your output compliant with this specification: ISO IECJTC1 SC29 N13798 Text
+     * ISO/IEC FDIS 14496-15 3rd Edition. For these outputs, the service stores
+     * parameter set NAL units in the sample headers but not in the samples directly.
+     * Keep the default HEV1 to mark your output as HEV1. For these outputs, the
+     * service writes parameter set NAL units directly into the samples.
+     */
     inline void SetWriteMp4PackagingType(const H265WriteMp4PackagingType& value) { m_writeMp4PackagingTypeHasBeenSet = true; m_writeMp4PackagingType = value; }
 
-    
+    /**
+     * Use this setting only for outputs encoded with H.265 that are in CMAF or DASH
+     * output groups. If you include writeMp4PackagingType in your JSON job
+     * specification for other outputs, your video might not work properly with
+     * downstream systems and video players. If the location of parameter set NAL units
+     * don't matter in your workflow, ignore this setting. The service defaults to
+     * marking your output as HEV1. Choose HVC1 to mark your output as HVC1. This makes
+     * your output compliant with this specification: ISO IECJTC1 SC29 N13798 Text
+     * ISO/IEC FDIS 14496-15 3rd Edition. For these outputs, the service stores
+     * parameter set NAL units in the sample headers but not in the samples directly.
+     * Keep the default HEV1 to mark your output as HEV1. For these outputs, the
+     * service writes parameter set NAL units directly into the samples.
+     */
     inline void SetWriteMp4PackagingType(H265WriteMp4PackagingType&& value) { m_writeMp4PackagingTypeHasBeenSet = true; m_writeMp4PackagingType = std::move(value); }
 
-    
+    /**
+     * Use this setting only for outputs encoded with H.265 that are in CMAF or DASH
+     * output groups. If you include writeMp4PackagingType in your JSON job
+     * specification for other outputs, your video might not work properly with
+     * downstream systems and video players. If the location of parameter set NAL units
+     * don't matter in your workflow, ignore this setting. The service defaults to
+     * marking your output as HEV1. Choose HVC1 to mark your output as HVC1. This makes
+     * your output compliant with this specification: ISO IECJTC1 SC29 N13798 Text
+     * ISO/IEC FDIS 14496-15 3rd Edition. For these outputs, the service stores
+     * parameter set NAL units in the sample headers but not in the samples directly.
+     * Keep the default HEV1 to mark your output as HEV1. For these outputs, the
+     * service writes parameter set NAL units directly into the samples.
+     */
     inline H265Settings& WithWriteMp4PackagingType(const H265WriteMp4PackagingType& value) { SetWriteMp4PackagingType(value); return *this;}
 
-    
+    /**
+     * Use this setting only for outputs encoded with H.265 that are in CMAF or DASH
+     * output groups. If you include writeMp4PackagingType in your JSON job
+     * specification for other outputs, your video might not work properly with
+     * downstream systems and video players. If the location of parameter set NAL units
+     * don't matter in your workflow, ignore this setting. The service defaults to
+     * marking your output as HEV1. Choose HVC1 to mark your output as HVC1. This makes
+     * your output compliant with this specification: ISO IECJTC1 SC29 N13798 Text
+     * ISO/IEC FDIS 14496-15 3rd Edition. For these outputs, the service stores
+     * parameter set NAL units in the sample headers but not in the samples directly.
+     * Keep the default HEV1 to mark your output as HEV1. For these outputs, the
+     * service writes parameter set NAL units directly into the samples.
+     */
     inline H265Settings& WithWriteMp4PackagingType(H265WriteMp4PackagingType&& value) { SetWriteMp4PackagingType(std::move(value)); return *this;}
 
   private:

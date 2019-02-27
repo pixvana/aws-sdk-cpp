@@ -747,6 +747,65 @@ namespace Model
      */
     inline CreateTrainingJobRequest& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
 
+
+    /**
+     * <p>Isolates the training container. No inbound or outbound network calls can be
+     * made, except for calls between peers within a training cluster for distributed
+     * training. If you enable network isolation for training jobs that are configured
+     * to use a VPC, Amazon SageMaker downloads and uploads customer data and model
+     * artifacts through the specified VPC, but the training container does not have
+     * network access.</p> <note> <p>The Semantic Segmentation built-in algorithm does
+     * not support network isolation.</p> </note>
+     */
+    inline bool GetEnableNetworkIsolation() const{ return m_enableNetworkIsolation; }
+
+    /**
+     * <p>Isolates the training container. No inbound or outbound network calls can be
+     * made, except for calls between peers within a training cluster for distributed
+     * training. If you enable network isolation for training jobs that are configured
+     * to use a VPC, Amazon SageMaker downloads and uploads customer data and model
+     * artifacts through the specified VPC, but the training container does not have
+     * network access.</p> <note> <p>The Semantic Segmentation built-in algorithm does
+     * not support network isolation.</p> </note>
+     */
+    inline void SetEnableNetworkIsolation(bool value) { m_enableNetworkIsolationHasBeenSet = true; m_enableNetworkIsolation = value; }
+
+    /**
+     * <p>Isolates the training container. No inbound or outbound network calls can be
+     * made, except for calls between peers within a training cluster for distributed
+     * training. If you enable network isolation for training jobs that are configured
+     * to use a VPC, Amazon SageMaker downloads and uploads customer data and model
+     * artifacts through the specified VPC, but the training container does not have
+     * network access.</p> <note> <p>The Semantic Segmentation built-in algorithm does
+     * not support network isolation.</p> </note>
+     */
+    inline CreateTrainingJobRequest& WithEnableNetworkIsolation(bool value) { SetEnableNetworkIsolation(value); return *this;}
+
+
+    /**
+     * <p>To encrypt all communications between ML compute instances in distributed
+     * training, choose <code>True</code>,. Encryption provides greater security for
+     * distributed training, but training can take longer because of additional
+     * communications between ML compute instances.</p>
+     */
+    inline bool GetEnableInterContainerTrafficEncryption() const{ return m_enableInterContainerTrafficEncryption; }
+
+    /**
+     * <p>To encrypt all communications between ML compute instances in distributed
+     * training, choose <code>True</code>,. Encryption provides greater security for
+     * distributed training, but training can take longer because of additional
+     * communications between ML compute instances.</p>
+     */
+    inline void SetEnableInterContainerTrafficEncryption(bool value) { m_enableInterContainerTrafficEncryptionHasBeenSet = true; m_enableInterContainerTrafficEncryption = value; }
+
+    /**
+     * <p>To encrypt all communications between ML compute instances in distributed
+     * training, choose <code>True</code>,. Encryption provides greater security for
+     * distributed training, but training can take longer because of additional
+     * communications between ML compute instances.</p>
+     */
+    inline CreateTrainingJobRequest& WithEnableInterContainerTrafficEncryption(bool value) { SetEnableInterContainerTrafficEncryption(value); return *this;}
+
   private:
 
     Aws::String m_trainingJobName;
@@ -778,6 +837,12 @@ namespace Model
 
     Aws::Vector<Tag> m_tags;
     bool m_tagsHasBeenSet;
+
+    bool m_enableNetworkIsolation;
+    bool m_enableNetworkIsolationHasBeenSet;
+
+    bool m_enableInterContainerTrafficEncryption;
+    bool m_enableInterContainerTrafficEncryptionHasBeenSet;
   };
 
 } // namespace Model

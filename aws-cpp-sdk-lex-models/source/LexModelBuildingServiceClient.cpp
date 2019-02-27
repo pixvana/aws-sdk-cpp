@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/lex-models/LexModelBuildingServiceClient.h>
 #include <aws/lex-models/LexModelBuildingServiceEndpoint.h>
 #include <aws/lex-models/LexModelBuildingServiceErrorMarshaller.h>
@@ -113,25 +116,32 @@ LexModelBuildingServiceClient::~LexModelBuildingServiceClient()
 
 void LexModelBuildingServiceClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << LexModelBuildingServiceEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + LexModelBuildingServiceEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void LexModelBuildingServiceClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateBotVersionOutcome LexModelBuildingServiceClient::CreateBotVersion(const CreateBotVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetName();
   ss << "/versions";
@@ -167,8 +177,8 @@ void LexModelBuildingServiceClient::CreateBotVersionAsyncHelper(const CreateBotV
 
 CreateIntentVersionOutcome LexModelBuildingServiceClient::CreateIntentVersion(const CreateIntentVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   ss << request.GetName();
   ss << "/versions";
@@ -204,8 +214,8 @@ void LexModelBuildingServiceClient::CreateIntentVersionAsyncHelper(const CreateI
 
 CreateSlotTypeVersionOutcome LexModelBuildingServiceClient::CreateSlotTypeVersion(const CreateSlotTypeVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   ss << request.GetName();
   ss << "/versions";
@@ -241,8 +251,8 @@ void LexModelBuildingServiceClient::CreateSlotTypeVersionAsyncHelper(const Creat
 
 DeleteBotOutcome LexModelBuildingServiceClient::DeleteBot(const DeleteBotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -277,8 +287,8 @@ void LexModelBuildingServiceClient::DeleteBotAsyncHelper(const DeleteBotRequest&
 
 DeleteBotAliasOutcome LexModelBuildingServiceClient::DeleteBotAlias(const DeleteBotAliasRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -315,8 +325,8 @@ void LexModelBuildingServiceClient::DeleteBotAliasAsyncHelper(const DeleteBotAli
 
 DeleteBotChannelAssociationOutcome LexModelBuildingServiceClient::DeleteBotChannelAssociation(const DeleteBotChannelAssociationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -355,8 +365,8 @@ void LexModelBuildingServiceClient::DeleteBotChannelAssociationAsyncHelper(const
 
 DeleteBotVersionOutcome LexModelBuildingServiceClient::DeleteBotVersion(const DeleteBotVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetName();
   ss << "/versions/";
@@ -393,8 +403,8 @@ void LexModelBuildingServiceClient::DeleteBotVersionAsyncHelper(const DeleteBotV
 
 DeleteIntentOutcome LexModelBuildingServiceClient::DeleteIntent(const DeleteIntentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   ss << request.GetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -429,8 +439,8 @@ void LexModelBuildingServiceClient::DeleteIntentAsyncHelper(const DeleteIntentRe
 
 DeleteIntentVersionOutcome LexModelBuildingServiceClient::DeleteIntentVersion(const DeleteIntentVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   ss << request.GetName();
   ss << "/versions/";
@@ -467,8 +477,8 @@ void LexModelBuildingServiceClient::DeleteIntentVersionAsyncHelper(const DeleteI
 
 DeleteSlotTypeOutcome LexModelBuildingServiceClient::DeleteSlotType(const DeleteSlotTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   ss << request.GetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -503,8 +513,8 @@ void LexModelBuildingServiceClient::DeleteSlotTypeAsyncHelper(const DeleteSlotTy
 
 DeleteSlotTypeVersionOutcome LexModelBuildingServiceClient::DeleteSlotTypeVersion(const DeleteSlotTypeVersionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   ss << request.GetName();
   ss << "/version/";
@@ -541,8 +551,8 @@ void LexModelBuildingServiceClient::DeleteSlotTypeVersionAsyncHelper(const Delet
 
 DeleteUtterancesOutcome LexModelBuildingServiceClient::DeleteUtterances(const DeleteUtterancesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/utterances/";
@@ -579,8 +589,8 @@ void LexModelBuildingServiceClient::DeleteUtterancesAsyncHelper(const DeleteUtte
 
 GetBotOutcome LexModelBuildingServiceClient::GetBot(const GetBotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetName();
   ss << "/versions/";
@@ -617,8 +627,8 @@ void LexModelBuildingServiceClient::GetBotAsyncHelper(const GetBotRequest& reque
 
 GetBotAliasOutcome LexModelBuildingServiceClient::GetBotAlias(const GetBotAliasRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -655,8 +665,8 @@ void LexModelBuildingServiceClient::GetBotAliasAsyncHelper(const GetBotAliasRequ
 
 GetBotAliasesOutcome LexModelBuildingServiceClient::GetBotAliases(const GetBotAliasesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -692,8 +702,8 @@ void LexModelBuildingServiceClient::GetBotAliasesAsyncHelper(const GetBotAliases
 
 GetBotChannelAssociationOutcome LexModelBuildingServiceClient::GetBotChannelAssociation(const GetBotChannelAssociationRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -732,8 +742,8 @@ void LexModelBuildingServiceClient::GetBotChannelAssociationAsyncHelper(const Ge
 
 GetBotChannelAssociationsOutcome LexModelBuildingServiceClient::GetBotChannelAssociations(const GetBotChannelAssociationsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -771,8 +781,8 @@ void LexModelBuildingServiceClient::GetBotChannelAssociationsAsyncHelper(const G
 
 GetBotVersionsOutcome LexModelBuildingServiceClient::GetBotVersions(const GetBotVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetName();
   ss << "/versions/";
@@ -808,8 +818,8 @@ void LexModelBuildingServiceClient::GetBotVersionsAsyncHelper(const GetBotVersio
 
 GetBotsOutcome LexModelBuildingServiceClient::GetBots(const GetBotsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -843,8 +853,8 @@ void LexModelBuildingServiceClient::GetBotsAsyncHelper(const GetBotsRequest& req
 
 GetBuiltinIntentOutcome LexModelBuildingServiceClient::GetBuiltinIntent(const GetBuiltinIntentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/builtins/intents/";
   ss << request.GetSignature();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -879,8 +889,8 @@ void LexModelBuildingServiceClient::GetBuiltinIntentAsyncHelper(const GetBuiltin
 
 GetBuiltinIntentsOutcome LexModelBuildingServiceClient::GetBuiltinIntents(const GetBuiltinIntentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/builtins/intents/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -914,8 +924,8 @@ void LexModelBuildingServiceClient::GetBuiltinIntentsAsyncHelper(const GetBuilti
 
 GetBuiltinSlotTypesOutcome LexModelBuildingServiceClient::GetBuiltinSlotTypes(const GetBuiltinSlotTypesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/builtins/slottypes/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -949,8 +959,8 @@ void LexModelBuildingServiceClient::GetBuiltinSlotTypesAsyncHelper(const GetBuil
 
 GetExportOutcome LexModelBuildingServiceClient::GetExport(const GetExportRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/exports/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -984,8 +994,8 @@ void LexModelBuildingServiceClient::GetExportAsyncHelper(const GetExportRequest&
 
 GetImportOutcome LexModelBuildingServiceClient::GetImport(const GetImportRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/imports/";
   ss << request.GetImportId();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -1020,8 +1030,8 @@ void LexModelBuildingServiceClient::GetImportAsyncHelper(const GetImportRequest&
 
 GetIntentOutcome LexModelBuildingServiceClient::GetIntent(const GetIntentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   ss << request.GetName();
   ss << "/versions/";
@@ -1058,8 +1068,8 @@ void LexModelBuildingServiceClient::GetIntentAsyncHelper(const GetIntentRequest&
 
 GetIntentVersionsOutcome LexModelBuildingServiceClient::GetIntentVersions(const GetIntentVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   ss << request.GetName();
   ss << "/versions/";
@@ -1095,8 +1105,8 @@ void LexModelBuildingServiceClient::GetIntentVersionsAsyncHelper(const GetIntent
 
 GetIntentsOutcome LexModelBuildingServiceClient::GetIntents(const GetIntentsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1130,8 +1140,8 @@ void LexModelBuildingServiceClient::GetIntentsAsyncHelper(const GetIntentsReques
 
 GetSlotTypeOutcome LexModelBuildingServiceClient::GetSlotType(const GetSlotTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   ss << request.GetName();
   ss << "/versions/";
@@ -1168,8 +1178,8 @@ void LexModelBuildingServiceClient::GetSlotTypeAsyncHelper(const GetSlotTypeRequ
 
 GetSlotTypeVersionsOutcome LexModelBuildingServiceClient::GetSlotTypeVersions(const GetSlotTypeVersionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   ss << request.GetName();
   ss << "/versions/";
@@ -1205,8 +1215,8 @@ void LexModelBuildingServiceClient::GetSlotTypeVersionsAsyncHelper(const GetSlot
 
 GetSlotTypesOutcome LexModelBuildingServiceClient::GetSlotTypes(const GetSlotTypesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -1240,8 +1250,8 @@ void LexModelBuildingServiceClient::GetSlotTypesAsyncHelper(const GetSlotTypesRe
 
 GetUtterancesViewOutcome LexModelBuildingServiceClient::GetUtterancesView(const GetUtterancesViewRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/utterances";
@@ -1279,8 +1289,8 @@ void LexModelBuildingServiceClient::GetUtterancesViewAsyncHelper(const GetUttera
 
 PutBotOutcome LexModelBuildingServiceClient::PutBot(const PutBotRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetName();
   ss << "/versions/$LATEST";
@@ -1316,8 +1326,8 @@ void LexModelBuildingServiceClient::PutBotAsyncHelper(const PutBotRequest& reque
 
 PutBotAliasOutcome LexModelBuildingServiceClient::PutBotAlias(const PutBotAliasRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/bots/";
   ss << request.GetBotName();
   ss << "/aliases/";
@@ -1354,8 +1364,8 @@ void LexModelBuildingServiceClient::PutBotAliasAsyncHelper(const PutBotAliasRequ
 
 PutIntentOutcome LexModelBuildingServiceClient::PutIntent(const PutIntentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/intents/";
   ss << request.GetName();
   ss << "/versions/$LATEST";
@@ -1391,8 +1401,8 @@ void LexModelBuildingServiceClient::PutIntentAsyncHelper(const PutIntentRequest&
 
 PutSlotTypeOutcome LexModelBuildingServiceClient::PutSlotType(const PutSlotTypeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/slottypes/";
   ss << request.GetName();
   ss << "/versions/$LATEST";
@@ -1428,8 +1438,8 @@ void LexModelBuildingServiceClient::PutSlotTypeAsyncHelper(const PutSlotTypeRequ
 
 StartImportOutcome LexModelBuildingServiceClient::StartImport(const StartImportRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/imports/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);

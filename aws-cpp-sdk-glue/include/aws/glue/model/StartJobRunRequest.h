@@ -119,8 +119,8 @@ namespace Model
 
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -133,8 +133,8 @@ namespace Model
     inline const Aws::Map<Aws::String, Aws::String>& GetArguments() const{ return m_arguments; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -147,8 +147,8 @@ namespace Model
     inline void SetArguments(const Aws::Map<Aws::String, Aws::String>& value) { m_argumentsHasBeenSet = true; m_arguments = value; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -161,8 +161,8 @@ namespace Model
     inline void SetArguments(Aws::Map<Aws::String, Aws::String>&& value) { m_argumentsHasBeenSet = true; m_arguments = std::move(value); }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -175,8 +175,8 @@ namespace Model
     inline StartJobRunRequest& WithArguments(const Aws::Map<Aws::String, Aws::String>& value) { SetArguments(value); return *this;}
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -189,8 +189,8 @@ namespace Model
     inline StartJobRunRequest& WithArguments(Aws::Map<Aws::String, Aws::String>&& value) { SetArguments(std::move(value)); return *this;}
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -203,8 +203,8 @@ namespace Model
     inline StartJobRunRequest& AddArguments(const Aws::String& key, const Aws::String& value) { m_argumentsHasBeenSet = true; m_arguments.emplace(key, value); return *this; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -217,8 +217,8 @@ namespace Model
     inline StartJobRunRequest& AddArguments(Aws::String&& key, const Aws::String& value) { m_argumentsHasBeenSet = true; m_arguments.emplace(std::move(key), value); return *this; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -231,8 +231,8 @@ namespace Model
     inline StartJobRunRequest& AddArguments(const Aws::String& key, Aws::String&& value) { m_argumentsHasBeenSet = true; m_arguments.emplace(key, std::move(value)); return *this; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -245,8 +245,8 @@ namespace Model
     inline StartJobRunRequest& AddArguments(Aws::String&& key, Aws::String&& value) { m_argumentsHasBeenSet = true; m_arguments.emplace(std::move(key), std::move(value)); return *this; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -259,8 +259,8 @@ namespace Model
     inline StartJobRunRequest& AddArguments(const char* key, Aws::String&& value) { m_argumentsHasBeenSet = true; m_arguments.emplace(key, std::move(value)); return *this; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -273,8 +273,8 @@ namespace Model
     inline StartJobRunRequest& AddArguments(Aws::String&& key, const char* value) { m_argumentsHasBeenSet = true; m_arguments.emplace(std::move(key), value); return *this; }
 
     /**
-     * <p>The job arguments specifically for this run. They override the equivalent
-     * default arguments set for in the job definition itself.</p> <p>You can specify
+     * <p>The job arguments specifically for this run. For this job run, they replace
+     * the default arguments set in the job definition itself.</p> <p>You can specify
      * arguments here that your own job-execution script consumes, as well as arguments
      * that AWS Glue itself consumes.</p> <p>For information about how to specify and
      * consume your own Job arguments, see the <a
@@ -285,34 +285,6 @@ namespace Model
      * Parameters Used by AWS Glue</a> topic in the developer guide.</p>
      */
     inline StartJobRunRequest& AddArguments(const char* key, const char* value) { m_argumentsHasBeenSet = true; m_arguments.emplace(key, value); return *this; }
-
-
-    /**
-     * <p>The number of AWS Glue data processing units (DPUs) to allocate to this
-     * JobRun. From 2 to 100 DPUs can be allocated; the default is 10. A DPU is a
-     * relative measure of processing power that consists of 4 vCPUs of compute
-     * capacity and 16 GB of memory. For more information, see the <a
-     * href="https://aws.amazon.com/glue/pricing/">AWS Glue pricing page</a>.</p>
-     */
-    inline int GetAllocatedCapacity() const{ return m_allocatedCapacity; }
-
-    /**
-     * <p>The number of AWS Glue data processing units (DPUs) to allocate to this
-     * JobRun. From 2 to 100 DPUs can be allocated; the default is 10. A DPU is a
-     * relative measure of processing power that consists of 4 vCPUs of compute
-     * capacity and 16 GB of memory. For more information, see the <a
-     * href="https://aws.amazon.com/glue/pricing/">AWS Glue pricing page</a>.</p>
-     */
-    inline void SetAllocatedCapacity(int value) { m_allocatedCapacityHasBeenSet = true; m_allocatedCapacity = value; }
-
-    /**
-     * <p>The number of AWS Glue data processing units (DPUs) to allocate to this
-     * JobRun. From 2 to 100 DPUs can be allocated; the default is 10. A DPU is a
-     * relative measure of processing power that consists of 4 vCPUs of compute
-     * capacity and 16 GB of memory. For more information, see the <a
-     * href="https://aws.amazon.com/glue/pricing/">AWS Glue pricing page</a>.</p>
-     */
-    inline StartJobRunRequest& WithAllocatedCapacity(int value) { SetAllocatedCapacity(value); return *this;}
 
 
     /**
@@ -338,6 +310,55 @@ namespace Model
      * value set in the parent job.</p>
      */
     inline StartJobRunRequest& WithTimeout(int value) { SetTimeout(value); return *this;}
+
+
+    /**
+     * <p>The number of AWS Glue data processing units (DPUs) that can be allocated
+     * when this job runs. A DPU is a relative measure of processing power that
+     * consists of 4 vCPUs of compute capacity and 16 GB of memory. For more
+     * information, see the <a href="https://aws.amazon.com/glue/pricing/">AWS Glue
+     * pricing page</a>.</p> <p>The value that can be allocated for
+     * <code>MaxCapacity</code> depends on whether you are running a python shell job,
+     * or an Apache Spark ETL job:</p> <ul> <li> <p>When you specify a python shell job
+     * (<code>JobCommand.Name</code>="pythonshell"), you can allocate either 0.0625 or
+     * 1 DPU. The default is 0.0625 DPU.</p> </li> <li> <p>When you specify an Apache
+     * Spark ETL job (<code>JobCommand.Name</code>="glueetl"), you can allocate from 2
+     * to 100 DPUs. The default is 10 DPUs. This job type cannot have a fractional DPU
+     * allocation.</p> </li> </ul>
+     */
+    inline double GetMaxCapacity() const{ return m_maxCapacity; }
+
+    /**
+     * <p>The number of AWS Glue data processing units (DPUs) that can be allocated
+     * when this job runs. A DPU is a relative measure of processing power that
+     * consists of 4 vCPUs of compute capacity and 16 GB of memory. For more
+     * information, see the <a href="https://aws.amazon.com/glue/pricing/">AWS Glue
+     * pricing page</a>.</p> <p>The value that can be allocated for
+     * <code>MaxCapacity</code> depends on whether you are running a python shell job,
+     * or an Apache Spark ETL job:</p> <ul> <li> <p>When you specify a python shell job
+     * (<code>JobCommand.Name</code>="pythonshell"), you can allocate either 0.0625 or
+     * 1 DPU. The default is 0.0625 DPU.</p> </li> <li> <p>When you specify an Apache
+     * Spark ETL job (<code>JobCommand.Name</code>="glueetl"), you can allocate from 2
+     * to 100 DPUs. The default is 10 DPUs. This job type cannot have a fractional DPU
+     * allocation.</p> </li> </ul>
+     */
+    inline void SetMaxCapacity(double value) { m_maxCapacityHasBeenSet = true; m_maxCapacity = value; }
+
+    /**
+     * <p>The number of AWS Glue data processing units (DPUs) that can be allocated
+     * when this job runs. A DPU is a relative measure of processing power that
+     * consists of 4 vCPUs of compute capacity and 16 GB of memory. For more
+     * information, see the <a href="https://aws.amazon.com/glue/pricing/">AWS Glue
+     * pricing page</a>.</p> <p>The value that can be allocated for
+     * <code>MaxCapacity</code> depends on whether you are running a python shell job,
+     * or an Apache Spark ETL job:</p> <ul> <li> <p>When you specify a python shell job
+     * (<code>JobCommand.Name</code>="pythonshell"), you can allocate either 0.0625 or
+     * 1 DPU. The default is 0.0625 DPU.</p> </li> <li> <p>When you specify an Apache
+     * Spark ETL job (<code>JobCommand.Name</code>="glueetl"), you can allocate from 2
+     * to 100 DPUs. The default is 10 DPUs. This job type cannot have a fractional DPU
+     * allocation.</p> </li> </ul>
+     */
+    inline StartJobRunRequest& WithMaxCapacity(double value) { SetMaxCapacity(value); return *this;}
 
 
     /**
@@ -419,11 +440,11 @@ namespace Model
     Aws::Map<Aws::String, Aws::String> m_arguments;
     bool m_argumentsHasBeenSet;
 
-    int m_allocatedCapacity;
-    bool m_allocatedCapacityHasBeenSet;
-
     int m_timeout;
     bool m_timeoutHasBeenSet;
+
+    double m_maxCapacity;
+    bool m_maxCapacityHasBeenSet;
 
     NotificationProperty m_notificationProperty;
     bool m_notificationPropertyHasBeenSet;

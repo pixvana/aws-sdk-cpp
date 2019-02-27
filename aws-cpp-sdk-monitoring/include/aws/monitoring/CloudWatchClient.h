@@ -456,7 +456,7 @@ namespace Model
          * into your data. For example, using Lambda metrics, you could divide the Errors
          * metric by the Invocations metric to get an error rate time series. For more
          * information about metric math expressions, see <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html#metric-math-syntax">Metric
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html#metric-math-syntax">Metric
          * Math Syntax and Functions</a> in the <i>Amazon CloudWatch User Guide</i>.</p>
          * <p>Calls to the <code>GetMetricData</code> API have a different pricing
          * structure than calls to <code>GetMetricStatistics</code>. For more information
@@ -489,7 +489,7 @@ namespace Model
          * into your data. For example, using Lambda metrics, you could divide the Errors
          * metric by the Invocations metric to get an error rate time series. For more
          * information about metric math expressions, see <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html#metric-math-syntax">Metric
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html#metric-math-syntax">Metric
          * Math Syntax and Functions</a> in the <i>Amazon CloudWatch User Guide</i>.</p>
          * <p>Calls to the <code>GetMetricData</code> API have a different pricing
          * structure than calls to <code>GetMetricStatistics</code>. For more information
@@ -524,7 +524,7 @@ namespace Model
          * into your data. For example, using Lambda metrics, you could divide the Errors
          * metric by the Invocations metric to get an error rate time series. For more
          * information about metric math expressions, see <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html#metric-math-syntax">Metric
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html#metric-math-syntax">Metric
          * Math Syntax and Functions</a> in the <i>Amazon CloudWatch User Guide</i>.</p>
          * <p>Calls to the <code>GetMetricData</code> API have a different pricing
          * structure than calls to <code>GetMetricStatistics</code>. For more information
@@ -585,7 +585,7 @@ namespace Model
          * resolution of 1 hour.</p> <p>CloudWatch started retaining 5-minute and 1-hour
          * metric data as of July 9, 2016.</p> <p>For information about metrics and
          * dimensions supported by AWS services, see the <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CW_Support_For_AWS.html">Amazon
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CW_Support_For_AWS.html">Amazon
          * CloudWatch Metrics and Dimensions Reference</a> in the <i>Amazon CloudWatch User
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/GetMetricStatistics">AWS
@@ -627,7 +627,7 @@ namespace Model
          * resolution of 1 hour.</p> <p>CloudWatch started retaining 5-minute and 1-hour
          * metric data as of July 9, 2016.</p> <p>For information about metrics and
          * dimensions supported by AWS services, see the <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CW_Support_For_AWS.html">Amazon
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CW_Support_For_AWS.html">Amazon
          * CloudWatch Metrics and Dimensions Reference</a> in the <i>Amazon CloudWatch User
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/GetMetricStatistics">AWS
@@ -671,7 +671,7 @@ namespace Model
          * resolution of 1 hour.</p> <p>CloudWatch started retaining 5-minute and 1-hour
          * metric data as of July 9, 2016.</p> <p>For information about metrics and
          * dimensions supported by AWS services, see the <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CW_Support_For_AWS.html">Amazon
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CW_Support_For_AWS.html">Amazon
          * CloudWatch Metrics and Dimensions Reference</a> in the <i>Amazon CloudWatch User
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/GetMetricStatistics">AWS
@@ -896,21 +896,21 @@ namespace Model
         virtual void PutDashboardAsync(const Model::PutDashboardRequest& request, const PutDashboardResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Creates or updates an alarm and associates it with the specified metric.
-         * Optionally, this operation can associate one or more Amazon SNS resources with
-         * the alarm.</p> <p>When this operation creates an alarm, the alarm state is
-         * immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is evaluated and
-         * its state is set appropriately. Any actions associated with the state are then
-         * executed.</p> <p>When you update an existing alarm, its state is left unchanged,
-         * but the update completely overwrites the previous configuration of the
-         * alarm.</p> <p>If you are an IAM user, you must have Amazon EC2 permissions for
-         * some operations:</p> <ul> <li> <p> <code>iam:CreateServiceLinkedRole</code> for
-         * all alarms with EC2 actions</p> </li> <li> <p>
-         * <code>ec2:DescribeInstanceStatus</code> and <code>ec2:DescribeInstances</code>
-         * for all alarms on EC2 instance status metrics</p> </li> <li> <p>
-         * <code>ec2:StopInstances</code> for alarms with stop actions</p> </li> <li> <p>
-         * <code>ec2:TerminateInstances</code> for alarms with terminate actions</p> </li>
-         * <li> <p> <code>ec2:DescribeInstanceRecoveryAttribute</code> and
+         * <p>Creates or updates an alarm and associates it with the specified metric or
+         * metric math expression.</p> <p>When this operation creates an alarm, the alarm
+         * state is immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is then
+         * evaluated and its state is set appropriately. Any actions associated with the
+         * new state are then executed.</p> <p>When you update an existing alarm, its state
+         * is left unchanged, but the update completely overwrites the previous
+         * configuration of the alarm.</p> <p>If you are an IAM user, you must have Amazon
+         * EC2 permissions for some alarm operations:</p> <ul> <li> <p>
+         * <code>iam:CreateServiceLinkedRole</code> for all alarms with EC2 actions</p>
+         * </li> <li> <p> <code>ec2:DescribeInstanceStatus</code> and
+         * <code>ec2:DescribeInstances</code> for all alarms on EC2 instance status
+         * metrics</p> </li> <li> <p> <code>ec2:StopInstances</code> for alarms with stop
+         * actions</p> </li> <li> <p> <code>ec2:TerminateInstances</code> for alarms with
+         * terminate actions</p> </li> <li> <p>
+         * <code>ec2:DescribeInstanceRecoveryAttribute</code> and
          * <code>ec2:RecoverInstances</code> for alarms with recover actions</p> </li>
          * </ul> <p>If you have read/write permissions for Amazon CloudWatch but not for
          * Amazon EC2, you can still create an alarm, but the stop or terminate actions are
@@ -924,9 +924,8 @@ namespace Model
          * <p>The first time you create an alarm in the AWS Management Console, the CLI, or
          * by using the PutMetricAlarm API, CloudWatch creates the necessary service-linked
          * role for you. The service-linked role is called
-         * <code>AWSServiceRoleForCloudWatchEvents</code>. For more information about
-         * service-linked roles, see <a
-         * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">AWS
+         * <code>AWSServiceRoleForCloudWatchEvents</code>. For more information, see <a
+         * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">AWS
          * service-linked role</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/PutMetricAlarm">AWS
          * API Reference</a></p>
@@ -934,21 +933,21 @@ namespace Model
         virtual Model::PutMetricAlarmOutcome PutMetricAlarm(const Model::PutMetricAlarmRequest& request) const;
 
         /**
-         * <p>Creates or updates an alarm and associates it with the specified metric.
-         * Optionally, this operation can associate one or more Amazon SNS resources with
-         * the alarm.</p> <p>When this operation creates an alarm, the alarm state is
-         * immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is evaluated and
-         * its state is set appropriately. Any actions associated with the state are then
-         * executed.</p> <p>When you update an existing alarm, its state is left unchanged,
-         * but the update completely overwrites the previous configuration of the
-         * alarm.</p> <p>If you are an IAM user, you must have Amazon EC2 permissions for
-         * some operations:</p> <ul> <li> <p> <code>iam:CreateServiceLinkedRole</code> for
-         * all alarms with EC2 actions</p> </li> <li> <p>
-         * <code>ec2:DescribeInstanceStatus</code> and <code>ec2:DescribeInstances</code>
-         * for all alarms on EC2 instance status metrics</p> </li> <li> <p>
-         * <code>ec2:StopInstances</code> for alarms with stop actions</p> </li> <li> <p>
-         * <code>ec2:TerminateInstances</code> for alarms with terminate actions</p> </li>
-         * <li> <p> <code>ec2:DescribeInstanceRecoveryAttribute</code> and
+         * <p>Creates or updates an alarm and associates it with the specified metric or
+         * metric math expression.</p> <p>When this operation creates an alarm, the alarm
+         * state is immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is then
+         * evaluated and its state is set appropriately. Any actions associated with the
+         * new state are then executed.</p> <p>When you update an existing alarm, its state
+         * is left unchanged, but the update completely overwrites the previous
+         * configuration of the alarm.</p> <p>If you are an IAM user, you must have Amazon
+         * EC2 permissions for some alarm operations:</p> <ul> <li> <p>
+         * <code>iam:CreateServiceLinkedRole</code> for all alarms with EC2 actions</p>
+         * </li> <li> <p> <code>ec2:DescribeInstanceStatus</code> and
+         * <code>ec2:DescribeInstances</code> for all alarms on EC2 instance status
+         * metrics</p> </li> <li> <p> <code>ec2:StopInstances</code> for alarms with stop
+         * actions</p> </li> <li> <p> <code>ec2:TerminateInstances</code> for alarms with
+         * terminate actions</p> </li> <li> <p>
+         * <code>ec2:DescribeInstanceRecoveryAttribute</code> and
          * <code>ec2:RecoverInstances</code> for alarms with recover actions</p> </li>
          * </ul> <p>If you have read/write permissions for Amazon CloudWatch but not for
          * Amazon EC2, you can still create an alarm, but the stop or terminate actions are
@@ -962,9 +961,8 @@ namespace Model
          * <p>The first time you create an alarm in the AWS Management Console, the CLI, or
          * by using the PutMetricAlarm API, CloudWatch creates the necessary service-linked
          * role for you. The service-linked role is called
-         * <code>AWSServiceRoleForCloudWatchEvents</code>. For more information about
-         * service-linked roles, see <a
-         * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">AWS
+         * <code>AWSServiceRoleForCloudWatchEvents</code>. For more information, see <a
+         * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">AWS
          * service-linked role</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/PutMetricAlarm">AWS
          * API Reference</a></p>
@@ -974,21 +972,21 @@ namespace Model
         virtual Model::PutMetricAlarmOutcomeCallable PutMetricAlarmCallable(const Model::PutMetricAlarmRequest& request) const;
 
         /**
-         * <p>Creates or updates an alarm and associates it with the specified metric.
-         * Optionally, this operation can associate one or more Amazon SNS resources with
-         * the alarm.</p> <p>When this operation creates an alarm, the alarm state is
-         * immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is evaluated and
-         * its state is set appropriately. Any actions associated with the state are then
-         * executed.</p> <p>When you update an existing alarm, its state is left unchanged,
-         * but the update completely overwrites the previous configuration of the
-         * alarm.</p> <p>If you are an IAM user, you must have Amazon EC2 permissions for
-         * some operations:</p> <ul> <li> <p> <code>iam:CreateServiceLinkedRole</code> for
-         * all alarms with EC2 actions</p> </li> <li> <p>
-         * <code>ec2:DescribeInstanceStatus</code> and <code>ec2:DescribeInstances</code>
-         * for all alarms on EC2 instance status metrics</p> </li> <li> <p>
-         * <code>ec2:StopInstances</code> for alarms with stop actions</p> </li> <li> <p>
-         * <code>ec2:TerminateInstances</code> for alarms with terminate actions</p> </li>
-         * <li> <p> <code>ec2:DescribeInstanceRecoveryAttribute</code> and
+         * <p>Creates or updates an alarm and associates it with the specified metric or
+         * metric math expression.</p> <p>When this operation creates an alarm, the alarm
+         * state is immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is then
+         * evaluated and its state is set appropriately. Any actions associated with the
+         * new state are then executed.</p> <p>When you update an existing alarm, its state
+         * is left unchanged, but the update completely overwrites the previous
+         * configuration of the alarm.</p> <p>If you are an IAM user, you must have Amazon
+         * EC2 permissions for some alarm operations:</p> <ul> <li> <p>
+         * <code>iam:CreateServiceLinkedRole</code> for all alarms with EC2 actions</p>
+         * </li> <li> <p> <code>ec2:DescribeInstanceStatus</code> and
+         * <code>ec2:DescribeInstances</code> for all alarms on EC2 instance status
+         * metrics</p> </li> <li> <p> <code>ec2:StopInstances</code> for alarms with stop
+         * actions</p> </li> <li> <p> <code>ec2:TerminateInstances</code> for alarms with
+         * terminate actions</p> </li> <li> <p>
+         * <code>ec2:DescribeInstanceRecoveryAttribute</code> and
          * <code>ec2:RecoverInstances</code> for alarms with recover actions</p> </li>
          * </ul> <p>If you have read/write permissions for Amazon CloudWatch but not for
          * Amazon EC2, you can still create an alarm, but the stop or terminate actions are
@@ -1002,9 +1000,8 @@ namespace Model
          * <p>The first time you create an alarm in the AWS Management Console, the CLI, or
          * by using the PutMetricAlarm API, CloudWatch creates the necessary service-linked
          * role for you. The service-linked role is called
-         * <code>AWSServiceRoleForCloudWatchEvents</code>. For more information about
-         * service-linked roles, see <a
-         * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">AWS
+         * <code>AWSServiceRoleForCloudWatchEvents</code>. For more information, see <a
+         * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html#iam-term-service-linked-role">AWS
          * service-linked role</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/PutMetricAlarm">AWS
          * API Reference</a></p>
@@ -1014,14 +1011,14 @@ namespace Model
         virtual void PutMetricAlarmAsync(const Model::PutMetricAlarmRequest& request, const PutMetricAlarmResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Publishes metric data to Amazon CloudWatch. CloudWatch associates the data
-         * with the specified metric. If the specified metric does not exist, CloudWatch
-         * creates the metric. When CloudWatch creates a metric, it can take up to fifteen
-         * minutes for the metric to appear in calls to <a>ListMetrics</a>.</p> <p>You can
-         * publish either individual data points in the <code>Value</code> field, or arrays
-         * of values and the number of times each value occurred during the period by using
-         * the <code>Values</code> and <code>Counts</code> fields in the
-         * <code>MetricDatum</code> structure. Using the <code>Values</code> and
+         * <p>Publishes metric data points to Amazon CloudWatch. CloudWatch associates the
+         * data points with the specified metric. If the specified metric does not exist,
+         * CloudWatch creates the metric. When CloudWatch creates a metric, it can take up
+         * to fifteen minutes for the metric to appear in calls to <a>ListMetrics</a>.</p>
+         * <p>You can publish either individual data points in the <code>Value</code>
+         * field, or arrays of values and the number of times each value occurred during
+         * the period by using the <code>Values</code> and <code>Counts</code> fields in
+         * the <code>MetricDatum</code> structure. Using the <code>Values</code> and
          * <code>Counts</code> method enables you to publish up to 150 values per metric
          * with one <code>PutMetricData</code> request, and supports retrieving percentile
          * statistics on this data.</p> <p>Each <code>PutMetricData</code> request is
@@ -1032,16 +1029,15 @@ namespace Model
          * too large. Values must be in the range of 8.515920e-109 to 1.174271e+108 (Base
          * 10) or 2e-360 to 2e360 (Base 2). In addition, special values (for example, NaN,
          * +Infinity, -Infinity) are not supported.</p> <p>You can use up to 10 dimensions
-         * per metric to further clarify what data the metric collects. For more
-         * information about specifying dimensions, see <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
+         * per metric to further clarify what data the metric collects. Each dimension
+         * consists of a Name and Value pair. For more information about specifying
+         * dimensions, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
          * Metrics</a> in the <i>Amazon CloudWatch User Guide</i>.</p> <p>Data points with
          * time stamps from 24 hours ago or longer can take at least 48 hours to become
          * available for <a>GetMetricData</a> or <a>GetMetricStatistics</a> from the time
          * they are submitted.</p> <p>CloudWatch needs raw data points to calculate
-         * percentile statistics. These raw data points could be published individually or
-         * as part of <code>Values</code> and <code>Counts</code> arrays. If you publish
-         * data using statistic sets in the <code>StatisticValues</code> field instead, you
+         * percentile statistics. If you publish data using a statistic set instead, you
          * can only retrieve percentile statistics for this data if one of the following
          * conditions is true:</p> <ul> <li> <p>The <code>SampleCount</code> value of the
          * statistic set is 1 and <code>Min</code>, <code>Max</code>, and <code>Sum</code>
@@ -1054,14 +1050,14 @@ namespace Model
         virtual Model::PutMetricDataOutcome PutMetricData(const Model::PutMetricDataRequest& request) const;
 
         /**
-         * <p>Publishes metric data to Amazon CloudWatch. CloudWatch associates the data
-         * with the specified metric. If the specified metric does not exist, CloudWatch
-         * creates the metric. When CloudWatch creates a metric, it can take up to fifteen
-         * minutes for the metric to appear in calls to <a>ListMetrics</a>.</p> <p>You can
-         * publish either individual data points in the <code>Value</code> field, or arrays
-         * of values and the number of times each value occurred during the period by using
-         * the <code>Values</code> and <code>Counts</code> fields in the
-         * <code>MetricDatum</code> structure. Using the <code>Values</code> and
+         * <p>Publishes metric data points to Amazon CloudWatch. CloudWatch associates the
+         * data points with the specified metric. If the specified metric does not exist,
+         * CloudWatch creates the metric. When CloudWatch creates a metric, it can take up
+         * to fifteen minutes for the metric to appear in calls to <a>ListMetrics</a>.</p>
+         * <p>You can publish either individual data points in the <code>Value</code>
+         * field, or arrays of values and the number of times each value occurred during
+         * the period by using the <code>Values</code> and <code>Counts</code> fields in
+         * the <code>MetricDatum</code> structure. Using the <code>Values</code> and
          * <code>Counts</code> method enables you to publish up to 150 values per metric
          * with one <code>PutMetricData</code> request, and supports retrieving percentile
          * statistics on this data.</p> <p>Each <code>PutMetricData</code> request is
@@ -1072,16 +1068,15 @@ namespace Model
          * too large. Values must be in the range of 8.515920e-109 to 1.174271e+108 (Base
          * 10) or 2e-360 to 2e360 (Base 2). In addition, special values (for example, NaN,
          * +Infinity, -Infinity) are not supported.</p> <p>You can use up to 10 dimensions
-         * per metric to further clarify what data the metric collects. For more
-         * information about specifying dimensions, see <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
+         * per metric to further clarify what data the metric collects. Each dimension
+         * consists of a Name and Value pair. For more information about specifying
+         * dimensions, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
          * Metrics</a> in the <i>Amazon CloudWatch User Guide</i>.</p> <p>Data points with
          * time stamps from 24 hours ago or longer can take at least 48 hours to become
          * available for <a>GetMetricData</a> or <a>GetMetricStatistics</a> from the time
          * they are submitted.</p> <p>CloudWatch needs raw data points to calculate
-         * percentile statistics. These raw data points could be published individually or
-         * as part of <code>Values</code> and <code>Counts</code> arrays. If you publish
-         * data using statistic sets in the <code>StatisticValues</code> field instead, you
+         * percentile statistics. If you publish data using a statistic set instead, you
          * can only retrieve percentile statistics for this data if one of the following
          * conditions is true:</p> <ul> <li> <p>The <code>SampleCount</code> value of the
          * statistic set is 1 and <code>Min</code>, <code>Max</code>, and <code>Sum</code>
@@ -1096,14 +1091,14 @@ namespace Model
         virtual Model::PutMetricDataOutcomeCallable PutMetricDataCallable(const Model::PutMetricDataRequest& request) const;
 
         /**
-         * <p>Publishes metric data to Amazon CloudWatch. CloudWatch associates the data
-         * with the specified metric. If the specified metric does not exist, CloudWatch
-         * creates the metric. When CloudWatch creates a metric, it can take up to fifteen
-         * minutes for the metric to appear in calls to <a>ListMetrics</a>.</p> <p>You can
-         * publish either individual data points in the <code>Value</code> field, or arrays
-         * of values and the number of times each value occurred during the period by using
-         * the <code>Values</code> and <code>Counts</code> fields in the
-         * <code>MetricDatum</code> structure. Using the <code>Values</code> and
+         * <p>Publishes metric data points to Amazon CloudWatch. CloudWatch associates the
+         * data points with the specified metric. If the specified metric does not exist,
+         * CloudWatch creates the metric. When CloudWatch creates a metric, it can take up
+         * to fifteen minutes for the metric to appear in calls to <a>ListMetrics</a>.</p>
+         * <p>You can publish either individual data points in the <code>Value</code>
+         * field, or arrays of values and the number of times each value occurred during
+         * the period by using the <code>Values</code> and <code>Counts</code> fields in
+         * the <code>MetricDatum</code> structure. Using the <code>Values</code> and
          * <code>Counts</code> method enables you to publish up to 150 values per metric
          * with one <code>PutMetricData</code> request, and supports retrieving percentile
          * statistics on this data.</p> <p>Each <code>PutMetricData</code> request is
@@ -1114,16 +1109,15 @@ namespace Model
          * too large. Values must be in the range of 8.515920e-109 to 1.174271e+108 (Base
          * 10) or 2e-360 to 2e360 (Base 2). In addition, special values (for example, NaN,
          * +Infinity, -Infinity) are not supported.</p> <p>You can use up to 10 dimensions
-         * per metric to further clarify what data the metric collects. For more
-         * information about specifying dimensions, see <a
-         * href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
+         * per metric to further clarify what data the metric collects. Each dimension
+         * consists of a Name and Value pair. For more information about specifying
+         * dimensions, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
          * Metrics</a> in the <i>Amazon CloudWatch User Guide</i>.</p> <p>Data points with
          * time stamps from 24 hours ago or longer can take at least 48 hours to become
          * available for <a>GetMetricData</a> or <a>GetMetricStatistics</a> from the time
          * they are submitted.</p> <p>CloudWatch needs raw data points to calculate
-         * percentile statistics. These raw data points could be published individually or
-         * as part of <code>Values</code> and <code>Counts</code> arrays. If you publish
-         * data using statistic sets in the <code>StatisticValues</code> field instead, you
+         * percentile statistics. If you publish data using a statistic set instead, you
          * can only retrieve percentile statistics for this data if one of the following
          * conditions is true:</p> <ul> <li> <p>The <code>SampleCount</code> value of the
          * statistic set is 1 and <code>Min</code>, <code>Max</code>, and <code>Sum</code>
@@ -1186,10 +1180,10 @@ namespace Model
          */
         virtual void SetAlarmStateAsync(const Model::SetAlarmStateRequest& request, const SetAlarmStateResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+        void OverrideEndpoint(const Aws::String& endpoint);
   private:
-    void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
+        void init(const Aws::Client::ClientConfiguration& clientConfiguration);
         /**Async helpers**/
         void DeleteAlarmsAsyncHelper(const Model::DeleteAlarmsRequest& request, const DeleteAlarmsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void DeleteDashboardsAsyncHelper(const Model::DeleteDashboardsRequest& request, const DeleteDashboardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -1209,8 +1203,9 @@ namespace Model
         void PutMetricDataAsyncHelper(const Model::PutMetricDataRequest& request, const PutMetricDataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void SetAlarmStateAsyncHelper(const Model::SetAlarmStateRequest& request, const SetAlarmStateResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
-    Aws::String m_uri;
-    std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
+        Aws::String m_uri;
+        Aws::String m_configScheme;
+        std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 
 } // namespace CloudWatch

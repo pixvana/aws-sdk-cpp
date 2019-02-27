@@ -244,53 +244,58 @@ namespace Model
 
 
     /**
-     * <p>The maximum payload size , in MB used in the transform job.</p>
+     * <p>The maximum payload size, in MB, used in the transform job.</p>
      */
     inline int GetMaxPayloadInMB() const{ return m_maxPayloadInMB; }
 
     /**
-     * <p>The maximum payload size , in MB used in the transform job.</p>
+     * <p>The maximum payload size, in MB, used in the transform job.</p>
      */
     inline void SetMaxPayloadInMB(int value) { m_maxPayloadInMB = value; }
 
     /**
-     * <p>The maximum payload size , in MB used in the transform job.</p>
+     * <p>The maximum payload size, in MB, used in the transform job.</p>
      */
     inline DescribeTransformJobResult& WithMaxPayloadInMB(int value) { SetMaxPayloadInMB(value); return *this;}
 
 
     /**
-     * <p>SingleRecord means only one record was used per a batch.
-     * <code>MultiRecord</code> means batches contained as many records that could
-     * possibly fit within the <code>MaxPayloadInMB</code> limit.</p>
+     * <p> If you want to include only one record in a batch, specify
+     * <code>SingleRecord</code>.. If you want batches to contain a maximum of the
+     * number of records specified in the <code>MaxPayloadInMB</code> parameter,
+     * specify <code>MultiRecord</code>.S</p>
      */
     inline const BatchStrategy& GetBatchStrategy() const{ return m_batchStrategy; }
 
     /**
-     * <p>SingleRecord means only one record was used per a batch.
-     * <code>MultiRecord</code> means batches contained as many records that could
-     * possibly fit within the <code>MaxPayloadInMB</code> limit.</p>
+     * <p> If you want to include only one record in a batch, specify
+     * <code>SingleRecord</code>.. If you want batches to contain a maximum of the
+     * number of records specified in the <code>MaxPayloadInMB</code> parameter,
+     * specify <code>MultiRecord</code>.S</p>
      */
     inline void SetBatchStrategy(const BatchStrategy& value) { m_batchStrategy = value; }
 
     /**
-     * <p>SingleRecord means only one record was used per a batch.
-     * <code>MultiRecord</code> means batches contained as many records that could
-     * possibly fit within the <code>MaxPayloadInMB</code> limit.</p>
+     * <p> If you want to include only one record in a batch, specify
+     * <code>SingleRecord</code>.. If you want batches to contain a maximum of the
+     * number of records specified in the <code>MaxPayloadInMB</code> parameter,
+     * specify <code>MultiRecord</code>.S</p>
      */
     inline void SetBatchStrategy(BatchStrategy&& value) { m_batchStrategy = std::move(value); }
 
     /**
-     * <p>SingleRecord means only one record was used per a batch.
-     * <code>MultiRecord</code> means batches contained as many records that could
-     * possibly fit within the <code>MaxPayloadInMB</code> limit.</p>
+     * <p> If you want to include only one record in a batch, specify
+     * <code>SingleRecord</code>.. If you want batches to contain a maximum of the
+     * number of records specified in the <code>MaxPayloadInMB</code> parameter,
+     * specify <code>MultiRecord</code>.S</p>
      */
     inline DescribeTransformJobResult& WithBatchStrategy(const BatchStrategy& value) { SetBatchStrategy(value); return *this;}
 
     /**
-     * <p>SingleRecord means only one record was used per a batch.
-     * <code>MultiRecord</code> means batches contained as many records that could
-     * possibly fit within the <code>MaxPayloadInMB</code> limit.</p>
+     * <p> If you want to include only one record in a batch, specify
+     * <code>SingleRecord</code>.. If you want batches to contain a maximum of the
+     * number of records specified in the <code>MaxPayloadInMB</code> parameter,
+     * specify <code>MultiRecord</code>.S</p>
      */
     inline DescribeTransformJobResult& WithBatchStrategy(BatchStrategy&& value) { SetBatchStrategy(std::move(value)); return *this;}
 
@@ -512,39 +517,82 @@ namespace Model
 
 
     /**
-     * <p>Indicates when the transform job is <code>Completed</code>,
-     * <code>Stopped</code>, or <code>Failed</code>. You are billed for the time
-     * interval between this time and the value of <code>TransformStartTime</code>.</p>
+     * <p>Indicates when the transform job has been completed, or has stopped or
+     * failed. You are billed for the time interval between this time and the value of
+     * <code>TransformStartTime</code>.</p>
      */
     inline const Aws::Utils::DateTime& GetTransformEndTime() const{ return m_transformEndTime; }
 
     /**
-     * <p>Indicates when the transform job is <code>Completed</code>,
-     * <code>Stopped</code>, or <code>Failed</code>. You are billed for the time
-     * interval between this time and the value of <code>TransformStartTime</code>.</p>
+     * <p>Indicates when the transform job has been completed, or has stopped or
+     * failed. You are billed for the time interval between this time and the value of
+     * <code>TransformStartTime</code>.</p>
      */
     inline void SetTransformEndTime(const Aws::Utils::DateTime& value) { m_transformEndTime = value; }
 
     /**
-     * <p>Indicates when the transform job is <code>Completed</code>,
-     * <code>Stopped</code>, or <code>Failed</code>. You are billed for the time
-     * interval between this time and the value of <code>TransformStartTime</code>.</p>
+     * <p>Indicates when the transform job has been completed, or has stopped or
+     * failed. You are billed for the time interval between this time and the value of
+     * <code>TransformStartTime</code>.</p>
      */
     inline void SetTransformEndTime(Aws::Utils::DateTime&& value) { m_transformEndTime = std::move(value); }
 
     /**
-     * <p>Indicates when the transform job is <code>Completed</code>,
-     * <code>Stopped</code>, or <code>Failed</code>. You are billed for the time
-     * interval between this time and the value of <code>TransformStartTime</code>.</p>
+     * <p>Indicates when the transform job has been completed, or has stopped or
+     * failed. You are billed for the time interval between this time and the value of
+     * <code>TransformStartTime</code>.</p>
      */
     inline DescribeTransformJobResult& WithTransformEndTime(const Aws::Utils::DateTime& value) { SetTransformEndTime(value); return *this;}
 
     /**
-     * <p>Indicates when the transform job is <code>Completed</code>,
-     * <code>Stopped</code>, or <code>Failed</code>. You are billed for the time
-     * interval between this time and the value of <code>TransformStartTime</code>.</p>
+     * <p>Indicates when the transform job has been completed, or has stopped or
+     * failed. You are billed for the time interval between this time and the value of
+     * <code>TransformStartTime</code>.</p>
      */
     inline DescribeTransformJobResult& WithTransformEndTime(Aws::Utils::DateTime&& value) { SetTransformEndTime(std::move(value)); return *this;}
+
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline const Aws::String& GetLabelingJobArn() const{ return m_labelingJobArn; }
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline void SetLabelingJobArn(const Aws::String& value) { m_labelingJobArn = value; }
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline void SetLabelingJobArn(Aws::String&& value) { m_labelingJobArn = std::move(value); }
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline void SetLabelingJobArn(const char* value) { m_labelingJobArn.assign(value); }
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline DescribeTransformJobResult& WithLabelingJobArn(const Aws::String& value) { SetLabelingJobArn(value); return *this;}
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline DescribeTransformJobResult& WithLabelingJobArn(Aws::String&& value) { SetLabelingJobArn(std::move(value)); return *this;}
+
+    /**
+     * <p>The Amazon Resource Name (ARN) of the Amazon SageMaker Ground Truth labeling
+     * job that created the transform or training job.</p>
+     */
+    inline DescribeTransformJobResult& WithLabelingJobArn(const char* value) { SetLabelingJobArn(value); return *this;}
 
   private:
 
@@ -577,6 +625,8 @@ namespace Model
     Aws::Utils::DateTime m_transformStartTime;
 
     Aws::Utils::DateTime m_transformEndTime;
+
+    Aws::String m_labelingJobArn;
   };
 
 } // namespace Model

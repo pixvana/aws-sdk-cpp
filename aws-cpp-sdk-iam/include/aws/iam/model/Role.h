@@ -19,6 +19,8 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/utils/DateTime.h>
 #include <aws/iam/model/AttachedPermissionsBoundary.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/iam/model/Tag.h>
 #include <utility>
 
 namespace Aws
@@ -358,7 +360,7 @@ namespace Model
 
     /**
      * <p>The maximum session duration (in seconds) for the specified role. Anyone who
-     * uses the AWS CLI or API to assume the role can specify the duration using the
+     * uses the AWS CLI, or API to assume the role can specify the duration using the
      * optional <code>DurationSeconds</code> API parameter or
      * <code>duration-seconds</code> CLI parameter.</p>
      */
@@ -366,7 +368,7 @@ namespace Model
 
     /**
      * <p>The maximum session duration (in seconds) for the specified role. Anyone who
-     * uses the AWS CLI or API to assume the role can specify the duration using the
+     * uses the AWS CLI, or API to assume the role can specify the duration using the
      * optional <code>DurationSeconds</code> API parameter or
      * <code>duration-seconds</code> CLI parameter.</p>
      */
@@ -374,7 +376,7 @@ namespace Model
 
     /**
      * <p>The maximum session duration (in seconds) for the specified role. Anyone who
-     * uses the AWS CLI or API to assume the role can specify the duration using the
+     * uses the AWS CLI, or API to assume the role can specify the duration using the
      * optional <code>DurationSeconds</code> API parameter or
      * <code>duration-seconds</code> CLI parameter.</p>
      */
@@ -384,7 +386,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the role.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline const AttachedPermissionsBoundary& GetPermissionsBoundary() const{ return m_permissionsBoundary; }
@@ -392,7 +394,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the role.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline void SetPermissionsBoundary(const AttachedPermissionsBoundary& value) { m_permissionsBoundaryHasBeenSet = true; m_permissionsBoundary = value; }
@@ -400,7 +402,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the role.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline void SetPermissionsBoundary(AttachedPermissionsBoundary&& value) { m_permissionsBoundaryHasBeenSet = true; m_permissionsBoundary = std::move(value); }
@@ -408,7 +410,7 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the role.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline Role& WithPermissionsBoundary(const AttachedPermissionsBoundary& value) { SetPermissionsBoundary(value); return *this;}
@@ -416,10 +418,67 @@ namespace Model
     /**
      * <p>The ARN of the policy used to set the permissions boundary for the role.</p>
      * <p>For more information about permissions boundaries, see <a
-     * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
+     * href="IAM/latest/UserGuide/access_policies_boundaries.html">Permissions
      * Boundaries for IAM Identities </a> in the <i>IAM User Guide</i>.</p>
      */
     inline Role& WithPermissionsBoundary(AttachedPermissionsBoundary&& value) { SetPermissionsBoundary(std::move(value)); return *this;}
+
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline Role& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline Role& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline Role& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
+
+    /**
+     * <p>A list of tags that are attached to the specified role. For more information
+     * about tagging, see <a
+     * href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html">Tagging IAM
+     * Identities</a> in the <i>IAM User Guide</i>.</p>
+     */
+    inline Role& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
 
   private:
 
@@ -449,6 +508,9 @@ namespace Model
 
     AttachedPermissionsBoundary m_permissionsBoundary;
     bool m_permissionsBoundaryHasBeenSet;
+
+    Aws::Vector<Tag> m_tags;
+    bool m_tagsHasBeenSet;
   };
 
 } // namespace Model

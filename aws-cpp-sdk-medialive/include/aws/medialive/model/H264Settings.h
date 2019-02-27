@@ -32,6 +32,7 @@
 #include <aws/medialive/model/H264ScanType.h>
 #include <aws/medialive/model/H264SceneChangeDetect.h>
 #include <aws/medialive/model/H264SpatialAq.h>
+#include <aws/medialive/model/H264SubGopLength.h>
 #include <aws/medialive/model/H264Syntax.h>
 #include <aws/medialive/model/H264TemporalAq.h>
 #include <aws/medialive/model/H264TimecodeInsertionBehavior.h>
@@ -139,23 +140,23 @@ namespace Model
 
 
     /**
-     * Average bitrate in bits/second. Required for VBR, CBR, and ABR. For MS Smooth
-     * outputs, bitrates must be unique when rounded down to the nearest multiple of
-     * 1000.
+     * Average bitrate in bits/second. Required when the rate control mode is VBR or
+     * CBR. Not used for QVBR. In an MS Smooth output group, each output must have a
+     * unique value when its bitrate is rounded down to the nearest multiple of 1000.
      */
     inline int GetBitrate() const{ return m_bitrate; }
 
     /**
-     * Average bitrate in bits/second. Required for VBR, CBR, and ABR. For MS Smooth
-     * outputs, bitrates must be unique when rounded down to the nearest multiple of
-     * 1000.
+     * Average bitrate in bits/second. Required when the rate control mode is VBR or
+     * CBR. Not used for QVBR. In an MS Smooth output group, each output must have a
+     * unique value when its bitrate is rounded down to the nearest multiple of 1000.
      */
     inline void SetBitrate(int value) { m_bitrateHasBeenSet = true; m_bitrate = value; }
 
     /**
-     * Average bitrate in bits/second. Required for VBR, CBR, and ABR. For MS Smooth
-     * outputs, bitrates must be unique when rounded down to the nearest multiple of
-     * 1000.
+     * Average bitrate in bits/second. Required when the rate control mode is VBR or
+     * CBR. Not used for QVBR. In an MS Smooth output group, each output must have a
+     * unique value when its bitrate is rounded down to the nearest multiple of 1000.
      */
     inline H264Settings& WithBitrate(int value) { SetBitrate(value); return *this;}
 
@@ -556,26 +557,26 @@ namespace Model
 
 
     /**
-     * Maximum bitrate in bits/second (for VBR and QVBR modes only).
+     * For QVBR: See the tooltip for Quality level 
 
-Required when
-     * rateControlMode is "qvbr".
+For VBR: Set the maximum bitrate
+     * in order to accommodate expected spikes in the complexity of the video.
      */
     inline int GetMaxBitrate() const{ return m_maxBitrate; }
 
     /**
-     * Maximum bitrate in bits/second (for VBR and QVBR modes only).
+     * For QVBR: See the tooltip for Quality level 
 
-Required when
-     * rateControlMode is "qvbr".
+For VBR: Set the maximum bitrate
+     * in order to accommodate expected spikes in the complexity of the video.
      */
     inline void SetMaxBitrate(int value) { m_maxBitrateHasBeenSet = true; m_maxBitrate = value; }
 
     /**
-     * Maximum bitrate in bits/second (for VBR and QVBR modes only).
+     * For QVBR: See the tooltip for Quality level 
 
-Required when
-     * rateControlMode is "qvbr".
+For VBR: Set the maximum bitrate
+     * in order to accommodate expected spikes in the complexity of the video.
      */
     inline H264Settings& WithMaxBitrate(int value) { SetMaxBitrate(value); return *this;}
 
@@ -738,26 +739,41 @@ Required when
 
 
     /**
-     * Target quality value. Applicable only to QVBR mode. 1 is the lowest quality and
-     * 10 is the
-highest and approaches lossless. Typical levels for content
-     * distribution are between 6 and 8.
+     * Controls the target quality for the video encode. Applies only when the rate
+     * control mode is QVBR. Set values for the QVBR quality level field and Max
+     * bitrate field that suit your most important viewing devices. Recommended values
+     * are:
+- Primary screen: Quality level: 8 to 10. Max bitrate: 4M
+- PC or tablet:
+     * Quality level: 7. Max bitrate: 1.5M to 3M
+- Smartphone: Quality level: 6. Max
+     * bitrate: 1M to 1.5M
      */
     inline int GetQvbrQualityLevel() const{ return m_qvbrQualityLevel; }
 
     /**
-     * Target quality value. Applicable only to QVBR mode. 1 is the lowest quality and
-     * 10 is the
-highest and approaches lossless. Typical levels for content
-     * distribution are between 6 and 8.
+     * Controls the target quality for the video encode. Applies only when the rate
+     * control mode is QVBR. Set values for the QVBR quality level field and Max
+     * bitrate field that suit your most important viewing devices. Recommended values
+     * are:
+- Primary screen: Quality level: 8 to 10. Max bitrate: 4M
+- PC or tablet:
+     * Quality level: 7. Max bitrate: 1.5M to 3M
+- Smartphone: Quality level: 6. Max
+     * bitrate: 1M to 1.5M
      */
     inline void SetQvbrQualityLevel(int value) { m_qvbrQualityLevelHasBeenSet = true; m_qvbrQualityLevel = value; }
 
     /**
-     * Target quality value. Applicable only to QVBR mode. 1 is the lowest quality and
-     * 10 is the
-highest and approaches lossless. Typical levels for content
-     * distribution are between 6 and 8.
+     * Controls the target quality for the video encode. Applies only when the rate
+     * control mode is QVBR. Set values for the QVBR quality level field and Max
+     * bitrate field that suit your most important viewing devices. Recommended values
+     * are:
+- Primary screen: Quality level: 8 to 10. Max bitrate: 4M
+- PC or tablet:
+     * Quality level: 7. Max bitrate: 1.5M to 3M
+- Smartphone: Quality level: 6. Max
+     * bitrate: 1M to 1.5M
      */
     inline H264Settings& WithQvbrQualityLevel(int value) { SetQvbrQualityLevel(value); return *this;}
 
@@ -765,80 +781,100 @@ highest and approaches lossless. Typical levels for content
     /**
      * Rate control mode. 
 
-- CBR: Constant Bit Rate
-- VBR: Variable Bit Rate
-- QVBR:
-     * Encoder dynamically controls the bitrate to meet the desired quality
-     * (specified
-through the qvbrQualityLevel field). The bitrate will not exceed the
-     * bitrate specified in
-the maxBitrate field and will not fall below the bitrate
-     * required to meet the desired
-quality level.
+QVBR: Quality will match the specified quality level except
+     * when it is constrained by the
+maximum bitrate.  Recommended if you or your
+     * viewers pay for bandwidth.
+
+VBR: Quality and bitrate vary, depending on the
+     * video complexity. Recommended instead of QVBR
+if you want to maintain a specific
+     * average bitrate over the duration of the channel.
+
+CBR: Quality varies,
+     * depending on the video complexity. Recommended only if you distribute
+your
+     * assets to devices that cannot handle variable bitrates.
      */
     inline const H264RateControlMode& GetRateControlMode() const{ return m_rateControlMode; }
 
     /**
      * Rate control mode. 
 
-- CBR: Constant Bit Rate
-- VBR: Variable Bit Rate
-- QVBR:
-     * Encoder dynamically controls the bitrate to meet the desired quality
-     * (specified
-through the qvbrQualityLevel field). The bitrate will not exceed the
-     * bitrate specified in
-the maxBitrate field and will not fall below the bitrate
-     * required to meet the desired
-quality level.
+QVBR: Quality will match the specified quality level except
+     * when it is constrained by the
+maximum bitrate.  Recommended if you or your
+     * viewers pay for bandwidth.
+
+VBR: Quality and bitrate vary, depending on the
+     * video complexity. Recommended instead of QVBR
+if you want to maintain a specific
+     * average bitrate over the duration of the channel.
+
+CBR: Quality varies,
+     * depending on the video complexity. Recommended only if you distribute
+your
+     * assets to devices that cannot handle variable bitrates.
      */
     inline void SetRateControlMode(const H264RateControlMode& value) { m_rateControlModeHasBeenSet = true; m_rateControlMode = value; }
 
     /**
      * Rate control mode. 
 
-- CBR: Constant Bit Rate
-- VBR: Variable Bit Rate
-- QVBR:
-     * Encoder dynamically controls the bitrate to meet the desired quality
-     * (specified
-through the qvbrQualityLevel field). The bitrate will not exceed the
-     * bitrate specified in
-the maxBitrate field and will not fall below the bitrate
-     * required to meet the desired
-quality level.
+QVBR: Quality will match the specified quality level except
+     * when it is constrained by the
+maximum bitrate.  Recommended if you or your
+     * viewers pay for bandwidth.
+
+VBR: Quality and bitrate vary, depending on the
+     * video complexity. Recommended instead of QVBR
+if you want to maintain a specific
+     * average bitrate over the duration of the channel.
+
+CBR: Quality varies,
+     * depending on the video complexity. Recommended only if you distribute
+your
+     * assets to devices that cannot handle variable bitrates.
      */
     inline void SetRateControlMode(H264RateControlMode&& value) { m_rateControlModeHasBeenSet = true; m_rateControlMode = std::move(value); }
 
     /**
      * Rate control mode. 
 
-- CBR: Constant Bit Rate
-- VBR: Variable Bit Rate
-- QVBR:
-     * Encoder dynamically controls the bitrate to meet the desired quality
-     * (specified
-through the qvbrQualityLevel field). The bitrate will not exceed the
-     * bitrate specified in
-the maxBitrate field and will not fall below the bitrate
-     * required to meet the desired
-quality level.
+QVBR: Quality will match the specified quality level except
+     * when it is constrained by the
+maximum bitrate.  Recommended if you or your
+     * viewers pay for bandwidth.
+
+VBR: Quality and bitrate vary, depending on the
+     * video complexity. Recommended instead of QVBR
+if you want to maintain a specific
+     * average bitrate over the duration of the channel.
+
+CBR: Quality varies,
+     * depending on the video complexity. Recommended only if you distribute
+your
+     * assets to devices that cannot handle variable bitrates.
      */
     inline H264Settings& WithRateControlMode(const H264RateControlMode& value) { SetRateControlMode(value); return *this;}
 
     /**
      * Rate control mode. 
 
-- CBR: Constant Bit Rate
-- VBR: Variable Bit Rate
-- QVBR:
-     * Encoder dynamically controls the bitrate to meet the desired quality
-     * (specified
-through the qvbrQualityLevel field). The bitrate will not exceed the
-     * bitrate specified in
-the maxBitrate field and will not fall below the bitrate
-     * required to meet the desired
-quality level.
+QVBR: Quality will match the specified quality level except
+     * when it is constrained by the
+maximum bitrate.  Recommended if you or your
+     * viewers pay for bandwidth.
+
+VBR: Quality and bitrate vary, depending on the
+     * video complexity. Recommended instead of QVBR
+if you want to maintain a specific
+     * average bitrate over the duration of the channel.
+
+CBR: Quality varies,
+     * depending on the video complexity. Recommended only if you distribute
+your
+     * assets to devices that cannot handle variable bitrates.
      */
     inline H264Settings& WithRateControlMode(H264RateControlMode&& value) { SetRateControlMode(std::move(value)); return *this;}
 
@@ -994,6 +1030,37 @@ This field is optional; when
      * variation of content complexity.
      */
     inline H264Settings& WithSpatialAq(H264SpatialAq&& value) { SetSpatialAq(std::move(value)); return *this;}
+
+
+    /**
+     * If set to fixed, use gopNumBFrames B-frames per sub-GOP. If set to dynamic,
+     * optimize the number of B-frames used for each sub-GOP to improve visual quality.
+     */
+    inline const H264SubGopLength& GetSubgopLength() const{ return m_subgopLength; }
+
+    /**
+     * If set to fixed, use gopNumBFrames B-frames per sub-GOP. If set to dynamic,
+     * optimize the number of B-frames used for each sub-GOP to improve visual quality.
+     */
+    inline void SetSubgopLength(const H264SubGopLength& value) { m_subgopLengthHasBeenSet = true; m_subgopLength = value; }
+
+    /**
+     * If set to fixed, use gopNumBFrames B-frames per sub-GOP. If set to dynamic,
+     * optimize the number of B-frames used for each sub-GOP to improve visual quality.
+     */
+    inline void SetSubgopLength(H264SubGopLength&& value) { m_subgopLengthHasBeenSet = true; m_subgopLength = std::move(value); }
+
+    /**
+     * If set to fixed, use gopNumBFrames B-frames per sub-GOP. If set to dynamic,
+     * optimize the number of B-frames used for each sub-GOP to improve visual quality.
+     */
+    inline H264Settings& WithSubgopLength(const H264SubGopLength& value) { SetSubgopLength(value); return *this;}
+
+    /**
+     * If set to fixed, use gopNumBFrames B-frames per sub-GOP. If set to dynamic,
+     * optimize the number of B-frames used for each sub-GOP to improve visual quality.
+     */
+    inline H264Settings& WithSubgopLength(H264SubGopLength&& value) { SetSubgopLength(std::move(value)); return *this;}
 
 
     /**
@@ -1198,6 +1265,9 @@ This field is optional; when
 
     H264SpatialAq m_spatialAq;
     bool m_spatialAqHasBeenSet;
+
+    H264SubGopLength m_subgopLength;
+    bool m_subgopLengthHasBeenSet;
 
     H264Syntax m_syntax;
     bool m_syntaxHasBeenSet;

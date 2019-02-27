@@ -24,11 +24,15 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/ecs/ECSClient.h>
 #include <aws/ecs/ECSEndpoint.h>
 #include <aws/ecs/ECSErrorMarshaller.h>
 #include <aws/ecs/model/CreateClusterRequest.h>
 #include <aws/ecs/model/CreateServiceRequest.h>
+#include <aws/ecs/model/DeleteAccountSettingRequest.h>
 #include <aws/ecs/model/DeleteAttributesRequest.h>
 #include <aws/ecs/model/DeleteClusterRequest.h>
 #include <aws/ecs/model/DeleteServiceRequest.h>
@@ -40,13 +44,17 @@
 #include <aws/ecs/model/DescribeTaskDefinitionRequest.h>
 #include <aws/ecs/model/DescribeTasksRequest.h>
 #include <aws/ecs/model/DiscoverPollEndpointRequest.h>
+#include <aws/ecs/model/ListAccountSettingsRequest.h>
 #include <aws/ecs/model/ListAttributesRequest.h>
 #include <aws/ecs/model/ListClustersRequest.h>
 #include <aws/ecs/model/ListContainerInstancesRequest.h>
 #include <aws/ecs/model/ListServicesRequest.h>
+#include <aws/ecs/model/ListTagsForResourceRequest.h>
 #include <aws/ecs/model/ListTaskDefinitionFamiliesRequest.h>
 #include <aws/ecs/model/ListTaskDefinitionsRequest.h>
 #include <aws/ecs/model/ListTasksRequest.h>
+#include <aws/ecs/model/PutAccountSettingRequest.h>
+#include <aws/ecs/model/PutAccountSettingDefaultRequest.h>
 #include <aws/ecs/model/PutAttributesRequest.h>
 #include <aws/ecs/model/RegisterContainerInstanceRequest.h>
 #include <aws/ecs/model/RegisterTaskDefinitionRequest.h>
@@ -55,6 +63,8 @@
 #include <aws/ecs/model/StopTaskRequest.h>
 #include <aws/ecs/model/SubmitContainerStateChangeRequest.h>
 #include <aws/ecs/model/SubmitTaskStateChangeRequest.h>
+#include <aws/ecs/model/TagResourceRequest.h>
+#include <aws/ecs/model/UntagResourceRequest.h>
 #include <aws/ecs/model/UpdateContainerAgentRequest.h>
 #include <aws/ecs/model/UpdateContainerInstancesStateRequest.h>
 #include <aws/ecs/model/UpdateServiceRequest.h>
@@ -108,25 +118,32 @@ ECSClient::~ECSClient()
 
 void ECSClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << ECSEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + ECSEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void ECSClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateClusterOutcome ECSClient::CreateCluster(const CreateClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -160,8 +177,8 @@ void ECSClient::CreateClusterAsyncHelper(const CreateClusterRequest& request, co
 
 CreateServiceOutcome ECSClient::CreateService(const CreateServiceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -193,10 +210,45 @@ void ECSClient::CreateServiceAsyncHelper(const CreateServiceRequest& request, co
   handler(this, request, CreateService(request), context);
 }
 
+DeleteAccountSettingOutcome ECSClient::DeleteAccountSetting(const DeleteAccountSettingRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return DeleteAccountSettingOutcome(DeleteAccountSettingResult(outcome.GetResult()));
+  }
+  else
+  {
+    return DeleteAccountSettingOutcome(outcome.GetError());
+  }
+}
+
+DeleteAccountSettingOutcomeCallable ECSClient::DeleteAccountSettingCallable(const DeleteAccountSettingRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DeleteAccountSettingOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DeleteAccountSetting(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::DeleteAccountSettingAsync(const DeleteAccountSettingRequest& request, const DeleteAccountSettingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DeleteAccountSettingAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::DeleteAccountSettingAsyncHelper(const DeleteAccountSettingRequest& request, const DeleteAccountSettingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DeleteAccountSetting(request), context);
+}
+
 DeleteAttributesOutcome ECSClient::DeleteAttributes(const DeleteAttributesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -230,8 +282,8 @@ void ECSClient::DeleteAttributesAsyncHelper(const DeleteAttributesRequest& reque
 
 DeleteClusterOutcome ECSClient::DeleteCluster(const DeleteClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -265,8 +317,8 @@ void ECSClient::DeleteClusterAsyncHelper(const DeleteClusterRequest& request, co
 
 DeleteServiceOutcome ECSClient::DeleteService(const DeleteServiceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -300,8 +352,8 @@ void ECSClient::DeleteServiceAsyncHelper(const DeleteServiceRequest& request, co
 
 DeregisterContainerInstanceOutcome ECSClient::DeregisterContainerInstance(const DeregisterContainerInstanceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -335,8 +387,8 @@ void ECSClient::DeregisterContainerInstanceAsyncHelper(const DeregisterContainer
 
 DeregisterTaskDefinitionOutcome ECSClient::DeregisterTaskDefinition(const DeregisterTaskDefinitionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -370,8 +422,8 @@ void ECSClient::DeregisterTaskDefinitionAsyncHelper(const DeregisterTaskDefiniti
 
 DescribeClustersOutcome ECSClient::DescribeClusters(const DescribeClustersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -405,8 +457,8 @@ void ECSClient::DescribeClustersAsyncHelper(const DescribeClustersRequest& reque
 
 DescribeContainerInstancesOutcome ECSClient::DescribeContainerInstances(const DescribeContainerInstancesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -440,8 +492,8 @@ void ECSClient::DescribeContainerInstancesAsyncHelper(const DescribeContainerIns
 
 DescribeServicesOutcome ECSClient::DescribeServices(const DescribeServicesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -475,8 +527,8 @@ void ECSClient::DescribeServicesAsyncHelper(const DescribeServicesRequest& reque
 
 DescribeTaskDefinitionOutcome ECSClient::DescribeTaskDefinition(const DescribeTaskDefinitionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -510,8 +562,8 @@ void ECSClient::DescribeTaskDefinitionAsyncHelper(const DescribeTaskDefinitionRe
 
 DescribeTasksOutcome ECSClient::DescribeTasks(const DescribeTasksRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -545,8 +597,8 @@ void ECSClient::DescribeTasksAsyncHelper(const DescribeTasksRequest& request, co
 
 DiscoverPollEndpointOutcome ECSClient::DiscoverPollEndpoint(const DiscoverPollEndpointRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -578,10 +630,45 @@ void ECSClient::DiscoverPollEndpointAsyncHelper(const DiscoverPollEndpointReques
   handler(this, request, DiscoverPollEndpoint(request), context);
 }
 
+ListAccountSettingsOutcome ECSClient::ListAccountSettings(const ListAccountSettingsRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListAccountSettingsOutcome(ListAccountSettingsResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListAccountSettingsOutcome(outcome.GetError());
+  }
+}
+
+ListAccountSettingsOutcomeCallable ECSClient::ListAccountSettingsCallable(const ListAccountSettingsRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListAccountSettingsOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListAccountSettings(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::ListAccountSettingsAsync(const ListAccountSettingsRequest& request, const ListAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListAccountSettingsAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::ListAccountSettingsAsyncHelper(const ListAccountSettingsRequest& request, const ListAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListAccountSettings(request), context);
+}
+
 ListAttributesOutcome ECSClient::ListAttributes(const ListAttributesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -615,8 +702,8 @@ void ECSClient::ListAttributesAsyncHelper(const ListAttributesRequest& request, 
 
 ListClustersOutcome ECSClient::ListClusters(const ListClustersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -650,8 +737,8 @@ void ECSClient::ListClustersAsyncHelper(const ListClustersRequest& request, cons
 
 ListContainerInstancesOutcome ECSClient::ListContainerInstances(const ListContainerInstancesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -685,8 +772,8 @@ void ECSClient::ListContainerInstancesAsyncHelper(const ListContainerInstancesRe
 
 ListServicesOutcome ECSClient::ListServices(const ListServicesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -718,10 +805,45 @@ void ECSClient::ListServicesAsyncHelper(const ListServicesRequest& request, cons
   handler(this, request, ListServices(request), context);
 }
 
+ListTagsForResourceOutcome ECSClient::ListTagsForResource(const ListTagsForResourceRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListTagsForResourceOutcome(ListTagsForResourceResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListTagsForResourceOutcome(outcome.GetError());
+  }
+}
+
+ListTagsForResourceOutcomeCallable ECSClient::ListTagsForResourceCallable(const ListTagsForResourceRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListTagsForResourceOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListTagsForResource(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::ListTagsForResourceAsync(const ListTagsForResourceRequest& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListTagsForResourceAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::ListTagsForResourceAsyncHelper(const ListTagsForResourceRequest& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListTagsForResource(request), context);
+}
+
 ListTaskDefinitionFamiliesOutcome ECSClient::ListTaskDefinitionFamilies(const ListTaskDefinitionFamiliesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -755,8 +877,8 @@ void ECSClient::ListTaskDefinitionFamiliesAsyncHelper(const ListTaskDefinitionFa
 
 ListTaskDefinitionsOutcome ECSClient::ListTaskDefinitions(const ListTaskDefinitionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -790,8 +912,8 @@ void ECSClient::ListTaskDefinitionsAsyncHelper(const ListTaskDefinitionsRequest&
 
 ListTasksOutcome ECSClient::ListTasks(const ListTasksRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -823,10 +945,80 @@ void ECSClient::ListTasksAsyncHelper(const ListTasksRequest& request, const List
   handler(this, request, ListTasks(request), context);
 }
 
+PutAccountSettingOutcome ECSClient::PutAccountSetting(const PutAccountSettingRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return PutAccountSettingOutcome(PutAccountSettingResult(outcome.GetResult()));
+  }
+  else
+  {
+    return PutAccountSettingOutcome(outcome.GetError());
+  }
+}
+
+PutAccountSettingOutcomeCallable ECSClient::PutAccountSettingCallable(const PutAccountSettingRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< PutAccountSettingOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->PutAccountSetting(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::PutAccountSettingAsync(const PutAccountSettingRequest& request, const PutAccountSettingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->PutAccountSettingAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::PutAccountSettingAsyncHelper(const PutAccountSettingRequest& request, const PutAccountSettingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, PutAccountSetting(request), context);
+}
+
+PutAccountSettingDefaultOutcome ECSClient::PutAccountSettingDefault(const PutAccountSettingDefaultRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return PutAccountSettingDefaultOutcome(PutAccountSettingDefaultResult(outcome.GetResult()));
+  }
+  else
+  {
+    return PutAccountSettingDefaultOutcome(outcome.GetError());
+  }
+}
+
+PutAccountSettingDefaultOutcomeCallable ECSClient::PutAccountSettingDefaultCallable(const PutAccountSettingDefaultRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< PutAccountSettingDefaultOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->PutAccountSettingDefault(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::PutAccountSettingDefaultAsync(const PutAccountSettingDefaultRequest& request, const PutAccountSettingDefaultResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->PutAccountSettingDefaultAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::PutAccountSettingDefaultAsyncHelper(const PutAccountSettingDefaultRequest& request, const PutAccountSettingDefaultResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, PutAccountSettingDefault(request), context);
+}
+
 PutAttributesOutcome ECSClient::PutAttributes(const PutAttributesRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -860,8 +1052,8 @@ void ECSClient::PutAttributesAsyncHelper(const PutAttributesRequest& request, co
 
 RegisterContainerInstanceOutcome ECSClient::RegisterContainerInstance(const RegisterContainerInstanceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -895,8 +1087,8 @@ void ECSClient::RegisterContainerInstanceAsyncHelper(const RegisterContainerInst
 
 RegisterTaskDefinitionOutcome ECSClient::RegisterTaskDefinition(const RegisterTaskDefinitionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -930,8 +1122,8 @@ void ECSClient::RegisterTaskDefinitionAsyncHelper(const RegisterTaskDefinitionRe
 
 RunTaskOutcome ECSClient::RunTask(const RunTaskRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -965,8 +1157,8 @@ void ECSClient::RunTaskAsyncHelper(const RunTaskRequest& request, const RunTaskR
 
 StartTaskOutcome ECSClient::StartTask(const StartTaskRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1000,8 +1192,8 @@ void ECSClient::StartTaskAsyncHelper(const StartTaskRequest& request, const Star
 
 StopTaskOutcome ECSClient::StopTask(const StopTaskRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1035,8 +1227,8 @@ void ECSClient::StopTaskAsyncHelper(const StopTaskRequest& request, const StopTa
 
 SubmitContainerStateChangeOutcome ECSClient::SubmitContainerStateChange(const SubmitContainerStateChangeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1070,8 +1262,8 @@ void ECSClient::SubmitContainerStateChangeAsyncHelper(const SubmitContainerState
 
 SubmitTaskStateChangeOutcome ECSClient::SubmitTaskStateChange(const SubmitTaskStateChangeRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1103,10 +1295,80 @@ void ECSClient::SubmitTaskStateChangeAsyncHelper(const SubmitTaskStateChangeRequ
   handler(this, request, SubmitTaskStateChange(request), context);
 }
 
+TagResourceOutcome ECSClient::TagResource(const TagResourceRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return TagResourceOutcome(TagResourceResult(outcome.GetResult()));
+  }
+  else
+  {
+    return TagResourceOutcome(outcome.GetError());
+  }
+}
+
+TagResourceOutcomeCallable ECSClient::TagResourceCallable(const TagResourceRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< TagResourceOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->TagResource(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::TagResourceAsync(const TagResourceRequest& request, const TagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->TagResourceAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::TagResourceAsyncHelper(const TagResourceRequest& request, const TagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, TagResource(request), context);
+}
+
+UntagResourceOutcome ECSClient::UntagResource(const UntagResourceRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return UntagResourceOutcome(UntagResourceResult(outcome.GetResult()));
+  }
+  else
+  {
+    return UntagResourceOutcome(outcome.GetError());
+  }
+}
+
+UntagResourceOutcomeCallable ECSClient::UntagResourceCallable(const UntagResourceRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< UntagResourceOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->UntagResource(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void ECSClient::UntagResourceAsync(const UntagResourceRequest& request, const UntagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->UntagResourceAsyncHelper( request, handler, context ); } );
+}
+
+void ECSClient::UntagResourceAsyncHelper(const UntagResourceRequest& request, const UntagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, UntagResource(request), context);
+}
+
 UpdateContainerAgentOutcome ECSClient::UpdateContainerAgent(const UpdateContainerAgentRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1140,8 +1402,8 @@ void ECSClient::UpdateContainerAgentAsyncHelper(const UpdateContainerAgentReques
 
 UpdateContainerInstancesStateOutcome ECSClient::UpdateContainerInstancesState(const UpdateContainerInstancesStateRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -1175,8 +1437,8 @@ void ECSClient::UpdateContainerInstancesStateAsyncHelper(const UpdateContainerIn
 
 UpdateServiceOutcome ECSClient::UpdateService(const UpdateServiceRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);

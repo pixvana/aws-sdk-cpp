@@ -126,39 +126,39 @@ namespace Model
 
 
     /**
-     * <p>The time (UTC) when Amazon Redshift began the snapshot. A snapshot contains a
-     * copy of the cluster data as of this exact time.</p>
+     * <p>The time (in UTC format) when Amazon Redshift began the snapshot. A snapshot
+     * contains a copy of the cluster data as of this exact time.</p>
      */
     inline const Aws::Utils::DateTime& GetSnapshotCreateTime() const{ return m_snapshotCreateTime; }
 
     /**
-     * <p>The time (UTC) when Amazon Redshift began the snapshot. A snapshot contains a
-     * copy of the cluster data as of this exact time.</p>
+     * <p>The time (in UTC format) when Amazon Redshift began the snapshot. A snapshot
+     * contains a copy of the cluster data as of this exact time.</p>
      */
     inline void SetSnapshotCreateTime(const Aws::Utils::DateTime& value) { m_snapshotCreateTimeHasBeenSet = true; m_snapshotCreateTime = value; }
 
     /**
-     * <p>The time (UTC) when Amazon Redshift began the snapshot. A snapshot contains a
-     * copy of the cluster data as of this exact time.</p>
+     * <p>The time (in UTC format) when Amazon Redshift began the snapshot. A snapshot
+     * contains a copy of the cluster data as of this exact time.</p>
      */
     inline void SetSnapshotCreateTime(Aws::Utils::DateTime&& value) { m_snapshotCreateTimeHasBeenSet = true; m_snapshotCreateTime = std::move(value); }
 
     /**
-     * <p>The time (UTC) when Amazon Redshift began the snapshot. A snapshot contains a
-     * copy of the cluster data as of this exact time.</p>
+     * <p>The time (in UTC format) when Amazon Redshift began the snapshot. A snapshot
+     * contains a copy of the cluster data as of this exact time.</p>
      */
     inline Snapshot& WithSnapshotCreateTime(const Aws::Utils::DateTime& value) { SetSnapshotCreateTime(value); return *this;}
 
     /**
-     * <p>The time (UTC) when Amazon Redshift began the snapshot. A snapshot contains a
-     * copy of the cluster data as of this exact time.</p>
+     * <p>The time (in UTC format) when Amazon Redshift began the snapshot. A snapshot
+     * contains a copy of the cluster data as of this exact time.</p>
      */
     inline Snapshot& WithSnapshotCreateTime(Aws::Utils::DateTime&& value) { SetSnapshotCreateTime(std::move(value)); return *this;}
 
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -168,7 +168,7 @@ namespace Model
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -178,7 +178,7 @@ namespace Model
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -188,7 +188,7 @@ namespace Model
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -198,7 +198,7 @@ namespace Model
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -208,7 +208,7 @@ namespace Model
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -218,7 +218,7 @@ namespace Model
 
     /**
      * <p>The snapshot status. The value of the status depends on the API operation
-     * used. </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
+     * used: </p> <ul> <li> <p> <a>CreateClusterSnapshot</a> and
      * <a>CopyClusterSnapshot</a> returns status as "creating". </p> </li> <li> <p>
      * <a>DescribeClusterSnapshots</a> returns status as "creating", "available",
      * "final snapshot", or "failed".</p> </li> <li> <p> <a>DeleteClusterSnapshot</a>
@@ -386,43 +386,43 @@ namespace Model
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline const Aws::String& GetSnapshotType() const{ return m_snapshotType; }
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline void SetSnapshotType(const Aws::String& value) { m_snapshotTypeHasBeenSet = true; m_snapshotType = value; }
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline void SetSnapshotType(Aws::String&& value) { m_snapshotTypeHasBeenSet = true; m_snapshotType = std::move(value); }
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline void SetSnapshotType(const char* value) { m_snapshotTypeHasBeenSet = true; m_snapshotType.assign(value); }
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline Snapshot& WithSnapshotType(const Aws::String& value) { SetSnapshotType(value); return *this;}
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline Snapshot& WithSnapshotType(Aws::String&& value) { SetSnapshotType(std::move(value)); return *this;}
 
     /**
      * <p>The snapshot type. Snapshots created using <a>CreateClusterSnapshot</a> and
-     * <a>CopyClusterSnapshot</a> will be of type "manual". </p>
+     * <a>CopyClusterSnapshot</a> are of type "manual". </p>
      */
     inline Snapshot& WithSnapshotType(const char* value) { SetSnapshotType(value); return *this;}
 
@@ -1040,6 +1040,78 @@ namespace Model
      */
     inline Snapshot& WithMaintenanceTrackName(const char* value) { SetMaintenanceTrackName(value); return *this;}
 
+
+    /**
+     * <p>The number of days that a manual snapshot is retained. If the value is -1,
+     * the manual snapshot is retained indefinitely. </p> <p>The value must be either
+     * -1 or an integer between 1 and 3,653.</p>
+     */
+    inline int GetManualSnapshotRetentionPeriod() const{ return m_manualSnapshotRetentionPeriod; }
+
+    /**
+     * <p>The number of days that a manual snapshot is retained. If the value is -1,
+     * the manual snapshot is retained indefinitely. </p> <p>The value must be either
+     * -1 or an integer between 1 and 3,653.</p>
+     */
+    inline void SetManualSnapshotRetentionPeriod(int value) { m_manualSnapshotRetentionPeriodHasBeenSet = true; m_manualSnapshotRetentionPeriod = value; }
+
+    /**
+     * <p>The number of days that a manual snapshot is retained. If the value is -1,
+     * the manual snapshot is retained indefinitely. </p> <p>The value must be either
+     * -1 or an integer between 1 and 3,653.</p>
+     */
+    inline Snapshot& WithManualSnapshotRetentionPeriod(int value) { SetManualSnapshotRetentionPeriod(value); return *this;}
+
+
+    /**
+     * <p>The number of days until a manual snapshot will pass its retention
+     * period.</p>
+     */
+    inline int GetManualSnapshotRemainingDays() const{ return m_manualSnapshotRemainingDays; }
+
+    /**
+     * <p>The number of days until a manual snapshot will pass its retention
+     * period.</p>
+     */
+    inline void SetManualSnapshotRemainingDays(int value) { m_manualSnapshotRemainingDaysHasBeenSet = true; m_manualSnapshotRemainingDays = value; }
+
+    /**
+     * <p>The number of days until a manual snapshot will pass its retention
+     * period.</p>
+     */
+    inline Snapshot& WithManualSnapshotRemainingDays(int value) { SetManualSnapshotRemainingDays(value); return *this;}
+
+
+    /**
+     * <p>A timestamp representing the start of the retention period for the
+     * snapshot.</p>
+     */
+    inline const Aws::Utils::DateTime& GetSnapshotRetentionStartTime() const{ return m_snapshotRetentionStartTime; }
+
+    /**
+     * <p>A timestamp representing the start of the retention period for the
+     * snapshot.</p>
+     */
+    inline void SetSnapshotRetentionStartTime(const Aws::Utils::DateTime& value) { m_snapshotRetentionStartTimeHasBeenSet = true; m_snapshotRetentionStartTime = value; }
+
+    /**
+     * <p>A timestamp representing the start of the retention period for the
+     * snapshot.</p>
+     */
+    inline void SetSnapshotRetentionStartTime(Aws::Utils::DateTime&& value) { m_snapshotRetentionStartTimeHasBeenSet = true; m_snapshotRetentionStartTime = std::move(value); }
+
+    /**
+     * <p>A timestamp representing the start of the retention period for the
+     * snapshot.</p>
+     */
+    inline Snapshot& WithSnapshotRetentionStartTime(const Aws::Utils::DateTime& value) { SetSnapshotRetentionStartTime(value); return *this;}
+
+    /**
+     * <p>A timestamp representing the start of the retention period for the
+     * snapshot.</p>
+     */
+    inline Snapshot& WithSnapshotRetentionStartTime(Aws::Utils::DateTime&& value) { SetSnapshotRetentionStartTime(std::move(value)); return *this;}
+
   private:
 
     Aws::String m_snapshotIdentifier;
@@ -1131,6 +1203,15 @@ namespace Model
 
     Aws::String m_maintenanceTrackName;
     bool m_maintenanceTrackNameHasBeenSet;
+
+    int m_manualSnapshotRetentionPeriod;
+    bool m_manualSnapshotRetentionPeriodHasBeenSet;
+
+    int m_manualSnapshotRemainingDays;
+    bool m_manualSnapshotRemainingDaysHasBeenSet;
+
+    Aws::Utils::DateTime m_snapshotRetentionStartTime;
+    bool m_snapshotRetentionStartTimeHasBeenSet;
   };
 
 } // namespace Model

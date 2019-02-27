@@ -24,13 +24,19 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/eks/EKSClient.h>
 #include <aws/eks/EKSEndpoint.h>
 #include <aws/eks/EKSErrorMarshaller.h>
 #include <aws/eks/model/CreateClusterRequest.h>
 #include <aws/eks/model/DeleteClusterRequest.h>
 #include <aws/eks/model/DescribeClusterRequest.h>
+#include <aws/eks/model/DescribeUpdateRequest.h>
 #include <aws/eks/model/ListClustersRequest.h>
+#include <aws/eks/model/ListUpdatesRequest.h>
+#include <aws/eks/model/UpdateClusterVersionRequest.h>
 
 using namespace Aws;
 using namespace Aws::Auth;
@@ -81,25 +87,32 @@ EKSClient::~EKSClient()
 
 void EKSClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << EKSEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + EKSEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void EKSClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 CreateClusterOutcome EKSClient::CreateCluster(const CreateClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clusters";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
@@ -133,8 +146,8 @@ void EKSClient::CreateClusterAsyncHelper(const CreateClusterRequest& request, co
 
 DeleteClusterOutcome EKSClient::DeleteCluster(const DeleteClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clusters/";
   ss << request.GetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -169,8 +182,8 @@ void EKSClient::DeleteClusterAsyncHelper(const DeleteClusterRequest& request, co
 
 DescribeClusterOutcome EKSClient::DescribeCluster(const DescribeClusterRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clusters/";
   ss << request.GetName();
   uri.SetPath(uri.GetPath() + ss.str());
@@ -203,10 +216,48 @@ void EKSClient::DescribeClusterAsyncHelper(const DescribeClusterRequest& request
   handler(this, request, DescribeCluster(request), context);
 }
 
+DescribeUpdateOutcome EKSClient::DescribeUpdate(const DescribeUpdateRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/clusters/";
+  ss << request.GetName();
+  ss << "/updates/";
+  ss << request.GetUpdateId();
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return DescribeUpdateOutcome(DescribeUpdateResult(outcome.GetResult()));
+  }
+  else
+  {
+    return DescribeUpdateOutcome(outcome.GetError());
+  }
+}
+
+DescribeUpdateOutcomeCallable EKSClient::DescribeUpdateCallable(const DescribeUpdateRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< DescribeUpdateOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->DescribeUpdate(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void EKSClient::DescribeUpdateAsync(const DescribeUpdateRequest& request, const DescribeUpdateResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->DescribeUpdateAsyncHelper( request, handler, context ); } );
+}
+
+void EKSClient::DescribeUpdateAsyncHelper(const DescribeUpdateRequest& request, const DescribeUpdateResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, DescribeUpdate(request), context);
+}
+
 ListClustersOutcome EKSClient::ListClusters(const ListClustersRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/clusters";
   uri.SetPath(uri.GetPath() + ss.str());
   JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
@@ -236,5 +287,79 @@ void EKSClient::ListClustersAsync(const ListClustersRequest& request, const List
 void EKSClient::ListClustersAsyncHelper(const ListClustersRequest& request, const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
 {
   handler(this, request, ListClusters(request), context);
+}
+
+ListUpdatesOutcome EKSClient::ListUpdates(const ListUpdatesRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/clusters/";
+  ss << request.GetName();
+  ss << "/updates";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return ListUpdatesOutcome(ListUpdatesResult(outcome.GetResult()));
+  }
+  else
+  {
+    return ListUpdatesOutcome(outcome.GetError());
+  }
+}
+
+ListUpdatesOutcomeCallable EKSClient::ListUpdatesCallable(const ListUpdatesRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< ListUpdatesOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->ListUpdates(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void EKSClient::ListUpdatesAsync(const ListUpdatesRequest& request, const ListUpdatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->ListUpdatesAsyncHelper( request, handler, context ); } );
+}
+
+void EKSClient::ListUpdatesAsyncHelper(const ListUpdatesRequest& request, const ListUpdatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, ListUpdates(request), context);
+}
+
+UpdateClusterVersionOutcome EKSClient::UpdateClusterVersion(const UpdateClusterVersionRequest& request) const
+{
+  Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
+  ss << "/clusters/";
+  ss << request.GetName();
+  ss << "/updates";
+  uri.SetPath(uri.GetPath() + ss.str());
+  JsonOutcome outcome = MakeRequest(uri, request, HttpMethod::HTTP_POST, Aws::Auth::SIGV4_SIGNER);
+  if(outcome.IsSuccess())
+  {
+    return UpdateClusterVersionOutcome(UpdateClusterVersionResult(outcome.GetResult()));
+  }
+  else
+  {
+    return UpdateClusterVersionOutcome(outcome.GetError());
+  }
+}
+
+UpdateClusterVersionOutcomeCallable EKSClient::UpdateClusterVersionCallable(const UpdateClusterVersionRequest& request) const
+{
+  auto task = Aws::MakeShared< std::packaged_task< UpdateClusterVersionOutcome() > >(ALLOCATION_TAG, [this, request](){ return this->UpdateClusterVersion(request); } );
+  auto packagedFunction = [task]() { (*task)(); };
+  m_executor->Submit(packagedFunction);
+  return task->get_future();
+}
+
+void EKSClient::UpdateClusterVersionAsync(const UpdateClusterVersionRequest& request, const UpdateClusterVersionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  m_executor->Submit( [this, request, handler, context](){ this->UpdateClusterVersionAsyncHelper( request, handler, context ); } );
+}
+
+void EKSClient::UpdateClusterVersionAsyncHelper(const UpdateClusterVersionRequest& request, const UpdateClusterVersionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const
+{
+  handler(this, request, UpdateClusterVersion(request), context);
 }
 

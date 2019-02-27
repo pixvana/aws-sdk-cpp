@@ -23,6 +23,14 @@
 #include <aws/states/model/ActivityStartedEventDetails.h>
 #include <aws/states/model/ActivitySucceededEventDetails.h>
 #include <aws/states/model/ActivityTimedOutEventDetails.h>
+#include <aws/states/model/TaskFailedEventDetails.h>
+#include <aws/states/model/TaskScheduledEventDetails.h>
+#include <aws/states/model/TaskStartFailedEventDetails.h>
+#include <aws/states/model/TaskStartedEventDetails.h>
+#include <aws/states/model/TaskSubmitFailedEventDetails.h>
+#include <aws/states/model/TaskSubmittedEventDetails.h>
+#include <aws/states/model/TaskSucceededEventDetails.h>
+#include <aws/states/model/TaskTimedOutEventDetails.h>
 #include <aws/states/model/ExecutionFailedEventDetails.h>
 #include <aws/states/model/ExecutionStartedEventDetails.h>
 #include <aws/states/model/ExecutionSucceededEventDetails.h>
@@ -69,27 +77,27 @@ namespace Model
 
 
     /**
-     * <p>The date the event occurred.</p>
+     * <p>The date and time the event occurred.</p>
      */
     inline const Aws::Utils::DateTime& GetTimestamp() const{ return m_timestamp; }
 
     /**
-     * <p>The date the event occurred.</p>
+     * <p>The date and time the event occurred.</p>
      */
     inline void SetTimestamp(const Aws::Utils::DateTime& value) { m_timestampHasBeenSet = true; m_timestamp = value; }
 
     /**
-     * <p>The date the event occurred.</p>
+     * <p>The date and time the event occurred.</p>
      */
     inline void SetTimestamp(Aws::Utils::DateTime&& value) { m_timestampHasBeenSet = true; m_timestamp = std::move(value); }
 
     /**
-     * <p>The date the event occurred.</p>
+     * <p>The date and time the event occurred.</p>
      */
     inline HistoryEvent& WithTimestamp(const Aws::Utils::DateTime& value) { SetTimestamp(value); return *this;}
 
     /**
-     * <p>The date the event occurred.</p>
+     * <p>The date and time the event occurred.</p>
      */
     inline HistoryEvent& WithTimestamp(Aws::Utils::DateTime&& value) { SetTimestamp(std::move(value)); return *this;}
 
@@ -169,31 +177,31 @@ namespace Model
 
 
     /**
-     * <p>Contains details about an activity schedule event which failed during an
+     * <p>Contains details about an activity schedule event that failed during an
      * execution.</p>
      */
     inline const ActivityScheduleFailedEventDetails& GetActivityScheduleFailedEventDetails() const{ return m_activityScheduleFailedEventDetails; }
 
     /**
-     * <p>Contains details about an activity schedule event which failed during an
+     * <p>Contains details about an activity schedule event that failed during an
      * execution.</p>
      */
     inline void SetActivityScheduleFailedEventDetails(const ActivityScheduleFailedEventDetails& value) { m_activityScheduleFailedEventDetailsHasBeenSet = true; m_activityScheduleFailedEventDetails = value; }
 
     /**
-     * <p>Contains details about an activity schedule event which failed during an
+     * <p>Contains details about an activity schedule event that failed during an
      * execution.</p>
      */
     inline void SetActivityScheduleFailedEventDetails(ActivityScheduleFailedEventDetails&& value) { m_activityScheduleFailedEventDetailsHasBeenSet = true; m_activityScheduleFailedEventDetails = std::move(value); }
 
     /**
-     * <p>Contains details about an activity schedule event which failed during an
+     * <p>Contains details about an activity schedule event that failed during an
      * execution.</p>
      */
     inline HistoryEvent& WithActivityScheduleFailedEventDetails(const ActivityScheduleFailedEventDetails& value) { SetActivityScheduleFailedEventDetails(value); return *this;}
 
     /**
-     * <p>Contains details about an activity schedule event which failed during an
+     * <p>Contains details about an activity schedule event that failed during an
      * execution.</p>
      */
     inline HistoryEvent& WithActivityScheduleFailedEventDetails(ActivityScheduleFailedEventDetails&& value) { SetActivityScheduleFailedEventDetails(std::move(value)); return *this;}
@@ -261,6 +269,214 @@ namespace Model
 
     
     inline HistoryEvent& WithActivityTimedOutEventDetails(ActivityTimedOutEventDetails&& value) { SetActivityTimedOutEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about the failure of a task.</p>
+     */
+    inline const TaskFailedEventDetails& GetTaskFailedEventDetails() const{ return m_taskFailedEventDetails; }
+
+    /**
+     * <p>Contains details about the failure of a task.</p>
+     */
+    inline void SetTaskFailedEventDetails(const TaskFailedEventDetails& value) { m_taskFailedEventDetailsHasBeenSet = true; m_taskFailedEventDetails = value; }
+
+    /**
+     * <p>Contains details about the failure of a task.</p>
+     */
+    inline void SetTaskFailedEventDetails(TaskFailedEventDetails&& value) { m_taskFailedEventDetailsHasBeenSet = true; m_taskFailedEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about the failure of a task.</p>
+     */
+    inline HistoryEvent& WithTaskFailedEventDetails(const TaskFailedEventDetails& value) { SetTaskFailedEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about the failure of a task.</p>
+     */
+    inline HistoryEvent& WithTaskFailedEventDetails(TaskFailedEventDetails&& value) { SetTaskFailedEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a task that was scheduled.</p>
+     */
+    inline const TaskScheduledEventDetails& GetTaskScheduledEventDetails() const{ return m_taskScheduledEventDetails; }
+
+    /**
+     * <p>Contains details about a task that was scheduled.</p>
+     */
+    inline void SetTaskScheduledEventDetails(const TaskScheduledEventDetails& value) { m_taskScheduledEventDetailsHasBeenSet = true; m_taskScheduledEventDetails = value; }
+
+    /**
+     * <p>Contains details about a task that was scheduled.</p>
+     */
+    inline void SetTaskScheduledEventDetails(TaskScheduledEventDetails&& value) { m_taskScheduledEventDetailsHasBeenSet = true; m_taskScheduledEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a task that was scheduled.</p>
+     */
+    inline HistoryEvent& WithTaskScheduledEventDetails(const TaskScheduledEventDetails& value) { SetTaskScheduledEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a task that was scheduled.</p>
+     */
+    inline HistoryEvent& WithTaskScheduledEventDetails(TaskScheduledEventDetails&& value) { SetTaskScheduledEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a task that failed to start.</p>
+     */
+    inline const TaskStartFailedEventDetails& GetTaskStartFailedEventDetails() const{ return m_taskStartFailedEventDetails; }
+
+    /**
+     * <p>Contains details about a task that failed to start.</p>
+     */
+    inline void SetTaskStartFailedEventDetails(const TaskStartFailedEventDetails& value) { m_taskStartFailedEventDetailsHasBeenSet = true; m_taskStartFailedEventDetails = value; }
+
+    /**
+     * <p>Contains details about a task that failed to start.</p>
+     */
+    inline void SetTaskStartFailedEventDetails(TaskStartFailedEventDetails&& value) { m_taskStartFailedEventDetailsHasBeenSet = true; m_taskStartFailedEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a task that failed to start.</p>
+     */
+    inline HistoryEvent& WithTaskStartFailedEventDetails(const TaskStartFailedEventDetails& value) { SetTaskStartFailedEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a task that failed to start.</p>
+     */
+    inline HistoryEvent& WithTaskStartFailedEventDetails(TaskStartFailedEventDetails&& value) { SetTaskStartFailedEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a task that was started.</p>
+     */
+    inline const TaskStartedEventDetails& GetTaskStartedEventDetails() const{ return m_taskStartedEventDetails; }
+
+    /**
+     * <p>Contains details about a task that was started.</p>
+     */
+    inline void SetTaskStartedEventDetails(const TaskStartedEventDetails& value) { m_taskStartedEventDetailsHasBeenSet = true; m_taskStartedEventDetails = value; }
+
+    /**
+     * <p>Contains details about a task that was started.</p>
+     */
+    inline void SetTaskStartedEventDetails(TaskStartedEventDetails&& value) { m_taskStartedEventDetailsHasBeenSet = true; m_taskStartedEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a task that was started.</p>
+     */
+    inline HistoryEvent& WithTaskStartedEventDetails(const TaskStartedEventDetails& value) { SetTaskStartedEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a task that was started.</p>
+     */
+    inline HistoryEvent& WithTaskStartedEventDetails(TaskStartedEventDetails&& value) { SetTaskStartedEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a task that where the submit failed.</p>
+     */
+    inline const TaskSubmitFailedEventDetails& GetTaskSubmitFailedEventDetails() const{ return m_taskSubmitFailedEventDetails; }
+
+    /**
+     * <p>Contains details about a task that where the submit failed.</p>
+     */
+    inline void SetTaskSubmitFailedEventDetails(const TaskSubmitFailedEventDetails& value) { m_taskSubmitFailedEventDetailsHasBeenSet = true; m_taskSubmitFailedEventDetails = value; }
+
+    /**
+     * <p>Contains details about a task that where the submit failed.</p>
+     */
+    inline void SetTaskSubmitFailedEventDetails(TaskSubmitFailedEventDetails&& value) { m_taskSubmitFailedEventDetailsHasBeenSet = true; m_taskSubmitFailedEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a task that where the submit failed.</p>
+     */
+    inline HistoryEvent& WithTaskSubmitFailedEventDetails(const TaskSubmitFailedEventDetails& value) { SetTaskSubmitFailedEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a task that where the submit failed.</p>
+     */
+    inline HistoryEvent& WithTaskSubmitFailedEventDetails(TaskSubmitFailedEventDetails&& value) { SetTaskSubmitFailedEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a submitted task.</p>
+     */
+    inline const TaskSubmittedEventDetails& GetTaskSubmittedEventDetails() const{ return m_taskSubmittedEventDetails; }
+
+    /**
+     * <p>Contains details about a submitted task.</p>
+     */
+    inline void SetTaskSubmittedEventDetails(const TaskSubmittedEventDetails& value) { m_taskSubmittedEventDetailsHasBeenSet = true; m_taskSubmittedEventDetails = value; }
+
+    /**
+     * <p>Contains details about a submitted task.</p>
+     */
+    inline void SetTaskSubmittedEventDetails(TaskSubmittedEventDetails&& value) { m_taskSubmittedEventDetailsHasBeenSet = true; m_taskSubmittedEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a submitted task.</p>
+     */
+    inline HistoryEvent& WithTaskSubmittedEventDetails(const TaskSubmittedEventDetails& value) { SetTaskSubmittedEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a submitted task.</p>
+     */
+    inline HistoryEvent& WithTaskSubmittedEventDetails(TaskSubmittedEventDetails&& value) { SetTaskSubmittedEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a task that succeeded.</p>
+     */
+    inline const TaskSucceededEventDetails& GetTaskSucceededEventDetails() const{ return m_taskSucceededEventDetails; }
+
+    /**
+     * <p>Contains details about a task that succeeded.</p>
+     */
+    inline void SetTaskSucceededEventDetails(const TaskSucceededEventDetails& value) { m_taskSucceededEventDetailsHasBeenSet = true; m_taskSucceededEventDetails = value; }
+
+    /**
+     * <p>Contains details about a task that succeeded.</p>
+     */
+    inline void SetTaskSucceededEventDetails(TaskSucceededEventDetails&& value) { m_taskSucceededEventDetailsHasBeenSet = true; m_taskSucceededEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a task that succeeded.</p>
+     */
+    inline HistoryEvent& WithTaskSucceededEventDetails(const TaskSucceededEventDetails& value) { SetTaskSucceededEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a task that succeeded.</p>
+     */
+    inline HistoryEvent& WithTaskSucceededEventDetails(TaskSucceededEventDetails&& value) { SetTaskSucceededEventDetails(std::move(value)); return *this;}
+
+
+    /**
+     * <p>Contains details about a task that timed out.</p>
+     */
+    inline const TaskTimedOutEventDetails& GetTaskTimedOutEventDetails() const{ return m_taskTimedOutEventDetails; }
+
+    /**
+     * <p>Contains details about a task that timed out.</p>
+     */
+    inline void SetTaskTimedOutEventDetails(const TaskTimedOutEventDetails& value) { m_taskTimedOutEventDetailsHasBeenSet = true; m_taskTimedOutEventDetails = value; }
+
+    /**
+     * <p>Contains details about a task that timed out.</p>
+     */
+    inline void SetTaskTimedOutEventDetails(TaskTimedOutEventDetails&& value) { m_taskTimedOutEventDetailsHasBeenSet = true; m_taskTimedOutEventDetails = std::move(value); }
+
+    /**
+     * <p>Contains details about a task that timed out.</p>
+     */
+    inline HistoryEvent& WithTaskTimedOutEventDetails(const TaskTimedOutEventDetails& value) { SetTaskTimedOutEventDetails(value); return *this;}
+
+    /**
+     * <p>Contains details about a task that timed out.</p>
+     */
+    inline HistoryEvent& WithTaskTimedOutEventDetails(TaskTimedOutEventDetails&& value) { SetTaskTimedOutEventDetails(std::move(value)); return *this;}
 
 
     
@@ -392,62 +608,62 @@ namespace Model
 
 
     /**
-     * <p>Contains details about a lambda function which failed to start during an
+     * <p>Contains details about a lambda function that failed to start during an
      * execution.</p>
      */
     inline const LambdaFunctionStartFailedEventDetails& GetLambdaFunctionStartFailedEventDetails() const{ return m_lambdaFunctionStartFailedEventDetails; }
 
     /**
-     * <p>Contains details about a lambda function which failed to start during an
+     * <p>Contains details about a lambda function that failed to start during an
      * execution.</p>
      */
     inline void SetLambdaFunctionStartFailedEventDetails(const LambdaFunctionStartFailedEventDetails& value) { m_lambdaFunctionStartFailedEventDetailsHasBeenSet = true; m_lambdaFunctionStartFailedEventDetails = value; }
 
     /**
-     * <p>Contains details about a lambda function which failed to start during an
+     * <p>Contains details about a lambda function that failed to start during an
      * execution.</p>
      */
     inline void SetLambdaFunctionStartFailedEventDetails(LambdaFunctionStartFailedEventDetails&& value) { m_lambdaFunctionStartFailedEventDetailsHasBeenSet = true; m_lambdaFunctionStartFailedEventDetails = std::move(value); }
 
     /**
-     * <p>Contains details about a lambda function which failed to start during an
+     * <p>Contains details about a lambda function that failed to start during an
      * execution.</p>
      */
     inline HistoryEvent& WithLambdaFunctionStartFailedEventDetails(const LambdaFunctionStartFailedEventDetails& value) { SetLambdaFunctionStartFailedEventDetails(value); return *this;}
 
     /**
-     * <p>Contains details about a lambda function which failed to start during an
+     * <p>Contains details about a lambda function that failed to start during an
      * execution.</p>
      */
     inline HistoryEvent& WithLambdaFunctionStartFailedEventDetails(LambdaFunctionStartFailedEventDetails&& value) { SetLambdaFunctionStartFailedEventDetails(std::move(value)); return *this;}
 
 
     /**
-     * <p>Contains details about a lambda function which terminated successfully during
+     * <p>Contains details about a lambda function that terminated successfully during
      * an execution.</p>
      */
     inline const LambdaFunctionSucceededEventDetails& GetLambdaFunctionSucceededEventDetails() const{ return m_lambdaFunctionSucceededEventDetails; }
 
     /**
-     * <p>Contains details about a lambda function which terminated successfully during
+     * <p>Contains details about a lambda function that terminated successfully during
      * an execution.</p>
      */
     inline void SetLambdaFunctionSucceededEventDetails(const LambdaFunctionSucceededEventDetails& value) { m_lambdaFunctionSucceededEventDetailsHasBeenSet = true; m_lambdaFunctionSucceededEventDetails = value; }
 
     /**
-     * <p>Contains details about a lambda function which terminated successfully during
+     * <p>Contains details about a lambda function that terminated successfully during
      * an execution.</p>
      */
     inline void SetLambdaFunctionSucceededEventDetails(LambdaFunctionSucceededEventDetails&& value) { m_lambdaFunctionSucceededEventDetailsHasBeenSet = true; m_lambdaFunctionSucceededEventDetails = std::move(value); }
 
     /**
-     * <p>Contains details about a lambda function which terminated successfully during
+     * <p>Contains details about a lambda function that terminated successfully during
      * an execution.</p>
      */
     inline HistoryEvent& WithLambdaFunctionSucceededEventDetails(const LambdaFunctionSucceededEventDetails& value) { SetLambdaFunctionSucceededEventDetails(value); return *this;}
 
     /**
-     * <p>Contains details about a lambda function which terminated successfully during
+     * <p>Contains details about a lambda function that terminated successfully during
      * an execution.</p>
      */
     inline HistoryEvent& WithLambdaFunctionSucceededEventDetails(LambdaFunctionSucceededEventDetails&& value) { SetLambdaFunctionSucceededEventDetails(std::move(value)); return *this;}
@@ -531,6 +747,30 @@ namespace Model
 
     ActivityTimedOutEventDetails m_activityTimedOutEventDetails;
     bool m_activityTimedOutEventDetailsHasBeenSet;
+
+    TaskFailedEventDetails m_taskFailedEventDetails;
+    bool m_taskFailedEventDetailsHasBeenSet;
+
+    TaskScheduledEventDetails m_taskScheduledEventDetails;
+    bool m_taskScheduledEventDetailsHasBeenSet;
+
+    TaskStartFailedEventDetails m_taskStartFailedEventDetails;
+    bool m_taskStartFailedEventDetailsHasBeenSet;
+
+    TaskStartedEventDetails m_taskStartedEventDetails;
+    bool m_taskStartedEventDetailsHasBeenSet;
+
+    TaskSubmitFailedEventDetails m_taskSubmitFailedEventDetails;
+    bool m_taskSubmitFailedEventDetailsHasBeenSet;
+
+    TaskSubmittedEventDetails m_taskSubmittedEventDetails;
+    bool m_taskSubmittedEventDetailsHasBeenSet;
+
+    TaskSucceededEventDetails m_taskSucceededEventDetails;
+    bool m_taskSucceededEventDetailsHasBeenSet;
+
+    TaskTimedOutEventDetails m_taskTimedOutEventDetails;
+    bool m_taskTimedOutEventDetailsHasBeenSet;
 
     ExecutionFailedEventDetails m_executionFailedEventDetails;
     bool m_executionFailedEventDetailsHasBeenSet;

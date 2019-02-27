@@ -131,31 +131,36 @@ namespace Model
 
     /**
      * <p>The <a>HyperParameterAlgorithmSpecification</a> object that specifies the
-     * algorithm to use for the training jobs that the tuning job launches.</p>
+     * resource algorithm to use for the training jobs that the tuning job
+     * launches.</p>
      */
     inline const HyperParameterAlgorithmSpecification& GetAlgorithmSpecification() const{ return m_algorithmSpecification; }
 
     /**
      * <p>The <a>HyperParameterAlgorithmSpecification</a> object that specifies the
-     * algorithm to use for the training jobs that the tuning job launches.</p>
+     * resource algorithm to use for the training jobs that the tuning job
+     * launches.</p>
      */
     inline void SetAlgorithmSpecification(const HyperParameterAlgorithmSpecification& value) { m_algorithmSpecificationHasBeenSet = true; m_algorithmSpecification = value; }
 
     /**
      * <p>The <a>HyperParameterAlgorithmSpecification</a> object that specifies the
-     * algorithm to use for the training jobs that the tuning job launches.</p>
+     * resource algorithm to use for the training jobs that the tuning job
+     * launches.</p>
      */
     inline void SetAlgorithmSpecification(HyperParameterAlgorithmSpecification&& value) { m_algorithmSpecificationHasBeenSet = true; m_algorithmSpecification = std::move(value); }
 
     /**
      * <p>The <a>HyperParameterAlgorithmSpecification</a> object that specifies the
-     * algorithm to use for the training jobs that the tuning job launches.</p>
+     * resource algorithm to use for the training jobs that the tuning job
+     * launches.</p>
      */
     inline HyperParameterTrainingJobDefinition& WithAlgorithmSpecification(const HyperParameterAlgorithmSpecification& value) { SetAlgorithmSpecification(value); return *this;}
 
     /**
      * <p>The <a>HyperParameterAlgorithmSpecification</a> object that specifies the
-     * algorithm to use for the training jobs that the tuning job launches.</p>
+     * resource algorithm to use for the training jobs that the tuning job
+     * launches.</p>
      */
     inline HyperParameterTrainingJobDefinition& WithAlgorithmSpecification(HyperParameterAlgorithmSpecification&& value) { SetAlgorithmSpecification(std::move(value)); return *this;}
 
@@ -439,6 +444,65 @@ namespace Model
      */
     inline HyperParameterTrainingJobDefinition& WithStoppingCondition(StoppingCondition&& value) { SetStoppingCondition(std::move(value)); return *this;}
 
+
+    /**
+     * <p>Isolates the training container. No inbound or outbound network calls can be
+     * made, except for calls between peers within a training cluster for distributed
+     * training. If network isolation is used for training jobs that are configured to
+     * use a VPC, Amazon SageMaker downloads and uploads customer data and model
+     * artifacts through the specified VPC, but the training container does not have
+     * network access.</p> <note> <p>The Semantic Segmentation built-in algorithm does
+     * not support network isolation.</p> </note>
+     */
+    inline bool GetEnableNetworkIsolation() const{ return m_enableNetworkIsolation; }
+
+    /**
+     * <p>Isolates the training container. No inbound or outbound network calls can be
+     * made, except for calls between peers within a training cluster for distributed
+     * training. If network isolation is used for training jobs that are configured to
+     * use a VPC, Amazon SageMaker downloads and uploads customer data and model
+     * artifacts through the specified VPC, but the training container does not have
+     * network access.</p> <note> <p>The Semantic Segmentation built-in algorithm does
+     * not support network isolation.</p> </note>
+     */
+    inline void SetEnableNetworkIsolation(bool value) { m_enableNetworkIsolationHasBeenSet = true; m_enableNetworkIsolation = value; }
+
+    /**
+     * <p>Isolates the training container. No inbound or outbound network calls can be
+     * made, except for calls between peers within a training cluster for distributed
+     * training. If network isolation is used for training jobs that are configured to
+     * use a VPC, Amazon SageMaker downloads and uploads customer data and model
+     * artifacts through the specified VPC, but the training container does not have
+     * network access.</p> <note> <p>The Semantic Segmentation built-in algorithm does
+     * not support network isolation.</p> </note>
+     */
+    inline HyperParameterTrainingJobDefinition& WithEnableNetworkIsolation(bool value) { SetEnableNetworkIsolation(value); return *this;}
+
+
+    /**
+     * <p>To encrypt all communications between ML compute instances in distributed
+     * training, specify <code>True</code>. Encryption provides greater security for
+     * distributed training, but training take longer because of the additional
+     * communications between ML compute instances.</p>
+     */
+    inline bool GetEnableInterContainerTrafficEncryption() const{ return m_enableInterContainerTrafficEncryption; }
+
+    /**
+     * <p>To encrypt all communications between ML compute instances in distributed
+     * training, specify <code>True</code>. Encryption provides greater security for
+     * distributed training, but training take longer because of the additional
+     * communications between ML compute instances.</p>
+     */
+    inline void SetEnableInterContainerTrafficEncryption(bool value) { m_enableInterContainerTrafficEncryptionHasBeenSet = true; m_enableInterContainerTrafficEncryption = value; }
+
+    /**
+     * <p>To encrypt all communications between ML compute instances in distributed
+     * training, specify <code>True</code>. Encryption provides greater security for
+     * distributed training, but training take longer because of the additional
+     * communications between ML compute instances.</p>
+     */
+    inline HyperParameterTrainingJobDefinition& WithEnableInterContainerTrafficEncryption(bool value) { SetEnableInterContainerTrafficEncryption(value); return *this;}
+
   private:
 
     Aws::Map<Aws::String, Aws::String> m_staticHyperParameters;
@@ -464,6 +528,12 @@ namespace Model
 
     StoppingCondition m_stoppingCondition;
     bool m_stoppingConditionHasBeenSet;
+
+    bool m_enableNetworkIsolation;
+    bool m_enableNetworkIsolationHasBeenSet;
+
+    bool m_enableInterContainerTrafficEncryption;
+    bool m_enableInterContainerTrafficEncryptionHasBeenSet;
   };
 
 } // namespace Model

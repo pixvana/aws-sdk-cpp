@@ -24,6 +24,9 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <aws/core/utils/threading/Executor.h>
+#include <aws/core/utils/DNS.h>
+#include <aws/core/utils/logging/LogMacros.h>
+
 #include <aws/iot-jobs-data/IoTJobsDataPlaneClient.h>
 #include <aws/iot-jobs-data/IoTJobsDataPlaneEndpoint.h>
 #include <aws/iot-jobs-data/IoTJobsDataPlaneErrorMarshaller.h>
@@ -81,25 +84,32 @@ IoTJobsDataPlaneClient::~IoTJobsDataPlaneClient()
 
 void IoTJobsDataPlaneClient::init(const ClientConfiguration& config)
 {
-  Aws::StringStream ss;
-  ss << SchemeMapper::ToString(config.scheme) << "://";
-
-  if(config.endpointOverride.empty())
+  m_configScheme = SchemeMapper::ToString(config.scheme);
+  if (config.endpointOverride.empty())
   {
-    ss << IoTJobsDataPlaneEndpoint::ForRegion(config.region, config.useDualStack);
+      m_uri = m_configScheme + "://" + IoTJobsDataPlaneEndpoint::ForRegion(config.region, config.useDualStack);
   }
   else
   {
-    ss << config.endpointOverride;
+      OverrideEndpoint(config.endpointOverride);
   }
-
-  m_uri = ss.str();
 }
 
+void IoTJobsDataPlaneClient::OverrideEndpoint(const Aws::String& endpoint)
+{
+  if (endpoint.compare(0, 7, "http://") == 0 || endpoint.compare(0, 8, "https://") == 0)
+  {
+      m_uri = endpoint;
+  }
+  else
+  {
+      m_uri = m_configScheme + "://" + endpoint;
+  }
+}
 DescribeJobExecutionOutcome IoTJobsDataPlaneClient::DescribeJobExecution(const DescribeJobExecutionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/jobs/";
@@ -136,8 +146,8 @@ void IoTJobsDataPlaneClient::DescribeJobExecutionAsyncHelper(const DescribeJobEx
 
 GetPendingJobExecutionsOutcome IoTJobsDataPlaneClient::GetPendingJobExecutions(const GetPendingJobExecutionsRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/jobs";
@@ -173,8 +183,8 @@ void IoTJobsDataPlaneClient::GetPendingJobExecutionsAsyncHelper(const GetPending
 
 StartNextPendingJobExecutionOutcome IoTJobsDataPlaneClient::StartNextPendingJobExecution(const StartNextPendingJobExecutionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/jobs/$next";
@@ -210,8 +220,8 @@ void IoTJobsDataPlaneClient::StartNextPendingJobExecutionAsyncHelper(const Start
 
 UpdateJobExecutionOutcome IoTJobsDataPlaneClient::UpdateJobExecution(const UpdateJobExecutionRequest& request) const
 {
-  Aws::StringStream ss;
   Aws::Http::URI uri = m_uri;
+  Aws::StringStream ss;
   ss << "/things/";
   ss << request.GetThingName();
   ss << "/jobs/";

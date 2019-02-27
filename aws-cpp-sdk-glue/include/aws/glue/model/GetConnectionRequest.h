@@ -46,43 +46,43 @@ namespace Model
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline const Aws::String& GetCatalogId() const{ return m_catalogId; }
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline void SetCatalogId(const Aws::String& value) { m_catalogIdHasBeenSet = true; m_catalogId = value; }
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline void SetCatalogId(Aws::String&& value) { m_catalogIdHasBeenSet = true; m_catalogId = std::move(value); }
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline void SetCatalogId(const char* value) { m_catalogIdHasBeenSet = true; m_catalogId.assign(value); }
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline GetConnectionRequest& WithCatalogId(const Aws::String& value) { SetCatalogId(value); return *this;}
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline GetConnectionRequest& WithCatalogId(Aws::String&& value) { SetCatalogId(std::move(value)); return *this;}
 
     /**
      * <p>The ID of the Data Catalog in which the connection resides. If none is
-     * supplied, the AWS account ID is used by default.</p>
+     * provided, the AWS account ID is used by default.</p>
      */
     inline GetConnectionRequest& WithCatalogId(const char* value) { SetCatalogId(value); return *this;}
 
@@ -122,6 +122,34 @@ namespace Model
      */
     inline GetConnectionRequest& WithName(const char* value) { SetName(value); return *this;}
 
+
+    /**
+     * <p>Allows you to retrieve the connection metadata without returning the
+     * password. For instance, the AWS Glue console uses this flag to retrieve the
+     * connection, and does not display the password. Set this parameter when the
+     * caller might not have permission to use the AWS KMS key to decrypt the password,
+     * but does have permission to access the rest of the connection properties.</p>
+     */
+    inline bool GetHidePassword() const{ return m_hidePassword; }
+
+    /**
+     * <p>Allows you to retrieve the connection metadata without returning the
+     * password. For instance, the AWS Glue console uses this flag to retrieve the
+     * connection, and does not display the password. Set this parameter when the
+     * caller might not have permission to use the AWS KMS key to decrypt the password,
+     * but does have permission to access the rest of the connection properties.</p>
+     */
+    inline void SetHidePassword(bool value) { m_hidePasswordHasBeenSet = true; m_hidePassword = value; }
+
+    /**
+     * <p>Allows you to retrieve the connection metadata without returning the
+     * password. For instance, the AWS Glue console uses this flag to retrieve the
+     * connection, and does not display the password. Set this parameter when the
+     * caller might not have permission to use the AWS KMS key to decrypt the password,
+     * but does have permission to access the rest of the connection properties.</p>
+     */
+    inline GetConnectionRequest& WithHidePassword(bool value) { SetHidePassword(value); return *this;}
+
   private:
 
     Aws::String m_catalogId;
@@ -129,6 +157,9 @@ namespace Model
 
     Aws::String m_name;
     bool m_nameHasBeenSet;
+
+    bool m_hidePassword;
+    bool m_hidePasswordHasBeenSet;
   };
 
 } // namespace Model

@@ -159,70 +159,49 @@ namespace Model
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline const Aws::String& GetCategory() const{ return m_category; }
 
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline void SetCategory(const Aws::String& value) { m_categoryHasBeenSet = true; m_category = value; }
 
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline void SetCategory(Aws::String&& value) { m_categoryHasBeenSet = true; m_category = std::move(value); }
 
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline void SetCategory(const char* value) { m_categoryHasBeenSet = true; m_category.assign(value); }
 
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline VpnConnection& WithCategory(const Aws::String& value) { SetCategory(value); return *this;}
 
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline VpnConnection& WithCategory(Aws::String&& value) { SetCategory(std::move(value)); return *this;}
 
     /**
      * <p>The category of the VPN connection. A value of <code>VPN</code> indicates an
      * AWS VPN connection. A value of <code>VPN-Classic</code> indicates an AWS Classic
-     * VPN connection. For more information, see <a
-     * href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#vpn-categories">AWS
-     * Managed VPN Categories</a> in the <i>Amazon Virtual Private Cloud User
-     * Guide</i>.</p>
+     * VPN connection.</p>
      */
     inline VpnConnection& WithCategory(const char* value) { SetCategory(value); return *this;}
 
@@ -356,6 +335,42 @@ namespace Model
      * connection.</p>
      */
     inline VpnConnection& WithVpnGatewayId(const char* value) { SetVpnGatewayId(value); return *this;}
+
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline const Aws::String& GetTransitGatewayId() const{ return m_transitGatewayId; }
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline void SetTransitGatewayId(const Aws::String& value) { m_transitGatewayIdHasBeenSet = true; m_transitGatewayId = value; }
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline void SetTransitGatewayId(Aws::String&& value) { m_transitGatewayIdHasBeenSet = true; m_transitGatewayId = std::move(value); }
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline void SetTransitGatewayId(const char* value) { m_transitGatewayIdHasBeenSet = true; m_transitGatewayId.assign(value); }
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline VpnConnection& WithTransitGatewayId(const Aws::String& value) { SetTransitGatewayId(value); return *this;}
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline VpnConnection& WithTransitGatewayId(Aws::String&& value) { SetTransitGatewayId(std::move(value)); return *this;}
+
+    /**
+     * <p>The ID of the transit gateway associated with the VPN connection.</p>
+     */
+    inline VpnConnection& WithTransitGatewayId(const char* value) { SetTransitGatewayId(value); return *this;}
 
 
     /**
@@ -513,6 +528,9 @@ namespace Model
 
     Aws::String m_vpnGatewayId;
     bool m_vpnGatewayIdHasBeenSet;
+
+    Aws::String m_transitGatewayId;
+    bool m_transitGatewayIdHasBeenSet;
 
     VpnConnectionOptions m_options;
     bool m_optionsHasBeenSet;

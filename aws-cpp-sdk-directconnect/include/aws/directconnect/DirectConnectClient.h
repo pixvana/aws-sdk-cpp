@@ -705,14 +705,15 @@ namespace Model
         virtual void ConfirmPublicVirtualInterfaceAsync(const Model::ConfirmPublicVirtualInterfaceRequest& request, const ConfirmPublicVirtualInterfaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Creates a BGP peer on the specified virtual interface.</p> <p>The BGP peer
-         * cannot be in the same address family (IPv4/IPv6) of an existing BGP peer on the
-         * virtual interface.</p> <p>You must create a BGP peer for the corresponding
-         * address family in order to access AWS resources that also use that address
-         * family.</p> <p>When creating a IPv6 BGP peer, omit the Amazon address and
-         * customer address. IPv6 addresses are automatically assigned from the Amazon pool
-         * of IPv6 addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public
-         * virtual interface, the Autonomous System Number (ASN) must be private or already
+         * <p>Creates a BGP peer on the specified virtual interface.</p> <p>You must create
+         * a BGP peer for the corresponding address family (IPv4/IPv6) in order to access
+         * AWS resources that also use that address family.</p> <p>If logical redundancy is
+         * not supported by the connection, interconnect, or LAG, the BGP peer cannot be in
+         * the same address family as an existing BGP peer on the virtual interface.</p>
+         * <p>When creating a IPv6 BGP peer, omit the Amazon address and customer address.
+         * IPv6 addresses are automatically assigned from the Amazon pool of IPv6
+         * addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public virtual
+         * interface, the Autonomous System Number (ASN) must be private or already
          * whitelisted for the virtual interface.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/CreateBGPPeer">AWS
          * API Reference</a></p>
@@ -720,14 +721,15 @@ namespace Model
         virtual Model::CreateBGPPeerOutcome CreateBGPPeer(const Model::CreateBGPPeerRequest& request) const;
 
         /**
-         * <p>Creates a BGP peer on the specified virtual interface.</p> <p>The BGP peer
-         * cannot be in the same address family (IPv4/IPv6) of an existing BGP peer on the
-         * virtual interface.</p> <p>You must create a BGP peer for the corresponding
-         * address family in order to access AWS resources that also use that address
-         * family.</p> <p>When creating a IPv6 BGP peer, omit the Amazon address and
-         * customer address. IPv6 addresses are automatically assigned from the Amazon pool
-         * of IPv6 addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public
-         * virtual interface, the Autonomous System Number (ASN) must be private or already
+         * <p>Creates a BGP peer on the specified virtual interface.</p> <p>You must create
+         * a BGP peer for the corresponding address family (IPv4/IPv6) in order to access
+         * AWS resources that also use that address family.</p> <p>If logical redundancy is
+         * not supported by the connection, interconnect, or LAG, the BGP peer cannot be in
+         * the same address family as an existing BGP peer on the virtual interface.</p>
+         * <p>When creating a IPv6 BGP peer, omit the Amazon address and customer address.
+         * IPv6 addresses are automatically assigned from the Amazon pool of IPv6
+         * addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public virtual
+         * interface, the Autonomous System Number (ASN) must be private or already
          * whitelisted for the virtual interface.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/CreateBGPPeer">AWS
          * API Reference</a></p>
@@ -737,14 +739,15 @@ namespace Model
         virtual Model::CreateBGPPeerOutcomeCallable CreateBGPPeerCallable(const Model::CreateBGPPeerRequest& request) const;
 
         /**
-         * <p>Creates a BGP peer on the specified virtual interface.</p> <p>The BGP peer
-         * cannot be in the same address family (IPv4/IPv6) of an existing BGP peer on the
-         * virtual interface.</p> <p>You must create a BGP peer for the corresponding
-         * address family in order to access AWS resources that also use that address
-         * family.</p> <p>When creating a IPv6 BGP peer, omit the Amazon address and
-         * customer address. IPv6 addresses are automatically assigned from the Amazon pool
-         * of IPv6 addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public
-         * virtual interface, the Autonomous System Number (ASN) must be private or already
+         * <p>Creates a BGP peer on the specified virtual interface.</p> <p>You must create
+         * a BGP peer for the corresponding address family (IPv4/IPv6) in order to access
+         * AWS resources that also use that address family.</p> <p>If logical redundancy is
+         * not supported by the connection, interconnect, or LAG, the BGP peer cannot be in
+         * the same address family as an existing BGP peer on the virtual interface.</p>
+         * <p>When creating a IPv6 BGP peer, omit the Amazon address and customer address.
+         * IPv6 addresses are automatically assigned from the Amazon pool of IPv6
+         * addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public virtual
+         * interface, the Autonomous System Number (ASN) must be private or already
          * whitelisted for the virtual interface.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/CreateBGPPeer">AWS
          * API Reference</a></p>
@@ -1127,18 +1130,18 @@ namespace Model
         virtual void CreatePublicVirtualInterfaceAsync(const Model::CreatePublicVirtualInterfaceRequest& request, const CreatePublicVirtualInterfaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
         /**
-         * <p>Deletes the BGP peer on the specified virtual interface with the specified
-         * customer address and ASN.</p> <p>You cannot delete the last BGP peer from a
-         * virtual interface.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes the specified BGP peer on the specified virtual interface with the
+         * specified customer address and ASN.</p> <p>You cannot delete the last BGP peer
+         * from a virtual interface.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/DeleteBGPPeer">AWS
          * API Reference</a></p>
          */
         virtual Model::DeleteBGPPeerOutcome DeleteBGPPeer(const Model::DeleteBGPPeerRequest& request) const;
 
         /**
-         * <p>Deletes the BGP peer on the specified virtual interface with the specified
-         * customer address and ASN.</p> <p>You cannot delete the last BGP peer from a
-         * virtual interface.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes the specified BGP peer on the specified virtual interface with the
+         * specified customer address and ASN.</p> <p>You cannot delete the last BGP peer
+         * from a virtual interface.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/DeleteBGPPeer">AWS
          * API Reference</a></p>
          *
@@ -1147,9 +1150,9 @@ namespace Model
         virtual Model::DeleteBGPPeerOutcomeCallable DeleteBGPPeerCallable(const Model::DeleteBGPPeerRequest& request) const;
 
         /**
-         * <p>Deletes the BGP peer on the specified virtual interface with the specified
-         * customer address and ASN.</p> <p>You cannot delete the last BGP peer from a
-         * virtual interface.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes the specified BGP peer on the specified virtual interface with the
+         * specified customer address and ASN.</p> <p>You cannot delete the last BGP peer
+         * from a virtual interface.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/DeleteBGPPeer">AWS
          * API Reference</a></p>
          *
@@ -1580,7 +1583,7 @@ namespace Model
          * (LAG).</p> <p>The Letter of Authorization - Connecting Facility Assignment
          * (LOA-CFA) is a document that is used when establishing your cross connect to AWS
          * at the colocation facility. For more information, see <a
-         * href="http://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting
+         * href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting
          * Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect
          * User Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/DescribeLoa">AWS
@@ -1593,7 +1596,7 @@ namespace Model
          * (LAG).</p> <p>The Letter of Authorization - Connecting Facility Assignment
          * (LOA-CFA) is a document that is used when establishing your cross connect to AWS
          * at the colocation facility. For more information, see <a
-         * href="http://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting
+         * href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting
          * Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect
          * User Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/DescribeLoa">AWS
@@ -1608,7 +1611,7 @@ namespace Model
          * (LAG).</p> <p>The Letter of Authorization - Connecting Facility Assignment
          * (LOA-CFA) is a document that is used when establishing your cross connect to AWS
          * at the colocation facility. For more information, see <a
-         * href="http://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting
+         * href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting
          * Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect
          * User Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/directconnect-2012-10-25/DescribeLoa">AWS
@@ -1967,10 +1970,10 @@ namespace Model
          */
         virtual void UpdateVirtualInterfaceAttributesAsync(const Model::UpdateVirtualInterfaceAttributesRequest& request, const UpdateVirtualInterfaceAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const;
 
-
+      
+      void OverrideEndpoint(const Aws::String& endpoint);
     private:
       void init(const Aws::Client::ClientConfiguration& clientConfiguration);
-
         /**Async helpers**/
         void AllocateHostedConnectionAsyncHelper(const Model::AllocateHostedConnectionRequest& request, const AllocateHostedConnectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
         void AllocatePrivateVirtualInterfaceAsyncHelper(const Model::AllocatePrivateVirtualInterfaceRequest& request, const AllocatePrivateVirtualInterfaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
@@ -2015,6 +2018,7 @@ namespace Model
         void UpdateVirtualInterfaceAttributesAsyncHelper(const Model::UpdateVirtualInterfaceAttributesRequest& request, const UpdateVirtualInterfaceAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const;
 
       Aws::String m_uri;
+      Aws::String m_configScheme;
       std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
   };
 

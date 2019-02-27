@@ -49,25 +49,39 @@ namespace Model
     Aws::Utils::Json::JsonValue Jsonize() const;
 
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline const Aws::String& GetAccountId() const{ return m_accountId; }
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline void SetAccountId(const Aws::String& value) { m_accountIdHasBeenSet = true; m_accountId = value; }
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline void SetAccountId(Aws::String&& value) { m_accountIdHasBeenSet = true; m_accountId = std::move(value); }
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline void SetAccountId(const char* value) { m_accountIdHasBeenSet = true; m_accountId.assign(value); }
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline ReservationPurchaseRecommendationDetail& WithAccountId(const Aws::String& value) { SetAccountId(value); return *this;}
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline ReservationPurchaseRecommendationDetail& WithAccountId(Aws::String&& value) { SetAccountId(std::move(value)); return *this;}
 
-    
+    /**
+     * <p>The account that this RI recommendation is for.</p>
+     */
     inline ReservationPurchaseRecommendationDetail& WithAccountId(const char* value) { SetAccountId(value); return *this;}
 
 
@@ -220,44 +234,51 @@ namespace Model
 
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline const Aws::String& GetMinimumNormalizedUnitsUsedPerHour() const{ return m_minimumNormalizedUnitsUsedPerHour; }
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline void SetMinimumNormalizedUnitsUsedPerHour(const Aws::String& value) { m_minimumNormalizedUnitsUsedPerHourHasBeenSet = true; m_minimumNormalizedUnitsUsedPerHour = value; }
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline void SetMinimumNormalizedUnitsUsedPerHour(Aws::String&& value) { m_minimumNormalizedUnitsUsedPerHourHasBeenSet = true; m_minimumNormalizedUnitsUsedPerHour = std::move(value); }
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline void SetMinimumNormalizedUnitsUsedPerHour(const char* value) { m_minimumNormalizedUnitsUsedPerHourHasBeenSet = true; m_minimumNormalizedUnitsUsedPerHour.assign(value); }
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline ReservationPurchaseRecommendationDetail& WithMinimumNormalizedUnitsUsedPerHour(const Aws::String& value) { SetMinimumNormalizedUnitsUsedPerHour(value); return *this;}
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline ReservationPurchaseRecommendationDetail& WithMinimumNormalizedUnitsUsedPerHour(Aws::String&& value) { SetMinimumNormalizedUnitsUsedPerHour(std::move(value)); return *this;}
 
     /**
-     * <p>The minimum number of hours that you used in an hour during the historical
-     * period. AWS uses this to calculate your recommended reservation purchases.</p>
+     * <p>The minimum number of normalized units that you used in an hour during the
+     * historical period. AWS uses this to calculate your recommended reservation
+     * purchases.</p>
      */
     inline ReservationPurchaseRecommendationDetail& WithMinimumNormalizedUnitsUsedPerHour(const char* value) { SetMinimumNormalizedUnitsUsedPerHour(value); return *this;}
 

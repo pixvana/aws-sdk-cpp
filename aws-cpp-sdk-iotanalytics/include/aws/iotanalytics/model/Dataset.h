@@ -22,6 +22,7 @@
 #include <aws/iotanalytics/model/RetentionPeriod.h>
 #include <aws/iotanalytics/model/DatasetAction.h>
 #include <aws/iotanalytics/model/DatasetTrigger.h>
+#include <aws/iotanalytics/model/DatasetContentDeliveryRule.h>
 #include <utility>
 
 namespace Aws
@@ -212,6 +213,49 @@ namespace Model
 
 
     /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline const Aws::Vector<DatasetContentDeliveryRule>& GetContentDeliveryRules() const{ return m_contentDeliveryRules; }
+
+    /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline void SetContentDeliveryRules(const Aws::Vector<DatasetContentDeliveryRule>& value) { m_contentDeliveryRulesHasBeenSet = true; m_contentDeliveryRules = value; }
+
+    /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline void SetContentDeliveryRules(Aws::Vector<DatasetContentDeliveryRule>&& value) { m_contentDeliveryRulesHasBeenSet = true; m_contentDeliveryRules = std::move(value); }
+
+    /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline Dataset& WithContentDeliveryRules(const Aws::Vector<DatasetContentDeliveryRule>& value) { SetContentDeliveryRules(value); return *this;}
+
+    /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline Dataset& WithContentDeliveryRules(Aws::Vector<DatasetContentDeliveryRule>&& value) { SetContentDeliveryRules(std::move(value)); return *this;}
+
+    /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline Dataset& AddContentDeliveryRules(const DatasetContentDeliveryRule& value) { m_contentDeliveryRulesHasBeenSet = true; m_contentDeliveryRules.push_back(value); return *this; }
+
+    /**
+     * <p>When data set contents are created they are delivered to destinations
+     * specified here.</p>
+     */
+    inline Dataset& AddContentDeliveryRules(DatasetContentDeliveryRule&& value) { m_contentDeliveryRulesHasBeenSet = true; m_contentDeliveryRules.push_back(std::move(value)); return *this; }
+
+
+    /**
      * <p>The status of the data set.</p>
      */
     inline const DatasetStatus& GetStatus() const{ return m_status; }
@@ -327,6 +371,9 @@ namespace Model
 
     Aws::Vector<DatasetTrigger> m_triggers;
     bool m_triggersHasBeenSet;
+
+    Aws::Vector<DatasetContentDeliveryRule> m_contentDeliveryRules;
+    bool m_contentDeliveryRulesHasBeenSet;
 
     DatasetStatus m_status;
     bool m_statusHasBeenSet;
